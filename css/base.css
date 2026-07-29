@@ -2,8 +2,26 @@
   box-sizing: border-box;
 }
 
+/* Several sections deliberately bleed a fixed-width (e.g. 1440px) element
+   past the viewport, centered via `left:50%; transform:translateX(-50%)`
+   (torn edges, striped backgrounds, the footer's hands band, hero
+   doves…). Any of those, at the wrong viewport width, can overshoot by a
+   stray sub-pixel and trigger a horizontal scrollbar — which then makes
+   the page's effective width visibly shift ("wander") as you scroll past
+   different sections, some triggering it and some not. overflow-x:hidden
+   here is the one global backstop, instead of chasing every section's
+   own rounding individually. scrollbar-gutter:stable reserves the
+   vertical scrollbar's width up front too, so opening/closing a <dialog>
+   (which suppresses body scroll) doesn't itself shift the layout
+   sideways by that width. */
+html {
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
+  overflow-x: hidden;
   background: var(--color-cream-pale);
 }
 
