@@ -1,0 +1,40 @@
+/* Design tokens — mirrors the "Colors" variable collection in Figma (file 4xUIAZ1VxxFUHcd4WGSJxo).
+   Names and values match 1:1 so Figma's Dev Mode code syntax (var(--color-*)) stays valid. */
+:root {
+  --color-navy: #161e39;
+  --color-navy-70: rgba(22, 30, 57, 0.7);
+  --color-navy-80: rgba(22, 30, 57, 0.8);
+  --color-navy-press: #001044;
+
+  --color-cream: #fff2d5;
+  --color-cream-70: rgba(255, 242, 213, 0.7);
+  --color-cream-80: rgba(255, 242, 213, 0.8);
+  --color-cream-pale: #f6eee2;
+  --color-cream-pale-2: #fbefdd;
+  --color-cream-soft: #f2eade;
+  --color-cream-muted: #f1e9de;
+  --color-eyebrow-cream: #efe6db;
+
+  --color-dusty-blue: #9bbbcf;
+  --color-sky-pale: #d0dfef;
+  --color-dot-inactive: #d9d2c7;
+
+  --color-brown: #251c15;
+  --color-brown-70: rgba(37, 28, 21, 0.7);
+
+  --color-maroon: #701e20;
+  --color-maroon-70: rgba(112, 30, 32, 0.7);
+  --color-maroon-dark: #2f0e15;
+
+  --color-card-olive: #2c3c1b;
+  --color-card-navy-deep: #252e4b;
+  --color-card-yellow-pale: #ffe9a7;
+
+  --color-white: #ffffff;
+  --color-white-50: rgba(254, 253, 254, 0.5);
+  --color-text-answer-muted: rgba(245, 239, 229, 0.8);
+
+  --color-overlay-black-30: rgba(0, 0, 0, 0.3);
+  --color-overlay-black-37: rgba(0, 0, 0, 0.37);
+  --color-overlay-black-40: rgba(0, 0, 0, 0.4);
+}

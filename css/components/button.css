@@ -1,0 +1,38 @@
+/* CTA button — "cta-button-join-club" component from Figma (node 116:4261).
+   Variant "Property 1=Default/Click" is implemented as the button's resting vs.
+   hover/active/focus state, which is what that variant represents in a real UI. */
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 32px;
+  min-height: 61px;
+  border: none;
+  border-radius: 999px;
+  background-color: var(--color-dusty-blue);
+  cursor: pointer;
+
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.1;
+  letter-spacing: -0.17px;
+  text-transform: uppercase;
+  color: var(--color-cream-pale);
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition: background-color 0.15s ease;
+}
+
+.btn-cta:hover,
+.btn-cta:focus-visible,
+.btn-cta:active {
+  background-color: var(--color-navy-press);
+}
+
+.btn-cta:focus-visible {
+  outline: 2px solid var(--color-navy-press);
+  outline-offset: 2px;
+}

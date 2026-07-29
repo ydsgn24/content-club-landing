@@ -1,0 +1,165 @@
+/* section-what-if — Figma node 189:43 ("А что, если…?").
+   A horizontal "scrapbook on a wooden desk" strip: three paper pages plus
+   scattered photos/polaroids, all laid out on a fixed 2241×851 design
+   canvas (percentages below are that canvas's px values converted to
+   %-of-width / %-of-height so the whole composition scales uniformly
+   with viewport height via aspect-ratio, see .what-if__track).
+   Element order in the markup follows Figma's own layer order exactly,
+   since some photos are meant to sit under the pages/other photos.
+
+   Behavior (not present in the static Figma frame — implemented per
+   product spec): once scrolled into view the section pins for a full
+   viewport height on every device. The wood-desk background sits on its
+   own layer and drifts slower than the foreground for a parallax effect.
+   The heading stays fixed at the top of the screen for the whole pin.
+
+   Mobile/tablet (<1200px) use .what-if__track: vertical scroll distance
+   steps it through 6 snapping frames (each spread gets a left-half and
+   right-half frame) instead of following the scroll 1:1.
+
+   Desktop (≥1200px) uses .what-if__spreads instead: 3 pre-composited
+   full-spread images (exported whole from Figma, one per diary), one
+   wheel gesture = one spread, via wheel-event interception rather than
+   scroll distance. Driven by js/what-if-scroll.js. */
+
+.what-if {
+  position: relative;
+  margin-top: 100px;
+  background: var(--color-brown);
+}
+
+@media (min-width: 1200px) {
+  .what-if {
+    margin-top: 200px;
+  }
+}
+
+.what-if__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.what-if__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('../../images/Group 25.webp');
+  background-repeat: repeat-x;
+  background-size: auto 900px;
+  background-position: top center;
+  will-change: background-position;
+}
+
+.what-if__heading {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  margin: 0;
+  padding-bottom: 50px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.34px;
+  color: var(--color-cream-pale);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@media (min-width: 1200px) {
+  .what-if__heading {
+    font-size: 48px;
+  }
+}
+
+.what-if__track {
+  position: relative;
+  flex: 0 0 auto;
+  height: 100vh;
+  aspect-ratio: 2241 / 851;
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.what-if__page {
+  position: absolute;
+  left: 1.07%;
+  top: 26.32%;
+  width: 31.02%;
+  height: 59.34%;
+}
+
+.what-if__page--2 {
+  left: 34.49%;
+}
+
+.what-if__page--3 {
+  left: 67.96%;
+}
+
+/* Loose photos — plain rotated rects, exactly as authored in Figma
+   (no card/shadow layer behind them there, so none added here). */
+.what-if__deco {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+  object-fit: cover;
+}
+
+/* Pre-composited assets exported straight from Figma (polaroid frames,
+   film-strip groups) — rotation and shadow are already baked into the
+   PNG, so these are placed unrotated at their outer bounding box with
+   height:auto to keep the exported image's own proportions. */
+.what-if__composite {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: auto;
+}
+
+/* Desktop-only: 3 whole pre-composited spreads, one per diary. */
+.what-if__spreads {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .what-if__track {
+    display: none;
+  }
+
+  .what-if__spreads {
+    display: flex;
+    position: absolute;
+    top: 232px; /* heading box (70px top + 48px line + 50px padding) + 64px gap */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+}
+
+.what-if__spread-slot {
+  flex: 0 0 100vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.what-if__spread {
+  max-width: 90vw;
+  max-height: calc(82vh + 50px);
+  width: auto;
+  height: auto;
+}

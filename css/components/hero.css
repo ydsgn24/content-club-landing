@@ -1,0 +1,334 @@
+/* section-hero — Figma: Mobile node 48:517, Desktop node 58:2468, Tablet node 133:2356.
+   Poster-style collage: the section keeps the frame's aspect ratio and every
+   child is positioned in % of that box, so the composition scales as one unit
+   between the three defined breakpoints. */
+
+/* No max-height cap: on a narrow-but-short mobile viewport (real Safari
+   chrome eats a lot of vertical space, so the *available* height is often
+   much shorter than the phone's actual screen) a 100vh/100svh cap here
+   used to squash the section below its designed 375:984 ratio — the
+   content is positioned in % of that box, so a shorter box crowded the
+   CTA button and the social-proof line into each other. Letting the
+   section keep its natural aspect ratio instead (taller than one screen
+   on such devices, just needs a bit more scrolling) keeps every element's
+   real spacing intact everywhere. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 375 / 984;
+  color: var(--color-navy);
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+  pointer-events: none;
+  transform-origin: top;
+  transform: translateY(-40px) scale(1.584);
+}
+
+/* Fixed at its native 1440px design width — not scaled to fit narrower
+   viewports, just centered and cropped by .hero's own overflow:hidden.
+   Only stretches (proportionally) once the viewport itself exceeds 1440px. */
+.hero__torn-edge {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 1;
+  width: 1440px;
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Figma mobile node 48:517 (updated): UA/RU switch at top:21px (2.13% of
+   the 984px-tall mobile frame), centered — the "current" language reads
+   as the dimmed half of the pair (50% opacity), the other language is
+   the actual link, at full cream. Carries through to desktop too (not
+   just mobile) per direct request, since there's no reason for it not
+   to stay centered there. */
+.hero__lang-switch {
+  position: absolute;
+  left: 50%;
+  top: 2.13%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-cream);
+}
+
+.hero__lang-switch a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero__lang-switch a:hover,
+.hero__lang-switch a:focus-visible {
+  text-decoration: underline;
+}
+
+.hero__lang-switch-current {
+  color: var(--color-cream-70);
+}
+
+/* Same update: doves+florals bracket the switch, one flipped horizontally
+   (Figma reuses one asset with a 180°+flipY transform, net a mirror,
+   same trick as the tariff-modal clouds) instead of two separate files. */
+.hero__dove {
+  position: absolute;
+  top: 1.02%;
+  width: 21.87%;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero__dove--left {
+  left: 1.33%;
+  transform: scaleX(-1);
+}
+
+.hero__dove--right {
+  right: 1.33%;
+}
+
+/* Eyebrow + follower count now stack centered as one block (was a
+   left/eyebrow-right/followers split) — mobile-only per node 48:517;
+   the desktop frame (58:2468) hasn't been redesigned this way, so its
+   own media query below still repositions them back to a left/right
+   split for that breakpoint. */
+.hero__eyebrow,
+.hero__followers,
+.hero__social-proof {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  width: max-content;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  text-align: center;
+  color: var(--color-cream);
+}
+
+.hero__eyebrow {
+  top: 6.91%;
+  font-size: 1rem;
+}
+
+.hero__followers {
+  top: 10.37%;
+  font-size: 1rem;
+}
+
+.hero__social-proof {
+  width: 55%;
+  top: 85.2%;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+/* Card + CTA stack in normal flow (column + gap) instead of two independently
+   positioned elements — the button can never end up under the card this way,
+   no matter how many lines the description wraps to.
+   Width is capped in px (not just %): in Figma the card/button stay a fixed
+   369px/313px at every breakpoint — only their position changes — so an
+   uncapped % width would balloon (and overflow into the text below it) on
+   any viewport wider than the breakpoint's own anchor width. */
+.hero__stack {
+  position: absolute;
+  left: 50%;
+  top: 50.9%;
+  width: min(98%, 369px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75em;
+}
+
+.hero__collage {
+  position: relative;
+  width: 100%;
+}
+
+/* The card's height is driven by the text it holds (padding + content),
+   not by the tag graphic — that graphic stretches to match instead. This
+   guarantees the description always stays inside the plate, centered, at
+   any viewport width, rather than relying on two elements scaling in sync. */
+.hero__card {
+  position: relative;
+  padding: 15% 12%;
+}
+
+.hero__photo--tag {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.hero__photo--pin {
+  position: absolute;
+  left: 38.5%;
+  top: 0;
+  width: 22.7%;
+  height: auto;
+  transform: translateY(-50%);
+}
+
+.hero__description {
+  position: relative;
+  margin: 0;
+  text-align: center;
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-navy-80);
+}
+
+.hero__description strong {
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+.hero__cta {
+  width: 84.8%;
+  flex-shrink: 0;
+}
+
+.hero__decor-circle {
+  display: none;
+}
+
+/* ============ Tablet: 768px — matches the Tablet frame (133:2356) ============
+   Same mobile typography/colors and the same card+button size — the tablet
+   frame just recenters that mobile composition inside a wider photo canvas.
+   Eyebrow/followers stay the new centered mobile layout through this
+   breakpoint too (no tablet-specific split override anymore) — only
+   .hero__social-proof still gets its own tablet width/position, since
+   that one wasn't touched by the mobile redesign. */
+@media (min-width: 768px) {
+  .hero {
+    aspect-ratio: 768 / 984;
+  }
+
+  .hero__social-proof {
+    left: 36.6%;
+    width: 26.8%;
+  }
+}
+
+/* ============ Desktop: 1200px — matches the Desktop frame ============ */
+@media (min-width: 1200px) {
+  .hero {
+    aspect-ratio: 1440 / 875;
+  }
+
+  /* top+height (not transform: translateY) so the enlarged cover box's
+     bottom edge still lands exactly on the section's bottom — a plain
+     translateY shift here would slide the already-cover-sized image up
+     and expose empty space below it, behind the torn-edge graphic. */
+  .hero__bg {
+    top: -100px;
+    height: calc(100% + 100px);
+    transform: none;
+  }
+
+  /* Doves are part of the mobile-only redesign (node 48:517) — no
+     matching update on the desktop frame (58:2468) yet. */
+  .hero__dove {
+    display: none;
+  }
+
+  .hero__eyebrow,
+  .hero__followers,
+  .hero__social-proof,
+  .hero__lang-switch {
+    font-size: 1.25rem;
+    letter-spacing: -0.2px;
+    line-height: 1;
+  }
+
+  .hero__eyebrow {
+    left: 6.9%;
+    top: 5.3%;
+    transform: none;
+  }
+
+  .hero__followers {
+    left: 81.3%;
+    top: 30.6%;
+    width: 12%;
+    text-align: right;
+    transform: none;
+  }
+
+  .hero__social-proof {
+    left: 6.9%;
+    top: 59.3%;
+    width: 23%;
+    text-align: left;
+    transform: none;
+  }
+
+  .hero__stack {
+    top: 52.3%;
+  }
+
+  .hero__description {
+    font-size: 1rem;
+  }
+
+  .hero__decor-circle {
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 32.4%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: var(--color-overlay-black-37);
+    filter: blur(150px);
+    pointer-events: none;
+  }
+
+  .hero__decor-circle--1 {
+    left: 73.3%;
+    top: 61.3%;
+  }
+
+  .hero__decor-circle--2 {
+    left: 77.9%;
+    top: 0;
+  }
+}
+
+/* ============ >1440px: scale the fixed-size torn-edge proportionally ============ */
+@media (min-width: 1440px) {
+  .hero__torn-edge {
+    left: 0;
+    width: 100%;
+    transform: none;
+  }
+}

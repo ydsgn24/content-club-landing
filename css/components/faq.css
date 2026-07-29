@@ -1,0 +1,184 @@
+/* section-faq — Figma: Mobile node 49:1450, Desktop node 59:3360.
+   List items are plain <details name="faq-accordion"> (native single-open
+   accordion, same technique as .accordion-item in accordion.css) — no JS
+   needed. Height is genuinely dynamic (first item opens by default, and
+   any item can open/close), so everything is in normal flow, not
+   absolutely positioned against a fixed-height background like the raw
+   Figma frame — same reasoning as club-contents.css.
+
+   Desktop heading sits to the left of the list instead of centered above
+   it — a real layout difference, not just a resize. The 173px gap below
+   is Figma's own constant (the list's left offset there is
+   `calc(20% + 173px)`), reused directly as the gap between the two flex
+   items rather than re-deriving separate absolute positions for both. */
+
+.faq {
+  position: relative;
+  padding: 114px 16px 56px;
+  background: var(--color-cream-pale);
+}
+
+.faq__heading {
+  margin: 0 0 32px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.32px;
+  color: var(--color-navy);
+  text-align: center;
+}
+
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Scroll reveal (js/faq-reveal.js) — heading line-reveals word by word
+   (.reveal-word, shared base rule in video-teaser.css) once the section
+   scrolls into view; each item fades/rises in individually as it's
+   scrolled to, same .reveal-card--visible mechanism as the club-contents
+   cards/accordion items. */
+.faq.is-revealed .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.faq-item {
+  width: 100%;
+  border: 2px solid var(--color-dusty-blue);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.faq-item.reveal-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.faq-item__summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item__summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item__question {
+  margin: 0;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: -0.2px;
+  color: var(--color-navy);
+}
+
+/* CSS-drawn plus that rotates into an × when open — same trick as
+   .accordion-item__icon, no icon asset needed. */
+.faq-item__icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+.faq-item__icon::before,
+.faq-item__icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--color-dusty-blue);
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s ease;
+}
+
+.faq-item__icon::before {
+  width: 16px;
+  height: 2px;
+}
+
+.faq-item__icon::after {
+  width: 2px;
+  height: 16px;
+}
+
+.faq-item[open] .faq-item__icon::before,
+.faq-item[open] .faq-item__icon::after {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.faq-item__answer {
+  margin: 8px 0 0;
+  padding: 0 16px 16px;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-navy-70);
+}
+
+.faq-item__answer em {
+  display: block;
+  margin-top: 8px;
+}
+
+@media (min-width: 1200px) {
+  .faq {
+    padding: 146px 100px 96px 148px;
+  }
+
+  /* space-between (not a fixed gap) so the heading sits flush against the
+     section's left inset and the list flush against its right inset,
+     with whatever room is left between them absorbed as whitespace. */
+  .faq__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .faq__heading {
+    flex-shrink: 0;
+    margin: 0;
+    font-size: 48px;
+    letter-spacing: -0.48px;
+    text-align: left;
+  }
+
+  .faq__list {
+    max-width: 879px;
+  }
+
+  .faq-item__summary {
+    padding: 24px;
+  }
+
+  .faq-item__question {
+    font-size: 28px;
+    letter-spacing: -0.28px;
+  }
+
+  .faq-item__answer {
+    padding: 0 24px 24px;
+    font-size: 20px;
+    letter-spacing: -0.2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item {
+    transition-duration: 0.01ms;
+  }
+}

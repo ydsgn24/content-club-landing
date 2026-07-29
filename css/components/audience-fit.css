@@ -1,0 +1,415 @@
+/* section-audience-fit — Figma node 48:707 (mobile), 59:2693 (desktop).
+   A fully static section, matching Figma exactly — no scroll interaction,
+   no pinning, no JS. Chandelier + heading + a photo backdrop (bounded top
+   and bottom by the same torn-edge asset, flipped for the top seam) sit
+   behind 5 cards. On mobile/tablet the cards are absolutely positioned in
+   a single column at their real Figma coordinates (including each card's
+   own resting tilt and its icon's independent poke/rotation — both are
+   permanent, not scroll-triggered states). Desktop switches to a static
+   grid (3 cards, then 2 centered below) per the separate Desktop frame. */
+
+.audience-fit {
+  position: relative;
+  background: var(--color-cream-pale);
+}
+
+.audience-fit__pin {
+  position: relative;
+  height: 2163px;
+  overflow: hidden;
+  background: var(--color-cream-pale);
+}
+
+/* Bounded photo backdrop: torn edge in, photo, torn edge out — a fixed
+   height instead of extending indefinitely, since nothing is pinned here.
+   Height leaves exactly 60px between the last card's bottom and the
+   torn-edge-bottom image above it. */
+.audience-fit__photo-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 294px;
+  height: 1869px;
+  overflow: hidden;
+}
+
+.audience-fit__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  z-index: 1;
+}
+
+/* Top seam: flipped so the solid cream fill sits at the top (blending into
+   the background above) and the jagged cutout reveals the photo below it. */
+.audience-fit__torn-edge--top {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1440px;
+  max-width: none;
+  transform: translateX(-50%) scaleY(-1);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Bottom seam: natural orientation (jagged edge up, revealing the photo
+   above it; solid cream fill below, blending into the section's own bg). */
+.audience-fit__torn-edge--bottom {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 1440px;
+  max-width: none;
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+@media (min-width: 1440px) {
+  .audience-fit__torn-edge--top,
+  .audience-fit__torn-edge--bottom {
+    width: 100%;
+  }
+}
+
+/* Drops in from above on scroll (js/audience-fit-scroll.js adds
+   .audience-fit--chandelier-revealed once it enters the viewport) instead
+   of just sitting there static — reads as the chandelier being lowered
+   into place. One-shot, same on every breakpoint. */
+.audience-fit__chandelier {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-90px);
+  opacity: 0;
+  width: 460px;
+  max-width: none;
+  height: auto;
+  z-index: 3;
+  transition: transform 1s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.9s ease;
+}
+
+.audience-fit--chandelier-revealed .audience-fit__chandelier {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Raised 30px above the original Figma-matched spot (was top: -30px) per
+   design tweak — heading/card positions below are left at their previous
+   fixed px values, not recalculated off the chandelier's new position.
+   [Was: 32px below the chandelier/photo scene's bottom edge (chandelier is
+   460px wide, -30px top, its own 1371:1583 aspect ratio puts its bottom at
+   ~501px — so 501 + 32 = 533). Card 1 sits 32px below the heading's own
+   bottom in turn (heading height 68px: 533 + 68 + 32 = 633, matching
+   .audience-card--seekers' top below).] */
+.audience-fit__heading {
+  position: absolute;
+  left: 50%;
+  top: 533px;
+  transform: translateX(-50%);
+  z-index: 3;
+  margin: 0;
+  width: 100%;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.34px;
+  color: var(--color-cream);
+  text-align: center;
+}
+
+/* Overlays the same 2116px canvas as .audience-fit__pin — cards are
+   positioned at their real Figma Y coordinates within it. */
+.audience-fit__stack {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+
+.audience-card {
+  position: absolute;
+  left: 50%;
+  width: 343px;
+  margin-left: -171.5px;
+  aspect-ratio: 347 / 246;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 20px 32px;
+  box-sizing: border-box;
+}
+
+/* The scalloped shape is a real <img> behind the content (not mask-image) —
+   mask-image referencing an external SVG doesn't reliably render in Safari
+   over file://, and this same shape is shared by all 5 cards, just recolored. */
+.audience-card__shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Position + resting tilt, per card. Gap between cards is a flat
+   28px (card height 243px + 28 = 271px per step), overriding Figma's own
+   slightly uneven spacing for a cleaner, consistent rhythm. */
+.audience-card--seekers       { top: 633px;  transform: rotate(-2.2deg); }
+.audience-card--bloggers      { top: 904px;  transform: rotate(2.66deg); }
+.audience-card--experts       { top: 1175px; }
+.audience-card--entrepreneurs { top: 1446px; transform: rotate(-1.78deg); }
+.audience-card--specialists   { top: 1718px; transform: rotate(1.12deg); }
+
+/* Mobile/tablet only (js/audience-fit-scroll.js): each card straightens
+   out while it's near the vertical center of the screen, and settles back
+   into its resting tilt above as it scrolls away in either direction —
+   not a one-shot reveal, so the class gets added/removed continuously. */
+@media (max-width: 1199.98px) {
+  .audience-card {
+    transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .audience-card--straight {
+    transform: rotate(0deg);
+  }
+}
+
+.audience-card__icon {
+  position: absolute;
+  width: 84px;
+  height: auto;
+  pointer-events: none;
+}
+
+.audience-card--seekers .audience-card__icon       { top: -23px; width: 91px;  transform: rotate(-2.2deg); }
+.audience-card--bloggers .audience-card__icon      { top: -6px;  width: 81px;  transform: rotate(-6.32deg); }
+.audience-card--experts .audience-card__icon       { top: -27px; width: 77px; }
+.audience-card--entrepreneurs .audience-card__icon { top: -34px; left: 50%; margin-left: -45.5px; width: 101px; transform: rotate(88.22deg); }
+.audience-card--specialists .audience-card__icon   { top: -59px; left: 50%; margin-left: -41px;   width: 92px;  transform: rotate(31.51deg); }
+
+.audience-card__title {
+  margin: 0;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.28px;
+}
+
+.audience-card__text {
+  margin: 0;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  max-width: 295px;
+}
+
+.audience-card--seekers .audience-card__title,
+.audience-card--seekers .audience-card__text {
+  color: var(--color-brown);
+}
+.audience-card--seekers .audience-card__text {
+  color: var(--color-brown-70);
+}
+
+.audience-card--specialists .audience-card__title {
+  color: var(--color-maroon);
+}
+.audience-card--specialists .audience-card__text {
+  color: var(--color-maroon-70);
+}
+
+.audience-card--bloggers .audience-card__title,
+.audience-card--experts .audience-card__title,
+.audience-card--entrepreneurs .audience-card__title {
+  color: var(--color-cream);
+}
+.audience-card--bloggers .audience-card__text,
+.audience-card--experts .audience-card__text,
+.audience-card--entrepreneurs .audience-card__text {
+  color: var(--color-cream-70);
+}
+
+/* ============ Tablet: 768px — interpolated, no Figma Tablet frame yet ============
+   Same static composition, scaled up for the wider canvas. Card positions
+   stay at the same Y coordinates (only the backdrop and card width scale);
+   there's no Figma tablet reference to derive a re-flowed layout from. */
+@media (min-width: 768px) {
+  .audience-fit__pin {
+    height: 2458px;
+  }
+
+  .audience-fit__chandelier {
+    top: -34px;
+    width: 520px;
+  }
+
+  /* Height leaves exactly 60px between the last card's bottom and the
+     torn-edge-bottom image above it. */
+  .audience-fit__photo-wrap {
+    top: 335px;
+    height: 2123px;
+  }
+
+  /* Same 32px-above/32px-below rule as mobile: chandelier at 520px wide
+     (-34px top) is ~566px tall to its bottom edge, +32 = 598; heading at
+     40px/2 lines is 80px tall, +32 = 710 for card 1 below. */
+  .audience-fit__heading {
+    top: 598px;
+    font-size: 40px;
+  }
+
+  /* Cards are bigger here (420px vs mobile's 343px), so both their own
+     height and the flat 16px gap before the next one scale up too —
+     otherwise a taller card runs into the one after it. */
+  .audience-card {
+    width: 420px;
+    margin-left: -210px;
+  }
+
+  .audience-card--seekers       { top: 710px; }
+  .audience-card--bloggers      { top: 1024px; }
+  .audience-card--experts       { top: 1338px; }
+  .audience-card--entrepreneurs { top: 1651px; }
+  .audience-card--specialists   { top: 1965px; }
+
+  .audience-card__title {
+    font-size: 32px;
+  }
+
+  .audience-card__text {
+    font-size: 18px;
+    max-width: 360px;
+  }
+}
+
+/* ============ Desktop: 1200px — matches the Desktop frame (59:2693) ============
+   A completely different composition from mobile/tablet: cards laid out as
+   a static grid on top of the photo backdrop (3 cards, then 2 centered
+   below), exactly as Figma shows — no single-column stack. */
+@media (min-width: 1200px) {
+  .audience-fit {
+    overflow: hidden;
+  }
+
+  .audience-fit__pin {
+    height: 1624px;
+  }
+
+  .audience-fit__chandelier {
+    top: -34px;
+    width: 585px;
+  }
+
+  /* 44px below the chandelier's own bottom edge (585px wide, -34px top,
+     1371:1583 aspect ratio puts its bottom at ~641px: 641 + 44 = 685);
+     cards in turn sit 44px below the heading's own bottom (48px font,
+     2 lines = 96px tall: 685 + 96 + 44 = 825, matching .audience-fit__stack
+     below). */
+  .audience-fit__heading {
+    display: block;
+    top: 685px;
+    font-size: 48px;
+  }
+
+  .audience-fit__photo-wrap {
+    top: 240px;
+    height: 1384px;
+  }
+
+  .audience-fit__stack {
+    position: absolute;
+    inset: auto;
+    z-index: 4;
+    top: 825px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1150px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    column-gap: 20px;
+    row-gap: 32px;
+  }
+
+  .audience-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 370px;
+    height: 296px;
+    margin-left: 0;
+    aspect-ratio: auto;
+    transform: none;
+  }
+
+  .audience-card__icon {
+    width: auto;
+    height: auto;
+  }
+
+  .audience-card--seekers .audience-card__icon {
+    top: -26px;
+    width: 91px;
+    transform: none;
+  }
+
+  .audience-card--bloggers .audience-card__icon {
+    top: -21px;
+    width: 81px;
+    transform: rotate(-8.97deg);
+  }
+
+  .audience-card--experts .audience-card__icon {
+    top: -37px;
+    width: 86px;
+    transform: none;
+  }
+
+  .audience-card--entrepreneurs .audience-card__icon {
+    top: -54px;
+    width: 114px;
+    transform: rotate(112.61deg);
+  }
+
+  .audience-card--specialists .audience-card__icon {
+    top: -49px;
+    width: 92px;
+    transform: rotate(30.39deg);
+  }
+
+  .audience-card__title {
+    font-size: 34px;
+  }
+
+  .audience-card--entrepreneurs .audience-card__title,
+  .audience-card--specialists .audience-card__title {
+    font-size: 36px;
+  }
+
+  .audience-card__text {
+    font-size: 20px;
+    max-width: 315px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audience-fit__chandelier {
+    transition-duration: 0.01ms;
+  }
+
+  .audience-card {
+    transition-duration: 0.01ms;
+  }
+}

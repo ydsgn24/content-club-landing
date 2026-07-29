@@ -1,0 +1,334 @@
+/* section-video-teaser — Figma: Mobile node 48:566, Desktop node 59:2506.
+   No Tablet frame exists in Figma for this section yet — the tablet rules
+   below are an interpolation (same stacked layout as mobile, larger type),
+   not a 1:1 match. Replace with real values if a Tablet frame gets added,
+   the same way section-hero's tablet rules were later corrected. */
+
+.video-teaser {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 375 / 802;
+  background: var(--color-cream-pale);
+  color: var(--color-navy);
+}
+
+/* Fixed at its native 1440px design width — not scaled to fit narrower
+   viewports, just centered and cropped by .video-teaser's own overflow:hidden.
+   Only stretches (proportionally) once the viewport itself exceeds 1440px.
+   The stripe photo itself is much shorter than the section, so it's tiled
+   vertically (it's a seamless repeat) to cover the full height. No fade at
+   the bottom — the stripes are vertical bands (position only varies by X,
+   not Y), and section-club-contents right below uses the same width/position
+   rule, so the pattern just continues across the seam instead of restarting. */
+.video-teaser__bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1440px;
+  height: 100%;
+  max-width: none;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background-image: url('../../images/фон.webp');
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: 1440px auto;
+}
+
+@media (min-width: 1440px) {
+  .video-teaser__bg {
+    left: 0;
+    width: 100%;
+    background-size: 100% auto;
+    transform: none;
+  }
+}
+
+/* Mirrors the Figma auto-layout (VERTICAL, counterAxisAlignItems: CENTER)
+   that wraps content-frame + the media cluster: the gap below the heading
+   block is a real flex gap, not a guessed absolute position, so it stays
+   exactly 40px/72px no matter how many lines the heading wraps to. */
+.video-teaser__stack {
+  position: absolute;
+  left: 50%;
+  top: 11.6%;
+  width: 100%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.video-teaser__content {
+  margin: 0;
+  width: min(91.5%, 343px);
+  text-align: center;
+}
+
+/* Figma node 236:62: heading sits on its own now (no longer sharing one
+   flex gap with the description below) — 25px to the content-frame's top
+   (was 16px), since the description now has a plate behind it and needs
+   more breathing room above. */
+.video-teaser__heading {
+  margin: 0 0 25px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.34px;
+  color: var(--color-navy);
+  -webkit-text-stroke: 0.3px var(--color-navy);
+}
+
+/* Figma node 236:80 "image 63345919" — same reused plate/badge asset as
+   section-club-contents' offer line (350:120 native ratio, matches this
+   image's own aspect exactly so no cropping is needed). */
+/* Matches section-club-contents' offer plate: heading's own 25px
+   margin-bottom + this 39px = same 64px total gap as
+   .club-contents__offer-wrap's margin-top, so both plates sit the same
+   distance below their heading. */
+.video-teaser__description-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 39px;
+}
+
+.video-teaser__description-badge {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  /* 2x the original 350px design size — capped against the viewport
+     (not the narrow text column) since the plate is meant to bleed
+     past the text width. max-width:none overrides base.css's global
+     `img { max-width: 100% }` reset, which otherwise clamps this down
+     to its 343px-wide ancestor (.video-teaser__content) — the actual
+     bug behind the plate looking stuck at the old smaller size. */
+  width: min(90vw, 700px);
+  max-width: none;
+  height: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.video-teaser__description {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0 20px;
+  font-family: 'Jost', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-navy-80);
+}
+
+.video-teaser__description strong {
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+/* Photo + frame + play button + caption all scale together as one cluster —
+   percentages below are relative to this element, and stay identical at
+   every breakpoint (only this element's own position/size changes). */
+.video-teaser__watch {
+  position: relative;
+  width: 84.3%;
+  aspect-ratio: 316 / 461.68;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.video-teaser__frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 78.63%;
+  pointer-events: none;
+}
+
+.video-teaser__photo {
+  position: absolute;
+  left: 10.44%;
+  top: 4.98%;
+  width: 80.38%;
+  height: 68.02%;
+  border-radius: 9999px;
+  object-fit: cover;
+  object-position: 50% 100%;
+}
+
+.video-teaser__play-glow {
+  position: absolute;
+  left: 32.91%;
+  top: 66.94%;
+  width: 34.18%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: var(--color-cream-pale);
+  filter: blur(5px);
+}
+
+.video-teaser__play-circle {
+  position: absolute;
+  left: 36.39%;
+  top: 69.31%;
+  width: 27.22%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: var(--color-cream-soft);
+  border: 3px solid var(--color-dusty-blue);
+}
+
+.video-teaser__play-triangle {
+  position: absolute;
+  left: 47.47%;
+  top: 75.16%;
+  width: 8.54%;
+  aspect-ratio: 27 / 32;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  background: var(--color-dusty-blue);
+}
+
+/* Position/size live on the outer span, the -9deg tilt on the inner one —
+   rotating the SAME element that's positioned would shift its visual top
+   edge by an amount proportional to the caption's own width (the wider
+   it renders, the more a rotation around "left center" lifts one side),
+   which is exactly why the old single-element version wasn't a
+   consistent 16px at every breakpoint. Splitting them means the outer
+   box's top edge is never touched by the rotation, so the gap below
+   stays exactly 16px regardless of size. */
+.video-teaser__caption {
+  position: absolute;
+  left: 30.06%;
+  /* play-circle's bottom edge as %-of-.video-teaser__watch-HEIGHT, plus a
+     literal 16px. Not simply top(69.31%) + width(27.22%): the circle's
+     height comes from aspect-ratio:1/1 on its WIDTH %, so translating
+     that into a %-of-height also has to factor in .video-teaser__watch's
+     own aspect ratio (316/461.68 here) — 69.31% + 27.22% * (316/461.68)
+     = 87.94%. Desktop overrides this below because its watch aspect
+     ratio (456.95/645.68) is different. */
+  top: calc(87.94% + 16px);
+  width: 39.76%;
+  /* "Classica Two" from the design isn't available as a web font — substituted
+     with a comparable cursive script (Parisienne) until a real webfont is added. */
+  font-family: 'Parisienne', cursive;
+  font-size: 22px;
+  color: var(--color-navy);
+  white-space: nowrap;
+}
+
+.video-teaser__caption-text {
+  display: inline-block;
+  transform: rotate(-9deg);
+  transform-origin: left center;
+}
+
+/* ============ Line-by-line scroll reveal (js/video-teaser-reveal.js) ============
+   Not in the Figma file — implemented per product spec. The script wraps
+   each word of the heading/description in a .reveal-word span and groups
+   them by their rendered line (measured at runtime, so it's correct at
+   any breakpoint/wrap point, not just one hard-coded width), then adds
+   .video-teaser--revealed once the section scrolls into view. Each word
+   fades/rises in together with the rest of its own line, staggered line
+   by line via the --reveal-delay custom property the script sets per word. */
+.reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.35em);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.video-teaser--revealed .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-word {
+    transition-duration: 0.01ms;
+    transition-delay: 0s;
+  }
+}
+
+/* ============ Tablet: 768px — interpolated, no Figma Tablet frame yet ============ */
+@media (min-width: 768px) {
+  .video-teaser {
+    aspect-ratio: 768 / 900;
+  }
+
+  .video-teaser__stack {
+    top: 8%;
+    gap: 56px;
+  }
+
+  .video-teaser__content {
+    width: min(70%, 460px);
+  }
+
+  .video-teaser__heading {
+    font-size: 44px;
+  }
+
+  .video-teaser__description {
+    font-size: 20px;
+  }
+
+  .video-teaser__watch {
+    width: 46%;
+  }
+}
+
+/* ============ Desktop: 1200px — matches the Desktop frame ============ */
+@media (min-width: 1200px) {
+  .video-teaser {
+    aspect-ratio: 1440 / 1053;
+  }
+
+  .video-teaser__stack {
+    top: 6.1%;
+    gap: 72px;
+  }
+
+  .video-teaser__content {
+    width: min(23.8%, 343px);
+  }
+
+  .video-teaser__heading {
+    font-size: 48px;
+    letter-spacing: -0.48px;
+  }
+
+  .video-teaser__description {
+    font-size: 20px;
+  }
+
+  .video-teaser__watch {
+    width: 31.7%;
+    aspect-ratio: 456.95 / 645.68;
+  }
+
+  .video-teaser__frame {
+    height: 81.3%;
+  }
+
+  .video-teaser__caption {
+    left: 39.6%;
+    /* Same formula as the base rule, recomputed for this breakpoint's own
+       .video-teaser__watch aspect ratio (456.95/645.68): 69.31% + 27.22%
+       * (456.95/645.68) = 88.57%. */
+    top: calc(88.57% + 16px);
+    width: 27.5%;
+  }
+}

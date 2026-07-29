@@ -1,0 +1,381 @@
+/* section-keyhole-bonus — Figma component "Component 1" (node 193:259),
+   variant "section-open-house-bonus-alt-draft" (193:257): full-bleed photo
+   (Frame 1484578930.webp) + title/subtitle/badge/text/CTA. The other
+   variant (193:258, the plain keyhole teaser) only supplied the keyhole
+   shape itself — its own photo crop isn't used here, since the reveal
+   effect below needs one static photo shared by both looks, not two.
+
+   The reveal effect isn't in the Figma file (no prototype data on this
+   component) — implemented per product spec: the photo never moves or
+   scales — only the keyhole-shaped CSS mask over it grows (mask-size),
+   so it reads as a hole widening in front of a still picture, not a
+   photo zooming in.
+
+   This used to be a CSS transition fired by a scroll-position threshold,
+   with js/keyhole-bonus.js blind-locking scroll (overflow:hidden) for a
+   guessed duration to give the transition time to finish. That's exactly
+   what broke on real phones: iOS Safari's momentum scrolling can carry a
+   fling straight through an overflow:hidden lock already in flight, and a
+   fixed lock duration has no way to also guarantee reading time once
+   opened — scroll either raced past the reveal or continued right as it
+   finished, before the CTA was even readable.
+
+   Now .keyhole-bonus__pin is `position: sticky` inside a much taller
+   .keyhole-bonus (a native, compositor-driven pin the browser itself
+   enforces — nothing to race past), and js/keyhole-bonus.js reads scroll
+   position every frame to drive the keyhole's mask-size directly via the
+   --progress custom property below (see .keyhole-bonus__photo) — the
+   opening is 1:1 with the scroll gesture, not a timed animation, so
+   there's no "did I miss the transition" window at all. The script maps
+   only the first ~55% of the pinned scroll distance to the zoom; the
+   remaining ~45% holds the fully-open frame on screen (still pinned)
+   before releasing, so there's real time to read the text and tap the CTA.
+
+   The keyhole mask is inlined as a data URI (not a separate .svg file)
+   because file:// pages — i.e. opening index.html directly instead of
+   through a server — hit WebKit's stricter same-origin rules for
+   mask-image url() fetches, which silently blanks the whole masked
+   element instead of erroring.
+
+   Mobile frame (193:257) values below are px converted to %-of-375
+   (width) / %-of-812 (height), so the whole composition scales as one
+   unit with the pin's own box (same convention as .hero__eyebrow etc in
+   hero.css). No Tablet frame was designed: the 100vh cap on .pin is a
+   mobile-only safeguard (keeps a short/wide phone from stretching the
+   pin too tall); from 768px up it's lifted so the same 375/812
+   composition just keeps scaling up at its own ratio (may run taller
+   than the viewport there, same tradeoff other tall mobile/tablet
+   sections on this site accept — see founder-intro.css).
+
+   Desktop (≥1200px) is a real, different Figma frame (node 59:3315,
+   1440×875, same width/height as .hero's own desktop frame) — genuinely
+   different copy (2-line heading instead of 3, wider body copy, a
+   larger separately-exported "24 часа" stamp), not just a resize, so it
+   gets its own values below rather than extending the mobile ones —
+   same "carry both, toggle by breakpoint" convention as
+   .pricing__desc / .pricing__desc--desktop. No Figma prototype exists
+   for the keyhole reveal at this size either, and mobile's mask-size %
+   were tuned for the 375/812 ratio — reused as-is they'd skew badly on
+   the much flatter 1440/875 frame, so desktop gets its own closed/open
+   mask-size pair: same keyhole height as a fraction of the frame
+   (38.42%, matching mobile), width recomputed from that height to keep
+   the true 172/312 shape ratio at this frame's own aspect (12.87% of
+   1440 instead of 45.87% of 375). mask-position keeps mobile's exact
+   values — that percentage is a per-axis anchor-point identity,
+   independent of aspect. */
+
+.keyhole-bonus {
+  position: relative;
+  /* Extra scroll distance for the pin: 100vh of it is consumed just
+     holding .pin on screen, the remaining 150vh is what
+     js/keyhole-bonus.js turns into 0–1 scroll progress. */
+  height: 250vh;
+  background: var(--color-cream-pale);
+}
+
+.keyhole-bonus__pin {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  aspect-ratio: 375 / 812;
+  max-height: 100vh;
+  max-height: 100svh;
+  overflow: hidden;
+  background: var(--color-cream-pale);
+}
+
+@media (min-width: 768px) {
+  .keyhole-bonus__pin {
+    max-height: none;
+  }
+}
+
+/* ============ Photo + scroll-scrubbed keyhole mask ============ */
+
+.keyhole-bonus__photo {
+  position: absolute;
+  inset: 0;
+  --keyhole-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 181 321'%3E%3Cdefs%3E%3Cfilter id='b' x='0' y='0' width='181' height='321' filterUnits='userSpaceOnUse'%3E%3CfeGaussianBlur stdDeviation='2'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23b)'%3E%3Cpath fill='%23D9D9D9' d='M176.5 90.5638C176.5 138.095 137.996 176.628 90.5 176.628C43.0035 176.628 4.5 138.095 4.5 90.5638C4.5 43.0321 43.0035 4.5 90.5 4.5C137.996 4.5 176.5 43.0321 176.5 90.5638Z'/%3E%3Cpath fill='%23D9D9D9' d='M56.4851 153.506L12.8433 316.5H172.649L129.007 153.506H56.4851Z'/%3E%3C/g%3E%3C/svg%3E");
+  -webkit-mask-image: var(--keyhole-mask);
+  mask-image: var(--keyhole-mask);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  /* Anchors the mask's own (50.24%, 51.59%) point to that same fraction
+     of the container, for any mask-size — the standard background-position
+     percentage identity. That's what keeps the hole growing outward from
+     a fixed point instead of drifting as mask-size below changes. */
+  -webkit-mask-position: 50.24% 51.59%;
+  mask-position: 50.24% 51.59%;
+  /* js/keyhole-bonus.js sets --progress (0–1, plain number) every scroll
+     frame; mask-size interpolates between the closed/open pairs below
+     directly off it — no CSS transition, so the hole tracks the scroll
+     gesture 1:1 instead of lagging behind it. */
+  --mask-w-closed: 45.87;
+  --mask-w-open: 366.96;
+  --mask-h-closed: 38.42;
+  --mask-h-open: 307.36;
+  --progress: 0;
+  -webkit-mask-size:
+    calc((var(--mask-w-closed) + (var(--mask-w-open) - var(--mask-w-closed)) * var(--progress)) * 1%)
+    calc((var(--mask-h-closed) + (var(--mask-h-open) - var(--mask-h-closed)) * var(--progress)) * 1%);
+  mask-size:
+    calc((var(--mask-w-closed) + (var(--mask-w-open) - var(--mask-w-closed)) * var(--progress)) * 1%)
+    calc((var(--mask-h-closed) + (var(--mask-h-open) - var(--mask-h-closed)) * var(--progress)) * 1%);
+}
+
+/* The oversized crop (241.07% × 125.74%, offset -65.6%/-25.74%) has to
+   live on this wrapper, not on the <img> itself — base.css's global
+   `img { max-width: 100% }` reset would otherwise clamp the image back
+   down to the section's own width and break the crop. */
+.keyhole-bonus__photo-frame {
+  position: absolute;
+  left: -65.6%;
+  top: -25.74%;
+  width: 241.07%;
+  height: 125.74%;
+}
+
+.keyhole-bonus__photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============ Text content ============
+   Was a single opacity fade on the whole .content block; now the title/
+   subtitle/text reveal word by word instead (.reveal-word, shared base
+   rule in video-teaser.css) via js/keyhole-bonus-reveal.js, same mechanism
+   as the rest of the site. That script bakes a 0.55s base delay (matching
+   the old fade's start — when the keyhole is already mostly open) into
+   each word's --reveal-delay, on top of the usual per-line stagger, so
+   nothing needs a transition-delay here. The badge/CTA aren't prose text,
+   so they keep a plain fade+rise below instead of word-wrapping. */
+.keyhole-bonus__content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.keyhole-bonus--open .keyhole-bonus__content {
+  pointer-events: auto;
+}
+
+/* Belt-and-suspenders for the "fully open" state: rather than trusting
+   mask-size to have grown "big enough" to clear the whole frame (fragile —
+   see the note above .keyhole-bonus__photo's desktop mask-size override,
+   where a too-large value backfired and hid the entire photo), just drop
+   the mask outright once js/keyhole-bonus.js adds this class. Guarantees
+   the full photo shows edge-to-edge with zero keyhole silhouette left,
+   independent of any mask-size math. */
+.keyhole-bonus--open .keyhole-bonus__photo {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.keyhole-bonus--open .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.keyhole-bonus__title {
+  position: absolute;
+  top: 10.1%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'Classica Two', serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.1;
+  color: var(--color-cream);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.keyhole-bonus__title--desktop {
+  display: none;
+}
+
+.keyhole-bonus__subtitle {
+  position: absolute;
+  top: 33.13%;
+  left: 50%;
+  width: min(91.47%, 343px);
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.32px;
+  color: var(--color-cream);
+  text-align: center;
+}
+
+.keyhole-bonus__subtitle p {
+  margin: 0;
+}
+
+.keyhole-bonus__on-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.keyhole-bonus__badge {
+  height: auto;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: 0.55s;
+}
+
+.keyhole-bonus--open .keyhole-bonus__badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.keyhole-bonus__badge--mobile {
+  width: 106px;
+}
+
+.keyhole-bonus__badge--desktop {
+  display: none;
+}
+
+.keyhole-bonus__text {
+  position: absolute;
+  top: 46.06%;
+  left: 50%;
+  width: min(77.6%, 291px);
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-cream);
+  text-align: center;
+}
+
+.keyhole-bonus__text strong {
+  font-weight: 600;
+}
+
+.keyhole-bonus__cta {
+  position: absolute;
+  top: 56.16%;
+  left: 50%;
+  width: min(83.47%, 313px);
+  transform: translateX(-50%) translateY(10px);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: 0.8s;
+}
+
+.keyhole-bonus--open .keyhole-bonus__cta {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ============ Desktop: 1200px — matches the Desktop frame (59:3315) ============ */
+@media (min-width: 1200px) {
+  .keyhole-bonus__pin {
+    aspect-ratio: 1440 / 875;
+    max-height: none;
+  }
+
+  /* Same 12x scale on both axes as the mobile keyhole's own 8x — bigger
+     here because the closed width% is much smaller to begin with (a
+     smaller starting fraction needs a larger multiplier to still clear
+     the frame once mask-position's off-center anchor is accounted for).
+     A bigger multiplier (tried 20x) doesn't reliably "clear" this frame's
+     much wider 1440/875 aspect — past a certain scale the container's
+     visible window lands in a near-transparent band of the mask's own
+     circle+wedge silhouette, so the ENTIRE photo disappears instead of
+     just the keyhole edge. See .keyhole-bonus--open below, which now
+     removes the mask outright once fully open instead of relying on
+     mask-size ever reaching "big enough". */
+  .keyhole-bonus__photo {
+    --mask-w-closed: 12.87;
+    --mask-w-open: 154.44;
+    --mask-h-closed: 38.42;
+    --mask-h-open: 461.04;
+  }
+
+  .keyhole-bonus__photo-frame {
+    left: 0;
+    top: -61.37%;
+    width: 100%;
+    height: 185.83%;
+  }
+
+  .keyhole-bonus__title--mobile {
+    display: none;
+  }
+
+  .keyhole-bonus__title--desktop {
+    display: block;
+  }
+
+  .keyhole-bonus__title {
+    top: 14.4%;
+    font-size: 68.38px;
+  }
+
+  .keyhole-bonus__subtitle {
+    top: 37.14%;
+    width: 343px;
+    font-size: 48px;
+    letter-spacing: -0.48px;
+  }
+
+  .keyhole-bonus__badge--mobile {
+    display: none;
+  }
+
+  .keyhole-bonus__badge--desktop {
+    display: block;
+    width: 163px;
+  }
+
+  .keyhole-bonus__text {
+    top: 52.11%;
+    width: 385px;
+    font-size: 20px;
+    letter-spacing: -0.2px;
+  }
+
+  .keyhole-bonus__cta {
+    top: 64.46%;
+    width: 376px;
+    min-height: 80px;
+    font-size: 20px;
+    letter-spacing: -0.2px;
+  }
+}
+
+/* No scroll-jack at all — js/keyhole-bonus.js skips the pin/progress logic
+   entirely and just adds .keyhole-bonus--open once the section is in view,
+   so the tall scroll-distance wrapper and the sticky pin both need to
+   collapse back to a plain single-viewport section here. */
+@media (prefers-reduced-motion: reduce) {
+  .keyhole-bonus {
+    height: auto;
+  }
+
+  .keyhole-bonus__pin {
+    position: static;
+  }
+
+  .keyhole-bonus__photo,
+  .keyhole-bonus__content,
+  .keyhole-bonus__badge,
+  .keyhole-bonus__cta {
+    transition-duration: 0.01ms;
+    transition-delay: 0s;
+  }
+}

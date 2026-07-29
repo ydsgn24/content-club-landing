@@ -1,0 +1,132 @@
+/* site-footer — not in the Figma file (no footer frame designed yet). This
+   navy band IS the page footer: it's the same "two hands reaching" visual
+   that used to live inside section-closing-cta as .closing-cta__hands, now
+   promoted to a real <footer> so the legal/business requisites (required
+   for a Ukrainian FOP storefront) live inside it instead of a separate
+   plain block. .site-footer__links points at oferta.html/privacy.html —
+   standalone pages styled via css/components/legal-page.css, built from
+   the PDFs supplied for this ("Договір публічної оферти…", "Політика
+   конфіденційності…").
+
+   No 100vw/left:50%/translateX(-50%) break-out hack needed here (unlike
+   the old .closing-cta__hands, nested inside a padded/flex section) — as
+   a top-level element this is already full width on its own. */
+
+.site-footer {
+  position: relative;
+  background: var(--color-navy);
+  padding: 0 16px 64px;
+  text-align: center;
+  /* clip-path, not overflow-x:hidden: `overflow-x:hidden` with overflow-y
+     left at its default computes overflow-y to `auto` (per spec, mixing
+     visible with a non-visible value), and auto still clips content
+     that sits above the box's own top edge — which is exactly what
+     .site-footer__hand's translateY does on purpose, to bleed onto the
+     cream section above. clip-path's inset() can restrict left/right
+     only, leaving top/bottom genuinely unclipped (pushed way out via the
+     negative values) — this is the only way to clip one axis but not the
+     other. Still contains the hands' off-screen slide-in start position
+     (translateX) horizontally, same as before. */
+  clip-path: inset(-9999px 0);
+}
+
+.site-footer__hands {
+  position: relative;
+  height: 130px;
+}
+
+/* Scroll reveal (js/closing-cta-reveal.js): each hand starts pulled out
+   further past its own resting `left`/`right` edge and slides in to meet
+   the other once the band scrolls into view — reads as the two hands
+   reaching toward each other, not just fading in place.
+
+   translateY(-N%) (not a fixed top px) trims off only each image's own
+   transparent top margin — measured off each file's actual alpha bounding
+   box (right hand's real content starts at 29% down its own canvas, left
+   hand's at 10.9%) — so the reaching hand sits closer to the seam with
+   the section above for free, with zero content cropped. Pushing this
+   further (e.g. all the way to each fingertip) would crop the arm/wrist
+   itself, since the fingertip is the LOW point of each source photo, not
+   the top. */
+.site-footer__hand {
+  position: absolute;
+  top: 0;
+  width: 58%;
+  max-width: 320px;
+  height: auto;
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.site-footer__hand--left {
+  left: -8%;
+  transform: translateX(-60%) translateY(calc(-10.9% - 20px));
+}
+
+.site-footer__hand--right {
+  right: -8%;
+  transform: translateX(60%) translateY(calc(-29% - 20px));
+}
+
+.site-footer__hands--visible .site-footer__hand--left {
+  transform: translateX(0) translateY(calc(-10.9% - 20px));
+}
+
+.site-footer__hands--visible .site-footer__hand--right {
+  transform: translateX(0) translateY(calc(-29% - 20px));
+}
+
+.site-footer__requisites {
+  margin: 48px auto 0;
+  max-width: 600px;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: -0.16px;
+  color: var(--color-cream-80);
+}
+
+.site-footer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 32px auto 0;
+  max-width: 600px;
+}
+
+.site-footer__links a {
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.16px;
+  color: var(--color-cream);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.site-footer__links a:hover,
+.site-footer__links a:focus-visible {
+  color: var(--color-cream-80);
+}
+
+@media (min-width: 1200px) {
+  .site-footer__hands {
+    height: 260px;
+  }
+
+  /* Bigger (was capped at 320px, same as mobile) so the two fingertips
+     read as close together in this much wider band — same left/right:-8%
+     anchor, so a larger image alone is what pulls the tips further in
+     toward the center. */
+  .site-footer__hand {
+    width: 34%;
+    max-width: 480px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__hand {
+    transition-duration: 0.01ms;
+  }
+}

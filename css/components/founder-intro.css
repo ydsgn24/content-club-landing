@@ -1,0 +1,405 @@
+/* section-founder-intro — Figma node 48:1092 (mobile), 59:3732 (desktop).
+   A "scrapbook letter" layout: logo + photo collage up top, then a bio
+   letter (with a spiral-notepad paper texture behind it on mobile/tablet
+   only) and a small rotated club-stamp photo. Desktop is a genuinely
+   different arrangement (two side-by-side text columns flanking the
+   collage, no paper texture, invite as its own full-width heading below)
+   per the separate Desktop frame — eyebrow/logo/collage stay absolutely
+   positioned at their real Figma coordinates on every breakpoint, and
+   block--1/block--2/invite/badge revert to the same technique at desktop.
+
+   Mobile/tablet letter (.founder-intro__letter down) is flow-based, not
+   fixed-pixel: the bio text can legitimately run longer/wrap more (a translated
+   locale, a copy edit, a narrow device down to ~300px) and fixed absolute
+   `top` values have no way to react to that — text at a lower position
+   would just silently collide with or run under the club-stamp badge below
+   it. Flow lets each block push the next one down by however tall it
+   actually rendered, so the badge always keeps its real minimum gap from
+   the text above it, and the paper background (object-fit: cover on an
+   auto-height wrapper) simply stretches to match, cropping further at the
+   edges if a very narrow/long-copy screen needs more height — instead of
+   the old fixed aspect-ratio image running out of room and getting clipped
+   by the section's own overflow:hidden the way the tablet paper once did.
+
+   Scroll reveal (js/founder-intro-reveal.js) — same mechanisms as the rest
+   of the site: the eyebrow/letter/invite text line-reveals word by word
+   (.reveal-word, shared base rule in video-teaser.css) as each group
+   scrolls into view; the collage photo fades/rises in the same way the
+   club-contents cards do; the "Yuvladi" wordmark traces in left-to-right
+   like images/icon-whats-inside.svg does in club-contents.css. */
+
+.founder-intro {
+  position: relative;
+  height: auto;
+  overflow: hidden;
+  background: var(--color-cream-pale);
+}
+
+.founder-intro__eyebrow {
+  position: absolute;
+  top: 79px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.34px;
+  color: var(--color-navy);
+  text-align: center;
+}
+
+/* "Yuvladi" wordmark — real drawn logo asset (images/logo-wordmark.svg).
+   Traces in left-to-right like a pen stroke, same technique as the
+   "Insides" wordmark in club-contents.css. */
+.founder-intro__logo {
+  position: absolute;
+  top: 108px;
+  left: calc(50% - 12px);
+  transform: translateX(-50%);
+  width: 296px;
+  height: auto;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.founder-intro.is-revealed .founder-intro__logo {
+  clip-path: inset(0 0 0 0);
+}
+
+.founder-intro.is-revealed .founder-intro__eyebrow .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Deliberately oversized/bleeding past the viewport edges on narrow
+   screens (cropped by .founder-intro's own overflow:hidden), matching the
+   same fixed-pixel, centered, crop-on-narrow technique used for other
+   full-bleed decorative images across this site (chandelier, torn edges). */
+.founder-intro__collage {
+  position: absolute;
+  top: 217px;
+  left: 50%;
+  transform: translateX(-50%) translateY(28px);
+  width: 487px;
+  max-width: none;
+  opacity: 0;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.founder-intro__collage.is-revealed {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Pushed down past the absolutely-positioned eyebrow/logo/collage above it
+   (875px, the old paper `top`) since it's back in normal flow now and
+   wouldn't otherwise know to start below them. */
+.founder-intro__letter {
+  position: relative;
+  margin-top: 875px;
+}
+
+/* Sized by its own flow content (block--1/2 + invite below), not by the
+   paper image's aspect ratio — the image instead stretches to *that*,
+   via object-fit: cover on .founder-intro__paper. padding-top is breathing
+   room before the quote starts; padding-bottom reserves exactly enough
+   room for the badge to overlap this wrapper's bottom edge by half its
+   own height (see .founder-intro__badge) while keeping a real 24px gap
+   below the invite text above it. */
+.founder-intro__paper-wrap {
+  position: relative;
+  padding-top: 121px;
+  padding-bottom: 105px;
+}
+
+.founder-intro__paper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.founder-intro__block {
+  position: relative;
+  width: 375px;
+  max-width: calc(100% - 32px);
+  margin: 0 auto;
+  padding: 0 38px;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.founder-intro__block--2 {
+  margin-top: 24px;
+}
+
+.founder-intro__quote,
+.founder-intro__heading2 {
+  margin: 0 0 24px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.34px;
+  color: var(--color-navy);
+}
+
+.founder-intro__heading2 {
+  text-align: right;
+}
+
+.founder-intro__paragraph p {
+  margin: 0 0 1.1em;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-navy-70);
+}
+
+.founder-intro__paragraph p:last-child {
+  margin-bottom: 0;
+}
+
+.founder-intro__paragraph2 {
+  margin: 0;
+  font-family: 'Kudryashev Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.32px;
+  color: var(--color-navy);
+}
+
+.founder-intro__invite {
+  position: relative;
+  width: 375px;
+  max-width: calc(100% - 32px);
+  margin: 24px auto 0;
+  padding: 0 38px;
+  box-sizing: border-box;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.34px;
+  color: var(--color-navy);
+  z-index: 1;
+}
+
+/* Letter/invite text line-reveal: each group (block--1, block--2, invite)
+   gets its own `is-revealed` class independently as it scrolls into view,
+   since they're spread far apart down a very tall section. */
+.founder-intro__block--1.is-revealed .reveal-word,
+.founder-intro__block--2.is-revealed .reveal-word,
+.founder-intro__invite.is-revealed .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* A flow sibling of .founder-intro__paper-wrap, not a child of it — pulled
+   up by exactly half its own height so it straddles the wrapper's bottom
+   edge (half on the paper, half hanging below it) regardless of how tall
+   the paper-wrap ended up being. Combined with that wrapper's 105px
+   padding-bottom (24px minimum gap + this same half-height), the gap above
+   the badge never drops below 24px even if the letter text runs longer. */
+.founder-intro__badge {
+  position: relative;
+  display: block;
+  width: 162px;
+  height: 162px;
+  margin: -81px auto 0;
+  transform: rotate(-5.86deg);
+  z-index: 2;
+}
+
+/* ============ Tablet: 768px — interpolated, no Figma Tablet frame yet ============
+   Same layout as mobile, per the client's own note — just scaled up
+   (~1.2x) for more breathing room on the wider canvas. */
+@media (min-width: 768px) {
+  .founder-intro__eyebrow {
+    top: 95px;
+    font-size: 40px;
+  }
+
+  .founder-intro__logo {
+    top: 130px;
+    width: 355px;
+  }
+
+  .founder-intro__collage {
+    top: 260px;
+    width: 584px;
+  }
+
+  .founder-intro__letter {
+    margin-top: 1050px;
+  }
+
+  /* object-fit: cover means the paper no longer needs a narrower fixed
+     width to control its own height (that was only ever needed under the
+     old width-drives-height-via-aspect-ratio model) — full-bleed like
+     mobile, height comes from .paper-wrap's flow content instead. */
+  .founder-intro__paper-wrap {
+    padding-bottom: 121px; /* 24px min gap + half the 194px tablet badge */
+  }
+
+  .founder-intro__block {
+    width: 450px;
+    max-width: calc(100% - 40px);
+    padding: 0 46px;
+  }
+
+  .founder-intro__block--2 {
+    margin-top: 71px;
+  }
+
+  .founder-intro__quote,
+  .founder-intro__heading2 {
+    font-size: 40px;
+  }
+
+  .founder-intro__paragraph p {
+    font-size: 18px;
+  }
+
+  .founder-intro__paragraph2 {
+    font-size: 38px;
+  }
+
+  .founder-intro__invite {
+    width: 450px;
+    max-width: calc(100% - 40px);
+    margin-top: 33px;
+    padding: 0 46px;
+    font-size: 40px;
+  }
+
+  .founder-intro__badge {
+    width: 194px;
+    height: 194px;
+    margin-top: -97px;
+  }
+}
+
+/* ============ Desktop: 1200px — matches the Desktop frame (59:3732) ============
+   A genuinely different arrangement: two text columns flank the centered
+   collage, the paper texture disappears, and the invite line becomes its
+   own big centered heading below everything. */
+@media (min-width: 1200px) {
+  .founder-intro {
+    max-width: 1440px;
+    margin: 0 auto;
+    height: 1248px;
+  }
+
+  .founder-intro__eyebrow {
+    top: 104px;
+    font-size: 48px;
+  }
+
+  .founder-intro__logo {
+    top: 147px;
+    left: 50%;
+    width: 354px;
+  }
+
+  .founder-intro__collage {
+    top: 311px;
+  }
+
+  /* Back to the original fixed-coordinate absolute layout — desktop's two
+     side-by-side columns don't share the mobile/tablet single-column flow
+     above at all, so .letter's flow margin-top and .paper-wrap's flow
+     padding need resetting rather than inheriting. */
+  .founder-intro__letter {
+    position: absolute;
+    inset: 0;
+    margin-top: 0;
+  }
+
+  /* Reset to position:static (not just padding) — otherwise this stays the
+     containing block for the now-absolute block--1/2 below instead of
+     .letter, which only produces the right desktop coordinates by
+     accident (today it happens to sit at the same 0,0 origin as .letter). */
+  .founder-intro__paper-wrap {
+    position: static;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .founder-intro__paper {
+    display: none;
+  }
+
+  .founder-intro__block {
+    position: absolute;
+    left: 0;
+    transform: none;
+    width: 375px;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .founder-intro__block--1 {
+    top: 375px;
+    left: 100px;
+    width: 296px;
+  }
+
+  .founder-intro__block--2 {
+    top: 614px;
+    left: auto;
+    right: 100px;
+    width: 296px;
+    margin-top: 0;
+  }
+
+  .founder-intro__paragraph p {
+    font-size: 20px;
+  }
+
+  .founder-intro__paragraph2 {
+    font-size: 34px;
+  }
+
+  .founder-intro__invite {
+    position: absolute;
+    top: 1104px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 540px;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    font-size: 48px;
+    text-align: center;
+  }
+
+  /* Centered exactly (not a fixed px offset from Figma) so it stays
+     anchored to the true middle of the grid at any desktop width. */
+  .founder-intro__badge {
+    position: absolute;
+    margin: 0;
+    top: 885px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-5.86deg);
+    width: 202px;
+    height: 202px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .founder-intro__logo,
+  .founder-intro__collage {
+    transition-duration: 0.01ms;
+  }
+}

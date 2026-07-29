@@ -1,0 +1,266 @@
+/* section-club-contents — Figma: Mobile node 48:586.
+   Unlike hero/video-teaser, this section is NOT an aspect-ratio-locked
+   poster: its content (5 accordion items, one of which can be open) has a
+   height that genuinely changes at runtime, so it flows normally instead of
+   relying on a fixed-height background with absolutely-positioned children —
+   that's exactly the class of bug fixed earlier in .hero__stack. Only the
+   decorative top photo is absolutely positioned; everything else is in flow. */
+
+.club-contents {
+  position: relative;
+  padding-top: 53px;
+  padding-bottom: 40px;
+  background: var(--color-cream-pale);
+  overflow: hidden;
+}
+
+/* Same fixed-1440px-width, crop-below/scale-above-1440 rule as the other
+   striped backgrounds on the site, faded into the section's own cream-pale
+   near the bottom instead of a hard cutoff. */
+.club-contents__bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1440px;
+  height: 400px;
+  max-width: none;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background-image: url('../../images/фон.webp');
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: 1440px auto;
+  -webkit-mask-image: linear-gradient(180deg, black 0%, black 55%, transparent 100%);
+  mask-image: linear-gradient(180deg, black 0%, black 55%, transparent 100%);
+}
+
+@media (min-width: 1440px) {
+  .club-contents__bg {
+    left: 0;
+    width: 100%;
+    background-size: 100% auto;
+    transform: none;
+  }
+}
+
+.club-contents__intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
+.club-contents__icon {
+  display: block;
+  width: 193px;
+  height: 65px;
+  /* Hidden behind a hard-edged wipe until revealed, so the cursive
+     wordmark appears to be traced left-to-right like a pen stroke,
+     instead of just fading in. Timing is slower/eased than the
+     word reveal below so it reads as "written", not "faded". */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.1s cubic-bezier(0.22, 0.9, 0.32, 1);
+}
+
+.club-contents--revealed .club-contents__icon {
+  clip-path: inset(0 0 0 0);
+}
+
+.club-contents__icon-caption {
+  margin: 0;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-navy);
+  text-align: center;
+}
+
+/* Figma node 236:85 "image 63345919" — a decorative badge/plate sitting
+   behind the offer line (700x240 native, ~350x120 design size, centered on
+   the text) rather than a fixed section-relative position, since this
+   section flows in normal layout, not absolute Figma coordinates. */
+.club-contents__offer-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 64px 0 0;
+}
+
+.club-contents__offer-badge {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  /* 2x the original 350px design size — capped against the viewport
+     (not the narrow text column) since the plate is meant to bleed
+     past the text width. max-width:none overrides base.css's global
+     `img { max-width: 100% }` reset (see the matching note on
+     .video-teaser__description-badge, where this actually bit). */
+  width: min(90vw, 700px);
+  max-width: none;
+  height: auto;
+  aspect-ratio: 350 / 120;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.club-contents__offer {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0 24px;
+  font-family: 'Jost', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.17px;
+  color: var(--color-navy);
+  text-align: center;
+}
+
+.club-contents__list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  margin: 32px auto 0;
+}
+
+/* The photo collage, the accordion items, and the navy cards all stretch
+   full-width instead of capping at 343px — this shared width/gap scheme
+   controls the edge gap instead: 16px on mobile, 24px on tablet, capped at
+   840px (centered) on desktop, same as each other so the groups line up
+   edge to edge. */
+.club-contents__photo-collage,
+.accordion-group,
+.club-cards {
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.accordion-group,
+.club-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Figma node 237:197 "Frame 1484578932 1" — flattened collage export
+   (526:420 design ratio), placed above the accordion list. */
+.club-contents__photo-collage {
+  display: block;
+  aspect-ratio: 526 / 420;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .club-contents__photo-collage,
+  .accordion-group,
+  .club-cards {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .club-contents__photo-collage,
+  .accordion-group,
+  .club-cards {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 0;
+  }
+}
+
+.club-card {
+  position: relative;
+  width: 100%;
+  padding: 20px 16px;
+  background: var(--color-navy);
+}
+
+.club-card__title {
+  margin: 0 0 8px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.28px;
+  color: var(--color-cream);
+}
+
+.club-card__description {
+  margin: 0;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-cream-80);
+}
+
+/* Flattened export of Figma's "content-group" (the two rotated photo strips
+   + "а еще..." label) — reproducing that rotation geometry in CSS didn't
+   hold up, so it's one image now. */
+.club-card__sticker {
+  position: absolute;
+  top: -15px;
+  right: 22px;
+  width: 106px;
+  height: auto;
+  aspect-ratio: 318 / 130;
+  pointer-events: none;
+}
+
+.club-contents__cta {
+  /* .btn-cta is display:inline-flex (inline-level) — margin:auto alone won't
+     center an inline box, so this makes it a block-level flex container. */
+  display: flex;
+  position: relative;
+  width: min(100%, 313px);
+  margin: 32px auto 0;
+}
+
+/* ============ Scroll reveal (js/club-contents-reveal.js) ============
+   Mirrors .video-teaser's line-by-line word reveal: the script wraps the
+   caption/offer text in .reveal-word spans (base fade/rise state lives in
+   video-teaser.css since it's the same shared mechanism) and adds
+   .club-contents--revealed once the intro scrolls into view — that class
+   also drives the logo wipe above. Cards get their own reveal below,
+   independent of this: each one fades/rises in on its own as it individually
+   enters the viewport, since the section is much taller than one screen. */
+.club-contents--revealed .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.accordion-item,
+.club-card {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.accordion-item.reveal-card--visible,
+.club-card.reveal-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .club-contents__icon {
+    transition-duration: 0.01ms;
+  }
+
+  .accordion-item,
+  .club-card {
+    transition-duration: 0.01ms;
+    transform: none;
+  }
+}

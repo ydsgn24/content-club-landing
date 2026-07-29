@@ -1,0 +1,212 @@
+/* section-closing-cta — Figma: Mobile node 51:1575, Desktop node 59:3552.
+   Mobile and Desktop carry genuinely different copy (heading, body text,
+   the desktop-only "P.S." block) — both variants are in the markup and
+   toggled by breakpoint, same convention as .pricing__desc/--desktop.
+   The photo+wax-seal collage is one flattened image (Frame 1484578931.webp,
+   named after the Figma export itself) instead of reproducing the rotated
+   photo-stack geometry in CSS — same reasoning as .club-card__sticker.
+
+   Desktop swaps the photo/body-text order relative to mobile, so this is
+   laid out as a flex column with explicit `order` at the 1200px
+   breakpoint rather than duplicating the photo element.
+
+   The navy "two hands reaching" band lives in <footer class="site-footer">
+   (see footer.css) — it's a sibling of this section, not a child, since it
+   doubles as the page footer (holds the legal requisites too). */
+
+.closing-cta {
+  position: relative;
+  padding: 71px 16px 0;
+  background: var(--color-cream-pale);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Scroll reveal (js/closing-cta-reveal.js): the angel/collage/CTA each
+   fade+rise in individually as they're scrolled to; the headings/body
+   text/P.S. line-reveal word by word instead (.reveal-word, shared base
+   rule in video-teaser.css), all triggered together once the section
+   scrolls into view — it isn't tall enough to need founder-intro's
+   separate scroll-trigger-per-group treatment. */
+.closing-cta.is-revealed .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.closing-cta__angel {
+  display: block;
+  width: 97px;
+  height: auto;
+  margin: 0 auto 21px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.closing-cta__angel.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.closing-cta__heading {
+  margin: 0 0 22px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.32px;
+  color: var(--color-navy);
+}
+
+.closing-cta__heading mark,
+.closing-cta__text mark,
+.closing-cta__heading2 mark,
+.closing-cta__ps-text mark {
+  background: var(--color-sky-pale);
+  color: inherit;
+}
+
+.closing-cta__heading--desktop,
+.closing-cta__text--desktop,
+.closing-cta__ps {
+  display: none;
+}
+
+.closing-cta__text {
+  margin: 0 0 27px;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-navy-70);
+}
+
+/* Bleeds past the section's own 16px side padding to match Figma's
+   edge-to-edge collage width. */
+.closing-cta__collage {
+  display: block;
+  width: calc(100% + 32px);
+  max-width: none;
+  margin: 0 -16px 19px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.closing-cta__collage.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.closing-cta__heading2 {
+  margin: 0 0 44px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.32px;
+  color: var(--color-navy);
+}
+
+.closing-cta__cta {
+  width: 313px;
+  max-width: 100%;
+  margin: 0 0 64px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.closing-cta__cta.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 1200px) {
+  .closing-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 85px 24px 0;
+  }
+
+  .closing-cta__angel {
+    order: 1;
+    width: 122px;
+    margin-bottom: 29px;
+  }
+
+  .closing-cta__heading--mobile {
+    display: none;
+  }
+
+  .closing-cta__heading--desktop {
+    display: block;
+    order: 2;
+    max-width: 861px;
+    font-size: 48px;
+    letter-spacing: -0.48px;
+  }
+
+  .closing-cta__collage {
+    order: 3;
+    width: 510px;
+    margin: 0 0 31px;
+  }
+
+  .closing-cta__text--mobile {
+    display: none;
+  }
+
+  .closing-cta__text--desktop {
+    display: block;
+    order: 4;
+    max-width: 462px;
+    margin-bottom: 108px;
+    font-size: 20px;
+    letter-spacing: -0.2px;
+  }
+
+  .closing-cta__heading2--mobile {
+    display: none;
+  }
+
+  .closing-cta__ps {
+    display: block;
+    order: 5;
+    max-width: 553px;
+    margin-bottom: 45px;
+  }
+
+  .closing-cta__ps-label,
+  .closing-cta__ps-text {
+    margin: 0;
+    font-family: 'Kudryashev Display', serif;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.48px;
+    color: var(--color-navy);
+  }
+
+  .closing-cta__ps-text {
+    margin-top: 30px;
+  }
+
+  .closing-cta__cta {
+    order: 6;
+    width: 376px;
+    min-height: 80px;
+    font-size: 20px;
+    letter-spacing: -0.2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closing-cta__angel,
+  .closing-cta__collage,
+  .closing-cta__cta {
+    transition-duration: 0.01ms;
+  }
+}

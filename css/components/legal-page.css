@@ -1,0 +1,144 @@
+/* legal-page — shared styling for the standalone legal documents
+   (oferta.html, privacy.html). Not a Figma component: no design frame
+   exists for these, per the request these are "just background and text
+   using the site's style" — so this reuses the site's existing tokens
+   (colors, fonts) instead of introducing new ones, kept intentionally
+   plain/readable rather than matching a specific composed layout. */
+
+.legal-page {
+  min-height: 100vh;
+  background: var(--color-cream-pale);
+  color: var(--color-navy);
+  font-family: 'Jost', sans-serif;
+}
+
+.legal-page__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.legal-page__back {
+  display: inline-flex;
+  margin-bottom: 32px;
+  font-family: 'Jost', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-navy-70);
+  text-decoration: none;
+}
+
+.legal-page__back:hover,
+.legal-page__back:focus-visible {
+  color: var(--color-navy);
+}
+
+.legal-page__title {
+  margin: 0 0 8px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.05;
+  letter-spacing: -0.4px;
+  color: var(--color-navy);
+}
+
+.legal-page__updated {
+  margin: 0 0 40px;
+  font-size: 14px;
+  color: var(--color-navy-70);
+}
+
+.legal-page__intro {
+  margin: 0 0 40px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-navy-80);
+}
+
+.legal-page h2 {
+  margin: 48px 0 16px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.3;
+  letter-spacing: -0.1px;
+  color: var(--color-navy);
+}
+
+.legal-page h2:first-of-type {
+  margin-top: 0;
+}
+
+.legal-page p {
+  margin: 0 0 16px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-navy-80);
+}
+
+.legal-page ul {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.legal-page ul li {
+  position: relative;
+  margin: 0 0 10px;
+  padding-left: 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-navy-80);
+}
+
+.legal-page ul li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-dusty-blue);
+}
+
+.legal-page ul li strong {
+  color: var(--color-navy);
+}
+
+/* Source numbering (1.1, 1.2, 6.6…) is already part of each clause's own
+   text — list-style:none avoids doubling it with a browser-generated
+   "1. 2. 3." on top. */
+.legal-page__clauses {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.legal-page__clauses li {
+  margin: 0 0 12px;
+  padding-left: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-navy-80);
+}
+
+.legal-page__requisites {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-dusty-blue);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-navy-70);
+}
+
+.legal-page__requisites p {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--color-navy-70);
+}
+
+.legal-page__contact {
+  margin-top: 24px;
+}

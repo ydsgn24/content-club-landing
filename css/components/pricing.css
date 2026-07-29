@@ -1,0 +1,312 @@
+/* section-pricing — Figma: Mobile node 48:1287, Desktop node 59:3156.
+   Card headers (photo + month label) and the two "экономия" stamps are
+   pre-composited images exported from Figma (content-frame-1*.png,
+   content-group*.png) — placed as-is, no shadows/frames added on top.
+
+   Mobile and Desktop are genuinely different content, not just a resize:
+   different tier-1 price (20€ vs 25€) and different description copy per
+   card, so each card carries both text blocks and toggles which is shown
+   at the 1200px breakpoint, same as the rest of the site's convention.
+
+   Price numbers use Kudryashev Display as a stand-in for Classica Two
+   (the font Figma specifies) — that font isn't in the project yet; swap
+   the font-family in .pricing__amount once it's supplied.
+
+   Not reproduced: the two small gold corner flourishes at the very
+   bottom of the 12-month card and the tick-mark decoration on the
+   "+ личная консультация" badge — no exported asset exists for either
+   (unlike the two "экономия" stamps, which were exported), so the
+   consultation badge is a plain label instead of a matching stamp. */
+
+.pricing {
+  position: relative;
+  padding: 98px 16px 40px;
+  background: var(--color-cream-pale);
+}
+
+.pricing__heading {
+  margin: 0 0 32px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.34px;
+  color: var(--color-navy);
+  text-align: center;
+}
+
+.pricing__note {
+  display: none;
+}
+
+.pricing__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 343px;
+  margin: 0 auto;
+}
+
+.pricing__disclaimer {
+  max-width: 343px;
+  margin: 32px auto 0;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-navy-70);
+  text-align: center;
+}
+
+.pricing__disclaimer strong {
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+/* Scroll reveal (js/pricing-reveal.js) — heading/note/disclaimer line-reveal
+   word by word (.reveal-word, shared base rule in video-teaser.css) as each
+   scrolls into view; cards fade/rise in individually as they're scrolled
+   to, same .reveal-card--visible mechanism as the club-contents cards. */
+.pricing.is-revealed .reveal-word,
+.pricing__disclaimer.is-revealed .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pricing__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-cream-pale-2);
+  border: 2px solid var(--color-dusty-blue);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.pricing__card.reveal-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pricing__card-header {
+  display: block;
+  width: 100%;
+  aspect-ratio: 343 / 149;
+  object-fit: cover;
+}
+
+.pricing__card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  padding: 24px 16px 16px;
+}
+
+.pricing__desc {
+  margin: 0;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-navy-70);
+  text-align: center;
+}
+
+.pricing__desc strong {
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+.pricing__desc--desktop {
+  display: none;
+}
+
+.pricing__price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+}
+
+.pricing__amount {
+  font-family: 'Kudryashev Display', serif; /* stand-in for Classica Two */
+  font-size: 48px;
+  line-height: 1;
+  color: var(--color-navy);
+}
+
+.pricing__currency {
+  font-family: 'Kudryashev Display', serif;
+  font-size: 41.66px;
+  line-height: 1;
+  color: var(--color-navy);
+}
+
+.pricing__amount--desktop {
+  display: none;
+}
+
+.pricing__card .btn-cta {
+  width: 100%;
+  max-width: 313px;
+}
+
+/* Anchored from the card's bottom edge (tucked over the button's top-right
+   corner) rather than the top — a fixed px-from-top would drift out of
+   place whenever the description text wraps to a different number of
+   lines than Figma's frozen mockup. */
+.pricing__badge {
+  position: absolute;
+  right: 14px;
+  bottom: 53px;
+  width: 126px;
+  height: auto;
+}
+
+.pricing__badge--consult {
+  position: absolute;
+  left: 149px;
+  top: 85px;
+  padding: 6px 10px;
+  background: var(--color-cream-pale);
+  border: 1px solid var(--color-dusty-blue);
+  border-radius: 4px;
+  transform: rotate(3.27deg);
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.14px;
+  color: var(--color-maroon-dark);
+  white-space: nowrap;
+}
+
+/* ============ Desktop: 1200px — matches node 59:3156 ============ */
+@media (min-width: 1200px) {
+  .pricing {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 157px 100px 120px;
+  }
+
+  .pricing__heading {
+    margin: 0 0 102px;
+    font-size: 48px;
+    letter-spacing: -0.48px;
+    text-align: left;
+  }
+
+  .pricing__disclaimer {
+    display: none;
+  }
+
+  .pricing__note {
+    display: block;
+    position: absolute;
+    top: 159px;
+    right: 100px;
+    margin: 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 20px;
+    line-height: 1.1;
+    letter-spacing: -0.2px;
+    color: var(--color-navy);
+    text-align: right;
+  }
+
+  .pricing__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: none;
+  }
+
+  /* Price/button are absolutely positioned (see below), so they no
+     longer contribute to the card's natural height — it has to be set
+     explicitly. 456px matches Figma's tallest card (the 12-month tier),
+     so every card ends up that height too. */
+  .pricing__card {
+    height: 456px;
+  }
+
+  /* Description length varies a lot per card (2 lines vs 6 for the
+     12-month tier), so flow-based stacking put each card's price/button
+     at a different height. Figma pins price/button to the same fixed
+     row on every card regardless of description length — matching that
+     with absolute positioning (rather than reserving worst-case space
+     for the description) is what actually keeps every row level. */
+  .pricing__card-body {
+    display: block;
+    height: 100%;
+    padding: 0;
+  }
+
+  .pricing__desc {
+    display: none;
+  }
+
+  .pricing__desc--desktop {
+    display: block;
+    position: absolute;
+    top: 213px;
+    left: 16px;
+    right: 16px;
+    margin: 0;
+  }
+
+  .pricing__card--12m .pricing__desc--desktop {
+    top: 173px;
+  }
+
+  .pricing__amount--mobile {
+    display: none;
+  }
+
+  .pricing__amount--desktop {
+    display: inline;
+  }
+
+  .pricing__amount {
+    font-size: 48px;
+  }
+
+  .pricing__price {
+    position: absolute;
+    top: 300px;
+    left: 0;
+    right: 0;
+  }
+
+  .pricing__card .btn-cta {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+    max-width: none;
+    font-size: 20px;
+    letter-spacing: -0.2px;
+  }
+
+  .pricing__badge {
+    right: 16px;
+    bottom: 55px;
+  }
+
+  /* Desktop cards are narrower than mobile (298px vs 343px) — anchoring
+     from the right instead of the mobile's fixed left px keeps it clear
+     of the card edge (overflow:hidden was clipping it) at any width. */
+  .pricing__badge--consult {
+    left: auto;
+    right: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing__card {
+    transition-duration: 0.01ms;
+  }
+}

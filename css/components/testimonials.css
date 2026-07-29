@@ -1,0 +1,267 @@
+/* section-testimonials — Figma node 59:3710 (mobile), 59:2992 (desktop).
+   Two entirely different carousels, swapped by breakpoint (js/testimonials.js
+   picks a controller the same way js/what-if-scroll.js does):
+
+   - Mobile/tablet (.testimonials__stage): a single golden frame stays fixed
+     in place; only the photo underneath it slides sideways into the frame's
+     window on swipe/arrow/dot, one at a time — driven by index-based
+     transforms, not scrolling.
+   - Desktop (.testimonials__track): the original horizontally-scrolling
+     strip of individually-framed testimonials, several visible at once in a
+     zigzag row. Uses native scroll-snap so touch/trackpad swipe works for
+     free here — js/testimonials.js only drives the prev/next buttons
+     (scrollBy one item), the dots (scrollTo a given item), and reads the
+     active dot back from scroll position. */
+
+.testimonials {
+  position: relative;
+  background: var(--color-cream-pale);
+  padding: 92px 16px 60px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.testimonials__heading {
+  margin: 0 0 39px;
+  font-family: 'Kudryashev Display', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.34px;
+  color: var(--color-navy);
+}
+
+.testimonials__viewport {
+  max-width: 329px;
+  margin: 0 auto;
+}
+
+/* ============ Mobile/tablet stage: fixed frame, sliding photo ============ */
+.testimonials__stage {
+  position: relative;
+  width: 329px;
+  height: 383px;
+}
+
+.testimonials__stage-window {
+  position: absolute;
+  /* Same real transparent-window insets as the desktop frame below —
+     measured off images/рамка.webp's alpha channel (14.4% left, 14.6%
+     right, 11.6% top, 11.7% bottom), since the Figma node's own crop of
+     this frame didn't match this file's real proportions. */
+  left: 14.4%;
+  right: 14.6%;
+  top: 11.6%;
+  bottom: 11.7%;
+  width: 71%;
+  height: 76.7%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.testimonials__stage-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Default (pre-JS) state: only the first photo sits in the window, the
+     rest wait off to the right — a sane no-JS fallback, since the window's
+     overflow:hidden makes it look identical to "only one photo exists"
+     either way. js/testimonials.js takes over from here, setting --offset
+     per photo (0 for the active one, ±1, ±2… for the rest) as an inline
+     style once it runs, which wins over this default. That's what makes
+     the incoming photo "drive into" the frame's window from the correct
+     side while the outgoing one exits the opposite way, instead of a hard
+     cut or a plain fade. */
+  --offset: 1;
+  transform: translateX(calc(var(--offset) * 100%));
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.testimonials__stage-photo:first-child {
+  --offset: 0;
+}
+
+.testimonials__stage-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ============ Desktop strip: individually-framed, native scroll-snap ============ */
+.testimonials__track {
+  display: none;
+}
+
+.testimonials__item {
+  position: relative;
+  flex: 0 0 329px;
+  width: 329px;
+  height: 383px;
+  scroll-snap-align: start;
+}
+
+.testimonials__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Inset within the frame's own actual transparent window — measured
+   directly off images/рамка.webp's alpha channel (14.4% left, 14.6% right,
+   11.6% top, 11.7% bottom), since the Figma node's own crop of this frame
+   didn't match this file's real proportions and was hiding most of the
+   gold border. */
+.testimonials__photo {
+  position: absolute;
+  left: 14.4%;
+  right: 14.6%;
+  top: 11.6%;
+  bottom: 11.7%;
+  /* left/right/top/bottom alone don't stretch a replaced element like
+     <img> — explicit width/height (matching the same insets) are needed. */
+  width: 71%;
+  height: 76.7%;
+  object-fit: cover;
+}
+
+.testimonials__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.testimonials__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--color-dusty-blue);
+  background: none;
+  color: var(--color-dusty-blue);
+  cursor: pointer;
+  padding: 0;
+}
+
+.testimonials__dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.testimonials__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: var(--color-dot-inactive);
+  cursor: pointer;
+}
+
+.testimonials__dot.is-active {
+  background: var(--color-dusty-blue);
+}
+
+/* ============ Tablet: 768px — interpolated, no Figma Tablet frame yet ============ */
+@media (min-width: 768px) {
+  .testimonials {
+    padding-top: 100px;
+  }
+
+  .testimonials__heading {
+    font-size: 40px;
+  }
+
+  .testimonials__viewport {
+    max-width: 380px;
+  }
+
+  .testimonials__stage {
+    width: 380px;
+    height: 443px;
+  }
+
+  .testimonials__item {
+    flex-basis: 380px;
+    width: 380px;
+    height: 443px;
+  }
+}
+
+/* ============ Desktop: 1200px — matches the Desktop frame (59:2992) ============
+   Heading and nav share one row; testimonials are a zigzag strip (even
+   items sit 180px lower, per Figma) with several visible/scrollable at
+   once instead of a single centered one. */
+@media (min-width: 1200px) {
+  .testimonials {
+    padding: 105px 100px 60px;
+    text-align: left;
+  }
+
+  .testimonials__heading {
+    margin: 0;
+    font-size: 48px;
+    letter-spacing: -0.48px;
+  }
+
+  .testimonials__viewport {
+    max-width: none;
+    height: 562px;
+    margin: 44px 0 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .testimonials__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonials__stage {
+    display: none;
+  }
+
+  .testimonials__track {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 48px;
+  }
+
+  .testimonials__item {
+    flex-basis: 328px;
+    width: 328px;
+    height: 382px;
+  }
+
+  .testimonials__item:nth-child(even) {
+    margin-top: 180px;
+  }
+
+  .testimonials__nav {
+    position: absolute;
+    top: 105px;
+    right: 100px;
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonials__stage-photo {
+    transition-duration: 0.01ms;
+  }
+}
