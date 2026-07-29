@@ -305,6 +305,13 @@
     width: min(23.8%, 343px);
   }
 
+  /* Half the mobile size — at desktop's much shorter 2-line description,
+     the full mobile-sized plate (min(90vw,700px)) overshot the text badly
+     enough to overlap the heading above it. */
+  .video-teaser__description-badge {
+    width: min(45vw, 350px);
+  }
+
   .video-teaser__heading {
     font-size: 48px;
     letter-spacing: -0.48px;

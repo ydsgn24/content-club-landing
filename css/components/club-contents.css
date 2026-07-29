@@ -176,6 +176,13 @@
     margin: 0 auto;
     padding: 0;
   }
+
+  /* Half the mobile size — at desktop's shorter 1-line offer text, the
+     full mobile-sized plate (min(90vw,700px)) overshot badly enough to
+     overlap the "Insides" wordmark/caption above it. */
+  .club-contents__offer-badge {
+    width: min(45vw, 350px);
+  }
 }
 
 .club-card {

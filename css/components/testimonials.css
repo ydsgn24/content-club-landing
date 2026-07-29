@@ -216,10 +216,15 @@
     letter-spacing: -0.48px;
   }
 
+  /* Bleeds past the section's own 100px right padding (margin-right:-100px
+     + matching padding-right, so the LAST item can still scroll flush to
+     the true screen edge instead of being clipped 100px short of it —
+     .testimonials itself keeps its padding for the heading/nav above). */
   .testimonials__viewport {
     max-width: none;
     height: 562px;
-    margin: 44px 0 0;
+    margin: 44px -100px 0 0;
+    padding-right: 100px;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;

@@ -2,15 +2,24 @@
   box-sizing: border-box;
 }
 
-/* REVERTED: overflow-x:hidden on html/body (tried as a fix for a
-   horizontal-scroll/"wandering width" bug) turns them into scroll
-   containers, which breaks `position: sticky` for any descendant —
-   exactly the mechanism .keyhole-bonus__pin and .what-if__pin depend on
-   for their pinned scroll-jack effect. That broke both of them outright
-   (no pin at all) the moment this shipped, which is a far worse bug than
-   the one it was trying to fix. The horizontal-overflow issue needs a
-   fix that doesn't touch html/body's own overflow — see individual
-   sections' own overflow:hidden instead. */
+/* REVERTED (see git history): overflow-x:hidden directly on html/body
+   broke `position: sticky` everywhere on the page — per spec, a non-
+   visible overflow on BODY propagates to become the root/viewport's own
+   overflow (when html itself stays visible), which changes the actual
+   scrolling mechanism the browser uses, not just "an ancestor clips
+   content". .page-wrap below is the fix instead: a perfectly ordinary
+   block wrapping all real page content (not html/body themselves), so
+   that special propagation rule never kicks in — sticky elements inside
+   it (.keyhole-bonus__pin, .what-if__pin) still resolve against the true
+   viewport, since page-wrap's own height always matches its content
+   (nothing to independently scroll) and it never leaves html/body's
+   default overflow:visible. This is the single backstop against several
+   sections' fixed-width bleed elements (torn edges, striped backgrounds,
+   the footer's hands, hero doves…) overshooting the viewport by a stray
+   sub-pixel and opening up page-wide horizontal scroll/drag. */
+.page-wrap {
+  overflow-x: hidden;
+}
 
 body {
   margin: 0;
