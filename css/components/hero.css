@@ -262,10 +262,16 @@
     display: none;
   }
 
+  /* Deliberately excluded from the bump below (stays 16px/1rem, same as
+     mobile) — the user asked for it smaller than the eyebrow/followers
+     text next to it on this screen. */
+  .hero__lang-switch {
+    font-size: 1rem;
+  }
+
   .hero__eyebrow,
   .hero__followers,
-  .hero__social-proof,
-  .hero__lang-switch {
+  .hero__social-proof {
     font-size: 1.25rem;
     letter-spacing: -0.2px;
     line-height: 1;
