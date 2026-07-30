@@ -15,64 +15,78 @@
 .site-footer {
   position: relative;
   background: var(--color-navy);
-  padding: 0 16px 64px;
+  /* padding-top reserves the same 130px .site-footer__hands used to take
+     up in normal flow — it's position:absolute now (see below), so
+     nothing else here would otherwise know to leave room for it. */
+  padding: 130px 16px 64px;
   text-align: center;
-  /* clip-path, not overflow-x:hidden: `overflow-x:hidden` with overflow-y
-     left at its default computes overflow-y to `auto` (per spec, mixing
-     visible with a non-visible value), and auto still clips content
-     that sits above the box's own top edge — which is exactly what
-     .site-footer__hand's translateY does on purpose, to bleed onto the
-     cream section above. clip-path's inset() can restrict left/right
-     only, leaving top/bottom genuinely unclipped (pushed way out via the
-     negative values) — this is the only way to clip one axis but not the
-     other. Still contains the hands' off-screen slide-in start position
-     (translateX) horizontally, same as before. */
-  clip-path: inset(-9999px 0);
 }
 
+/* Absolute + pulled up 90px + that much taller (still only 130px of it is
+   the "normal" visible band, matched by .site-footer's own padding-top
+   above) — NOT .site-footer__hand's own left/right edge escaping the
+   viewport this time, that part is fine (see below) — this box existing
+   at all, tall enough and high enough that the hands' upward bleed
+   (translateY, still needed to reach the seam with the section above)
+   lands INSIDE this box's own bounds instead of above them. That's what
+   makes it safe to give this box overflow:hidden for horizontal
+   clipping: nothing needs to escape it vertically anymore, so hidden
+   can't clip anything that was supposed to show. 90px comfortably covers
+   the taller hand's own translateY (~67px at this width) with margin. */
 .site-footer__hands {
-  position: relative;
-  height: 130px;
+  position: absolute;
+  top: -90px;
+  left: 0;
+  right: 0;
+  height: 220px;
+  overflow: hidden;
 }
 
-/* Scroll reveal (js/closing-cta-reveal.js): each hand starts pulled out
-   further past its own resting `left`/`right` edge and slides in to meet
-   the other once the band scrolls into view — reads as the two hands
-   reaching toward each other, not just fading in place.
+/* Scroll reveal (js/closing-cta-reveal.js): fades in once the band
+   scrolls into view — used to ALSO slide in from translateX(±60%) past
+   each hand's own resting left/right edge, but that pre-reveal position
+   pushed the image's own layout box (not just what's painted — `clip-
+   path`, tried right before this, hides it visually but never reduces
+   real scrollable overflow) far enough past the viewport to make the
+   ENTIRE page horizontally draggable from first load, everywhere, not
+   just at the footer. Confirmed empirically (Playwright: documentElement
+   scrollWidth exceeded innerWidth by exactly this pair's escaped width,
+   consistently at every breakpoint tested). Fade-only removes that
+   escaping transform entirely; .site-footer__hands above now safely
+   clips the resting `left:-8%`/`right:-8%` overshoot horizontally too.
 
-   translateY(-N%) (not a fixed top px) trims off only each image's own
-   transparent top margin — measured off each file's actual alpha bounding
-   box (right hand's real content starts at 29% down its own canvas, left
-   hand's at 10.9%) — so the reaching hand sits closer to the seam with
-   the section above for free, with zero content cropped. Pushing this
-   further (e.g. all the way to each fingertip) would crop the arm/wrist
-   itself, since the fingertip is the LOW point of each source photo, not
-   the top. */
+   `top: 90px` (matches .site-footer__hands' own -90px) puts each hand
+   back at the same resting position as when the wrapper sat at top:0 —
+   translateY(-N%) on top of that (not a fixed px) trims off only each
+   image's own transparent top margin — measured off each file's actual
+   alpha bounding box (right hand's real content starts at 29% down its
+   own canvas, left hand's at 10.9%) — so the reaching hand sits closer
+   to the seam for free, with zero content cropped. Pushing this further
+   (e.g. all the way to each fingertip) would crop the arm/wrist itself,
+   since the fingertip is the LOW point of each source photo, not the
+   top. */
 .site-footer__hand {
   position: absolute;
-  top: 0;
+  top: 90px;
   width: 58%;
   max-width: 320px;
   height: auto;
-  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  opacity: 0;
+  transition: opacity 0.9s ease;
 }
 
 .site-footer__hand--left {
   left: -8%;
-  transform: translateX(-60%) translateY(calc(-10.9% - 20px));
+  transform: translateY(calc(-10.9% - 20px));
 }
 
 .site-footer__hand--right {
   right: -8%;
-  transform: translateX(60%) translateY(calc(-29% - 20px));
+  transform: translateY(calc(-29% - 20px));
 }
 
-.site-footer__hands--visible .site-footer__hand--left {
-  transform: translateX(0) translateY(calc(-10.9% - 20px));
-}
-
-.site-footer__hands--visible .site-footer__hand--right {
-  transform: translateX(0) translateY(calc(-29% - 20px));
+.site-footer__hands--visible .site-footer__hand {
+  opacity: 1;
 }
 
 .site-footer__requisites {
@@ -111,8 +125,16 @@
 }
 
 @media (min-width: 1200px) {
+  .site-footer {
+    padding-top: 260px;
+  }
+
+  /* Bigger hand images need a bigger upward-bleed buffer too (~133px at
+     this width, vs mobile's ~67px) — same "tall+high enough that nothing
+     needs to escape the box" logic as the base rule above. */
   .site-footer__hands {
-    height: 260px;
+    top: -150px;
+    height: 410px;
   }
 
   /* Bigger (was capped at 320px, same as mobile) so the two fingertips
@@ -120,6 +142,7 @@
      anchor, so a larger image alone is what pulls the tips further in
      toward the center. */
   .site-footer__hand {
+    top: 150px;
     width: 34%;
     max-width: 480px;
   }
