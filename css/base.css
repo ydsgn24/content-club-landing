@@ -2,27 +2,24 @@
   box-sizing: border-box;
 }
 
-/* REVERTED (see git history): overflow-x:hidden directly on html/body
-   broke `position: sticky` everywhere on the page — per spec, a non-
-   visible overflow on BODY propagates to become the root/viewport's own
-   overflow (when html itself stays visible), which changes the actual
-   scrolling mechanism the browser uses, not just "an ancestor clips
-   content". .page-wrap below is the fix instead: a perfectly ordinary
-   block wrapping all real page content (not html/body themselves), so
-   that special propagation rule never kicks in — sticky elements inside
-   it (.keyhole-bonus__pin, .what-if__pin) still resolve against the true
-   viewport, since page-wrap's own height always matches its content
-   (nothing to independently scroll) and it never leaves html/body's
-   default overflow:visible. This is the single backstop against several
-   sections' fixed-width bleed elements (torn edges, striped backgrounds,
-   the footer's hands, hero doves…) overshooting the viewport by a stray
-   sub-pixel and opening up page-wide horizontal scroll/drag. */
-.page-wrap {
-  overflow-x: hidden;
-}
-
+/* REVERTED TWICE (see git history): first overflow-x:hidden on html/body,
+   then the same thing one level down on a wrapping .page-wrap div — both
+   broke `position: sticky` for .keyhole-bonus__pin / .what-if__pin
+   (confirmed live on both mobile and desktop: the pin stopped holding,
+   scrolling straight past to expose the section's own background instead
+   of staying pinned). Any ancestor with a non-visible `overflow` value
+   turns it into a "scroll container" per spec, and that's what sticky's
+   containing-block resolution keys off — doesn't matter whether that
+   ancestor is html/body or an ordinary div, or whether it ever actually
+   scrolls independently.
+   clip-path does NOT create a scroll container — it's a paint-time clip,
+   completely outside the Overflow module's scroll-container concept —
+   so it clips the same stray horizontal bleed (torn edges, striped
+   backgrounds, the footer's hands, hero doves…) without going anywhere
+   near what sticky's ancestor search cares about. */
 body {
   margin: 0;
+  clip-path: inset(0);
   background: var(--color-cream-pale);
 }
 
