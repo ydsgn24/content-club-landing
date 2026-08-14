@@ -5,12 +5,21 @@
    didn't quite reach the real viewport edge. `dvw`/`dvh` track the
    actual current visual viewport and keep this pinned edge-to-edge
    through the toolbar's show/hide (see the matching note on
-   .tariff-modal::backdrop in tariff-modal.css — same underlying bug). */
+   .tariff-modal::backdrop in tariff-modal.css — same underlying bug).
+
+   `max-width`/`max-height: none` are load-bearing here, not decoration —
+   Chromium's own UA stylesheet puts `max-width/max-height: calc(100% -
+   38px)` on `dialog:modal`, which silently shrank this below the real
+   viewport. With `margin: 0` (not the UA's own `auto`) that shrunk box
+   had nothing centering it, so it pinned to the top-left corner instead
+   of the middle — the video looked like it had "crawled" to one side. */
 .video-modal {
   position: fixed;
   inset: 0;
   width: 100dvw;
   height: 100dvh;
+  max-width: none;
+  max-height: none;
   margin: 0;
   padding: 0;
   border: none;
