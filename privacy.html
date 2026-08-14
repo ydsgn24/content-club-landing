@@ -2,6 +2,34 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1029980306332056');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1029980306332056&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZFH7NNCCK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-LZFH7NNCCK');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Політика конфіденційності — Content Club</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -10,7 +38,9 @@
   <link rel="stylesheet" href="KudryashevHeadline-Sans/style.css" />
   <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components/button.css" />
   <link rel="stylesheet" href="css/components/legal-page.css" />
+  <link rel="stylesheet" href="css/components/cookie-banner.css" />
 </head>
 <body>
   <main class="legal-page">
@@ -93,5 +123,12 @@
       </div>
     </div>
   </main>
+  <div class="cookie-banner" data-cookie-banner hidden>
+    <img class="cookie-banner__icon" src="images/8c315204974a834520faab19f4fdd0ed (фон удален).webp" alt="" aria-hidden="true" />
+    <p class="cookie-banner__text">Ми використовуємо файли cookie для покращення роботи сайту. Детальніше — в <a href="privacy.html">Політиці конфіденційності</a>.</p>
+    <button class="btn-cta cookie-banner__accept" type="button" data-cookie-accept>Добре</button>
+  </div>
+
+  <script src="js/cookie-banner.js"></script>
 </body>
 </html>

@@ -50,7 +50,18 @@
   display: block;
 }
 
+/* Explicit fixed/inset + dvw/dvh here, even though the UA default
+   `::backdrop` box is already `position: fixed; inset: 0` — on mobile
+   Safari/Chrome that default box doesn't reliably resize as the
+   address-bar toolbar slides away mid-scroll, leaving a sliver of
+   un-dimmed page visible at the top. `dvw`/`dvh` track the actual
+   current visual viewport (unlike bare `vw`/`vh`), which keeps the
+   backdrop pinned edge-to-edge through the toolbar's show/hide. */
 .tariff-modal::backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.85);
 }
 

@@ -1,22 +1,23 @@
 /* section-pricing — Figma: Mobile node 48:1287, Desktop node 59:3156.
-   Card headers (photo + month label) and the two "экономия" stamps are
-   pre-composited images exported from Figma (content-frame-1*.png,
-   content-group*.png) — placed as-is, no shadows/frames added on top.
+   12-month card content/price updated per Figma node 49:1396 (no longer
+   a "+ личная консультация" offer — plain full-year access at 200€, same
+   savings-stamp treatment as the 3m/6m cards).
+   Card headers (photo + month label) and the three "экономия" stamps are
+   pre-composited images exported from Figma (content-frame-1*.webp,
+   content-group*.png, "40 ру"/"40 укр".png) — placed as-is, no
+   shadows/frames added on top.
 
-   Mobile and Desktop are genuinely different content, not just a resize:
-   different tier-1 price (20€ vs 25€) and different description copy per
-   card, so each card carries both text blocks and toggles which is shown
-   at the 1200px breakpoint, same as the rest of the site's convention.
+   Mobile and Desktop carry separate description text blocks per card
+   (each toggled at the 1200px breakpoint, same as the rest of the site's
+   convention) — except the 12-month card, whose Figma source only
+   specifies one copy variant, so both breakpoints share the same text.
 
    Price numbers use Kudryashev Display as a stand-in for Classica Two
    (the font Figma specifies) — that font isn't in the project yet; swap
    the font-family in .pricing__amount once it's supplied.
 
    Not reproduced: the two small gold corner flourishes at the very
-   bottom of the 12-month card and the tick-mark decoration on the
-   "+ личная консультация" badge — no exported asset exists for either
-   (unlike the two "экономия" stamps, which were exported), so the
-   consultation badge is a plain label instead of a matching stamp. */
+   bottom of the 12-month card — no exported asset exists for them. */
 
 .pricing {
   position: relative;
@@ -168,23 +169,6 @@
   height: auto;
 }
 
-.pricing__badge--consult {
-  position: absolute;
-  left: 149px;
-  top: 85px;
-  padding: 6px 10px;
-  background: var(--color-cream-pale);
-  border: 1px solid var(--color-dusty-blue);
-  border-radius: 4px;
-  transform: rotate(3.27deg);
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  letter-spacing: -0.14px;
-  color: var(--color-maroon-dark);
-  white-space: nowrap;
-}
-
 /* ============ Desktop: 1200px — matches node 59:3156 ============ */
 @media (min-width: 1200px) {
   .pricing {
@@ -294,14 +278,6 @@
   .pricing__badge {
     right: 16px;
     bottom: 55px;
-  }
-
-  /* Desktop cards are narrower than mobile (298px vs 343px) — anchoring
-     from the right instead of the mobile's fixed left px keeps it clear
-     of the card edge (overflow:hidden was clipping it) at any width. */
-  .pricing__badge--consult {
-    left: auto;
-    right: 8px;
   }
 }
 

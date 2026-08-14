@@ -2,6 +2,34 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1029980306332056');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1029980306332056&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZFH7NNCCK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-LZFH7NNCCK');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Club</title>
   <link rel="alternate" hreflang="ru" href="index.html" />
@@ -31,15 +59,16 @@
   <link rel="stylesheet" href="css/components/closing-cta.css" />
   <link rel="stylesheet" href="css/components/footer.css" />
   <noscript><style>.club-contents__icon,.accordion-item,.club-card,.pricing__card,.faq-item,.closing-cta__angel,.closing-cta__collage,.closing-cta__cta,.site-footer__hand,.keyhole-bonus__badge,.keyhole-bonus__cta{opacity:1!important;clip-path:none!important;transform:none!important;}.audience-fit__chandelier,.founder-intro__logo{opacity:1!important;clip-path:none!important;transform:translateX(-50%)!important;}.founder-intro__collage{opacity:1!important;transform:translateX(-50%)!important;}.keyhole-bonus__cta{transform:translateX(-50%)!important;}</style></noscript>
+  <link rel="stylesheet" href="css/components/cookie-banner.css" />
 </head>
 <body>
   <header class="visually-hidden"><h1>Content Club</h1></header>
 
   <section class="hero" aria-label="Приветствие">
-    <img class="hero__bg" src="images/фон Юля.webp" alt="Основательница Content Club в винтажном интерьере с золотой лепниной" />
+    <img loading="eager" class="hero__bg" src="images/фон Юля.webp" alt="Основательница Content Club в винтажном интерьере с золотой лепниной" />
 
-    <img class="hero__dove hero__dove--left" src="images/hero-dove.png" alt="" aria-hidden="true" />
-    <img class="hero__dove hero__dove--right" src="images/hero-dove.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="hero__dove hero__dove--left" src="images/hero-dove.webp" alt="" aria-hidden="true" />
+    <img loading="lazy" class="hero__dove hero__dove--right" src="images/hero-dove.webp" alt="" aria-hidden="true" />
 
     <nav class="hero__lang-switch" aria-label="Выбор языка">
       <a href="index-ua.html">UA</a>
@@ -55,12 +84,12 @@
     <div class="hero__stack">
       <div class="hero__collage">
         <div class="hero__card">
-          <img class="hero__photo hero__photo--tag" src="images/hero-photo-1.webp" alt="" />
+          <img loading="lazy" class="hero__photo hero__photo--tag" src="images/hero-photo-1.webp" alt="" />
           <p class="hero__description">
             Это клуб людей, <strong>объединённых развитием личного бренда в Instagram,</strong> где вы обретаете опору из практических знаний и поддержки сотен участниц.
           </p>
         </div>
-        <img class="hero__photo hero__photo--pin" src="images/hero-photo-2.webp" alt="" />
+        <img loading="lazy" class="hero__photo hero__photo--pin" src="images/hero-photo-2.webp" alt="" />
       </div>
 
       <a class="btn-cta hero__cta" href="#pricing">Вступить в клуб</a>
@@ -68,7 +97,7 @@
 
     <p class="hero__social-proof">700+ участниц из Одессы, Лиссабона, Лондона, Барселоны, Берлина и ещё десятков городов</p>
 
-    <img class="hero__torn-edge" src="images/край 1.webp" alt="" />
+    <img loading="lazy" class="hero__torn-edge" src="images/край 1.webp" alt="" />
   </section>
 
   <section class="video-teaser" aria-label="Видео-экскурсия по клубу">
@@ -78,14 +107,14 @@
       <div class="video-teaser__content">
         <h2 class="video-teaser__heading">Не хотите<br />читать?</h2>
         <div class="video-teaser__description-wrap">
-          <img class="video-teaser__description-badge" src="images/image 63345919.png" alt="" aria-hidden="true" />
-          <p class="video-teaser__description">Видео-экскурсия <strong>на 5 минут</strong> с обзором всех веток клуба</p>
+          <img loading="lazy" class="video-teaser__description-badge" src="images/image 63345919.png" alt="" aria-hidden="true" />
+          <p class="video-teaser__description">Видео-экскурсия <strong>на 4 минуты</strong> с обзором всех веток клуба</p>
         </div>
       </div>
 
       <button class="video-teaser__watch" type="button">
-        <img class="video-teaser__photo" src="images/photo.webp" alt="" />
-        <img class="video-teaser__frame" src="images/photo-frame-mask.webp" alt="" />
+        <img loading="lazy" class="video-teaser__photo" src="images/photo.webp" alt="" />
+        <img loading="lazy" class="video-teaser__frame" src="images/photo-frame-mask.webp" alt="" />
         <span class="video-teaser__play-glow" aria-hidden="true"></span>
         <span class="video-teaser__play-circle" aria-hidden="true"></span>
         <span class="video-teaser__play-triangle" aria-hidden="true"></span>
@@ -98,17 +127,17 @@
     <div class="club-contents__bg" aria-hidden="true"></div>
 
     <div class="club-contents__intro">
-      <img class="club-contents__icon" src="images/icon-whats-inside.svg" alt="Insides" />
+      <img loading="lazy" class="club-contents__icon" src="images/icon-whats-inside.svg" alt="Insides" />
       <p class="club-contents__icon-caption">что внутри клуба?</p>
     </div>
 
     <div class="club-contents__offer-wrap">
-      <img class="club-contents__offer-badge" src="images/image 63345919.png" alt="" aria-hidden="true" />
+      <img loading="lazy" class="club-contents__offer-badge" src="images/image 63345919.png" alt="" aria-hidden="true" />
       <p class="club-contents__offer">За 20 евро<br />вы получаете:</p>
     </div>
 
     <div class="club-contents__list">
-      <img class="club-contents__photo-collage" src="images/Frame 1484578932.png" alt="Коллаж из фото участниц клуба" />
+      <img loading="lazy" class="club-contents__photo-collage" src="images/Frame 1484578932.webp" alt="Коллаж из фото участниц клуба" />
 
       <div class="accordion-group">
         <details class="accordion-item" name="room-accordion" open>
@@ -181,7 +210,7 @@
 
       <div class="club-cards">
         <div class="club-card">
-          <img class="club-card__sticker" src="images/content-group.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="club-card__sticker" src="images/content-group.webp" alt="" aria-hidden="true" />
           <h3 class="club-card__title">Гостиная</h3>
           <p class="club-card__description">Ветка для знакомств и живых разговоров на любые темы.</p>
         </div>
@@ -199,46 +228,46 @@
   <section class="audience-fit" aria-label="Для кого этот клуб">
     <div class="audience-fit__pin">
       <div class="audience-fit__photo-wrap">
-        <img class="audience-fit__torn-edge audience-fit__torn-edge--top" src="images/край 2.webp" alt="" aria-hidden="true" />
-        <img class="audience-fit__bg" src="images/decorative-blur-background-1.webp" alt="" aria-hidden="true" />
-        <img class="audience-fit__torn-edge audience-fit__torn-edge--bottom" src="images/край 2.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="audience-fit__torn-edge audience-fit__torn-edge--top" src="images/край 2.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="audience-fit__bg" src="images/decorative-blur-background-1.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="audience-fit__torn-edge audience-fit__torn-edge--bottom" src="images/край 2.webp" alt="" aria-hidden="true" />
       </div>
-      <img class="audience-fit__chandelier" src="images/Group 21.webp" alt="" />
+      <img loading="lazy" class="audience-fit__chandelier" src="images/Group 21.webp" alt="" />
       <h2 class="audience-fit__heading">Для кого<br />этот клуб</h2>
     </div>
 
     <div class="audience-fit__stack">
       <article class="audience-card audience-card--seekers">
-        <img class="audience-card__shape" src="images/card-shape-seekers.svg" alt="" aria-hidden="true" />
-        <img class="audience-card__icon" src="images/audience-icon-seekers.webp" alt="" />
+        <img loading="lazy" class="audience-card__shape" src="images/card-shape-seekers.svg" alt="" aria-hidden="true" />
+        <img loading="lazy" class="audience-card__icon" src="images/audience-icon-seekers.webp" alt="" />
         <h3 class="audience-card__title">Для ищущих</h3>
         <p class="audience-card__text">Для тех, кто ещё не развивает личный бренд, но ищет наполняющее и развивающееся окружение</p>
       </article>
 
       <article class="audience-card audience-card--bloggers">
-        <img class="audience-card__shape" src="images/card-shape-bloggers.svg" alt="" aria-hidden="true" />
-        <img class="audience-card__icon" src="images/audience-icon-bloggers.webp" alt="" />
+        <img loading="lazy" class="audience-card__shape" src="images/card-shape-bloggers.svg" alt="" aria-hidden="true" />
+        <img loading="lazy" class="audience-card__icon" src="images/audience-icon-bloggers.webp" alt="" />
         <h3 class="audience-card__title">Для блогеров</h3>
         <p class="audience-card__text">Для блогеров на всех этапах развития: от начинающих до практикующих</p>
       </article>
 
       <article class="audience-card audience-card--experts">
-        <img class="audience-card__shape" src="images/card-shape-experts.svg" alt="" aria-hidden="true" />
-        <img class="audience-card__icon" src="images/audience-icon-experts.webp" alt="" />
+        <img loading="lazy" class="audience-card__shape" src="images/card-shape-experts.svg" alt="" aria-hidden="true" />
+        <img loading="lazy" class="audience-card__icon" src="images/audience-icon-experts.webp" alt="" />
         <h3 class="audience-card__title">Для экспертов</h3>
         <p class="audience-card__text">Для экспертов, которые хотят упаковать страницу под органическую монетизацию, научиться находить клиентов через reels и совершенствоваться в продажах</p>
       </article>
 
       <article class="audience-card audience-card--entrepreneurs">
-        <img class="audience-card__shape" src="images/card-shape-entrepreneurs.svg" alt="" aria-hidden="true" />
-        <img class="audience-card__icon" src="images/audience-icon-entrepreneurs.webp" alt="" />
+        <img loading="lazy" class="audience-card__shape" src="images/card-shape-entrepreneurs.svg" alt="" aria-hidden="true" />
+        <img loading="lazy" class="audience-card__icon" src="images/audience-icon-entrepreneurs.webp" alt="" />
         <h3 class="audience-card__title">Для предпринимателей</h3>
         <p class="audience-card__text">Для предпринимателей, которые хотят усилить влияние личного бренда и использовать его как дополнительный канал продаж</p>
       </article>
 
       <article class="audience-card audience-card--specialists">
-        <img class="audience-card__shape" src="images/card-shape-specialists.svg" alt="" aria-hidden="true" />
-        <img class="audience-card__icon" src="images/audience-icon-specialists.webp" alt="" />
+        <img loading="lazy" class="audience-card__shape" src="images/card-shape-specialists.svg" alt="" aria-hidden="true" />
+        <img loading="lazy" class="audience-card__icon" src="images/audience-icon-specialists.webp" alt="" />
         <h3 class="audience-card__title">Для специалистов</h3>
         <p class="audience-card__text">Для smm-специалистов, которые хотят выйти на новый уровень работы с клиентами</p>
       </article>
@@ -255,50 +284,50 @@
            several framed testimonials at once. -->
       <div class="testimonials__stage">
         <div class="testimonials__stage-window">
-          <img class="testimonials__stage-photo" src="images/отзыв 1.webp" alt="Скриншот отзыва участницы клуба 1" />
-          <img class="testimonials__stage-photo" src="images/отзыв 2.webp" alt="Скриншот отзыва участницы клуба 2" />
-          <img class="testimonials__stage-photo" src="images/отзыв 3.webp" alt="Скриншот отзыва участницы клуба 3" />
-          <img class="testimonials__stage-photo" src="images/отзыв 4.webp" alt="Скриншот отзыва участницы клуба 4" />
-          <img class="testimonials__stage-photo" src="images/отзыв 5.webp" alt="Скриншот отзыва участницы клуба 5" />
-          <img class="testimonials__stage-photo" src="images/отзыв 6.webp" alt="Скриншот отзыва участницы клуба 6" />
-          <img class="testimonials__stage-photo" src="images/отзыв 7.webp" alt="Скриншот отзыва участницы клуба 7" />
-          <img class="testimonials__stage-photo" src="images/отзыв 8.webp" alt="Скриншот отзыва участницы клуба 8" />
+          <img loading="lazy" class="testimonials__stage-photo" src="images/отзыв 1.webp" alt="Скриншот отзыва участницы клуба 1" />
+          <img loading="lazy" class="testimonials__stage-photo" src="images/отзыв 2.webp" alt="Скриншот отзыва участницы клуба 2" />
+          <img loading="lazy" class="testimonials__stage-photo" src="images/отзыв 3.webp" alt="Скриншот отзыва участницы клуба 3" />
+          <img loading="lazy" class="testimonials__stage-photo" src="images/отзыв 4.webp" alt="Скриншот отзыва участницы клуба 4" />
+          <img loading="lazy" class="testimonials__stage-photo" src="images/отзыв 5.webp" alt="Скриншот отзыва участницы клуба 5" />
+          <img loading="lazy" class="testimonials__stage-photo" src="images/отзыв 6.webp" alt="Скриншот отзыва участницы клуба 6" />
+          <img loading="lazy" class="testimonials__stage-photo" src="images/отзыв 7.webp" alt="Скриншот отзыва участницы клуба 7" />
+          <img loading="lazy" class="testimonials__stage-photo" src="images/отзыв 8.webp" alt="Скриншот отзыва участницы клуба 8" />
         </div>
-        <img class="testimonials__stage-frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="testimonials__stage-frame" src="images/рамка.webp" alt="" aria-hidden="true" />
       </div>
 
       <ul class="testimonials__track">
         <li class="testimonials__item">
-          <img class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
-          <img class="testimonials__photo" src="images/отзыв 1.webp" alt="Скриншот отзыва участницы клуба" />
+          <img loading="lazy" class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="testimonials__photo" src="images/отзыв 1.webp" alt="Скриншот отзыва участницы клуба" />
         </li>
         <li class="testimonials__item">
-          <img class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
-          <img class="testimonials__photo" src="images/отзыв 2.webp" alt="Скриншот отзыва участницы клуба" />
+          <img loading="lazy" class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="testimonials__photo" src="images/отзыв 2.webp" alt="Скриншот отзыва участницы клуба" />
         </li>
         <li class="testimonials__item">
-          <img class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
-          <img class="testimonials__photo" src="images/отзыв 3.webp" alt="Скриншот отзыва участницы клуба" />
+          <img loading="lazy" class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="testimonials__photo" src="images/отзыв 3.webp" alt="Скриншот отзыва участницы клуба" />
         </li>
         <li class="testimonials__item">
-          <img class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
-          <img class="testimonials__photo" src="images/отзыв 4.webp" alt="Скриншот отзыва участницы клуба" />
+          <img loading="lazy" class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="testimonials__photo" src="images/отзыв 4.webp" alt="Скриншот отзыва участницы клуба" />
         </li>
         <li class="testimonials__item">
-          <img class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
-          <img class="testimonials__photo" src="images/отзыв 5.webp" alt="Скриншот отзыва участницы клуба" />
+          <img loading="lazy" class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="testimonials__photo" src="images/отзыв 5.webp" alt="Скриншот отзыва участницы клуба" />
         </li>
         <li class="testimonials__item">
-          <img class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
-          <img class="testimonials__photo" src="images/отзыв 6.webp" alt="Скриншот отзыва участницы клуба" />
+          <img loading="lazy" class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="testimonials__photo" src="images/отзыв 6.webp" alt="Скриншот отзыва участницы клуба" />
         </li>
         <li class="testimonials__item">
-          <img class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
-          <img class="testimonials__photo" src="images/отзыв 7.webp" alt="Скриншот отзыва участницы клуба" />
+          <img loading="lazy" class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="testimonials__photo" src="images/отзыв 7.webp" alt="Скриншот отзыва участницы клуба" />
         </li>
         <li class="testimonials__item">
-          <img class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
-          <img class="testimonials__photo" src="images/отзыв 8.webp" alt="Скриншот отзыва участницы клуба" />
+          <img loading="lazy" class="testimonials__frame" src="images/рамка.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" class="testimonials__photo" src="images/отзыв 8.webp" alt="Скриншот отзыва участницы клуба" />
         </li>
       </ul>
     </div>
@@ -325,16 +354,16 @@
 
   <section class="founder-intro" aria-label="Кто такая Юля">
     <p class="founder-intro__eyebrow">Who is</p>
-    <img class="founder-intro__logo" src="images/logo-wordmark.svg" alt="Yuvladi" />
+    <img loading="lazy" class="founder-intro__logo" src="images/logo-wordmark.svg" alt="Yuvladi" />
 
-    <img class="founder-intro__collage" src="images/founder-bio-photo-collage-alt-draft.webp" alt="Коллаж из личных фотографий Юли: инста-профиль, кадры из будней в Лиссабоне" />
+    <img loading="lazy" class="founder-intro__collage" src="images/founder-bio-photo-collage-alt-draft.webp" alt="Коллаж из личных фотографий Юли: инста-профиль, кадры из будней в Лиссабоне" />
 
     <div class="founder-intro__letter">
       <div class="founder-intro__paper-wrap">
-        <img class="founder-intro__paper" src="images/founder-bio-photo-stack.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="founder-intro__paper" src="images/founder-bio-photo-stack.webp" alt="" aria-hidden="true" />
 
         <div class="founder-intro__block founder-intro__block--1">
-          <p class="founder-intro__quote">&ldquo; Привет, мой дорогой читатель</p>
+          <p class="founder-intro__quote">&laquo; Привет, мой дорогой читатель</p>
           <div class="founder-intro__paragraph">
             <p>Меня зовут Юля, я одесситка в Лиссабоне, гедонист, 10 лет работаю в SMM и 5 специализируюсь на личных брендах.</p>
             <p>Я, как и вы, прошла все этапы развития блога: от «кому это интересно» и синдрома самозванца до аудитории в 90к+ подписчиков, которую я набрала исключительно на разговорных reels.</p>
@@ -348,10 +377,10 @@
           <p class="founder-intro__paragraph2">Я создала его из того, чем наполняюсь сама, для тех, кто хочет проявляться с любовью и развиваться во всех направлениях</p>
         </div>
 
-        <p class="founder-intro__invite">Приглашаю вас стать частью нашей большой семьи! &rdquo;</p>
+        <p class="founder-intro__invite">Приглашаю вас стать частью нашей большой семьи! &raquo;</p>
       </div>
 
-      <img class="founder-intro__badge" src="images/brosh.webp" alt="Печать клуба Content Club, основан в 2025 году" />
+      <img loading="lazy" class="founder-intro__badge" src="images/brosh.webp" alt="Печать клуба Content Club, основан в 2025 году" />
     </div>
   </section>
 
@@ -361,34 +390,34 @@
       <h2 class="what-if__heading">А что, если…?</h2>
 
       <div class="what-if__track">
-        <img class="what-if__composite" style="--x:11.67%;--y:13.42%;--w:8.79%" src="images/polaroid-frame-1.png" alt="" aria-hidden="true" />
-        <img class="what-if__page what-if__page--1" src="images/1 страница.webp" alt="Разворот дневника: «Рынок переполнен, мне на нём нет места»" />
-        <img class="what-if__composite" style="--x:1.47%;--y:18.09%;--w:5.55%" src="images/polaroid-frame-2.png" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__composite" style="--x:11.67%;--y:13.42%;--w:8.79%" src="images/polaroid-frame-1.png" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__page what-if__page--1" src="images/1 страница.webp" alt="Разворот дневника: «Рынок переполнен, мне на нём нет места»" />
+        <img loading="lazy" class="what-if__composite" style="--x:1.47%;--y:18.09%;--w:5.55%" src="images/polaroid-frame-2.png" alt="" aria-hidden="true" />
 
-        <img class="what-if__deco" style="--x:80.67%;--y:40.64%;--w:10.84%;--h:49.82%;--r:-8.01deg" src="images/esli-photo-tall2.webp" alt="" aria-hidden="true" />
-        <img class="what-if__deco" style="--x:12.79%;--y:86.44%;--w:11.92%;--h:31.38%;--r:156.55deg" src="images/esli-photo-round.webp" alt="" aria-hidden="true" />
-        <img class="what-if__deco" style="--x:26.06%;--y:27.03%;--w:9.46%;--h:5.17%;--r:0deg" src="images/esli-photo-tape.webp" alt="" aria-hidden="true" />
-        <img class="what-if__deco" style="--x:31.91%;--y:69.88%;--w:12.49%;--h:59.46%;--r:7.79deg" src="images/esli-photo-tall.webp" alt="" aria-hidden="true" />
-        <img class="what-if__page what-if__page--2" src="images/2 страница.webp" alt="Разворот дневника с рассуждениями «А что, если…?»" />
-        <img class="what-if__composite" style="--x:37.08%;--y:75.56%;--w:10.45%" src="images/Group 24.png" alt="" aria-hidden="true" />
-        <img class="what-if__deco" style="--x:41.24%;--y:26.79%;--w:2.88%;--h:15.96%;--r:-87.77deg" src="images/esli-photo-sliver.webp" alt="" aria-hidden="true" />
-        <img class="what-if__deco" style="--x:65.75%;--y:28.49%;--w:6.47%;--h:20.68%;--r:5.46deg" src="images/esli-photo-a.webp" alt="" aria-hidden="true" />
-        <img class="what-if__deco" style="--x:65.79%;--y:27.64%;--w:5.63%;--h:16.46%;--r:5.46deg" src="images/esli-photo-b.webp" alt="" aria-hidden="true" />
-        <img class="what-if__deco" style="--x:60.3%;--y:84.64%;--w:5.15%;--h:13.57%;--r:-5.86deg" src="images/esli-photo-round-small.webp" alt="" aria-hidden="true" />
-        <img class="what-if__page what-if__page--3" src="images/3 страница.webp" alt="Разворот дневника с рассуждениями «А что, если…?»" />
-        <img class="what-if__composite" style="--x:87.37%;--y:74.15%;--w:7.28%" src="images/Group 23.png" alt="" aria-hidden="true" />
-        <img class="what-if__deco" style="--x:97.59%;--y:77.77%;--w:13.43%;--h:37.25%;--r:-30.37deg" src="images/photo-4.png" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:80.67%;--y:40.64%;--w:10.84%;--h:49.82%;--r:-8.01deg" src="images/esli-photo-tall2.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:12.79%;--y:86.44%;--w:11.92%;--h:31.38%;--r:156.55deg" src="images/esli-photo-round.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:26.06%;--y:27.03%;--w:9.46%;--h:5.17%;--r:0deg" src="images/esli-photo-tape.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:31.91%;--y:69.88%;--w:12.49%;--h:59.46%;--r:7.79deg" src="images/esli-photo-tall.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__page what-if__page--2" src="images/2 страница.webp" alt="Разворот дневника с рассуждениями «А что, если…?»" />
+        <img loading="lazy" class="what-if__composite" style="--x:37.08%;--y:75.56%;--w:10.45%" src="images/Group 24.png" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:41.24%;--y:26.79%;--w:2.88%;--h:15.96%;--r:-87.77deg" src="images/esli-photo-sliver.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:65.75%;--y:28.49%;--w:6.47%;--h:20.68%;--r:5.46deg" src="images/esli-photo-a.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:65.79%;--y:27.64%;--w:5.63%;--h:16.46%;--r:5.46deg" src="images/esli-photo-b.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:60.3%;--y:84.64%;--w:5.15%;--h:13.57%;--r:-5.86deg" src="images/esli-photo-round-small.webp" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__page what-if__page--3" src="images/3 страница.webp" alt="Разворот дневника с рассуждениями «А что, если…?»" />
+        <img loading="lazy" class="what-if__composite" style="--x:87.37%;--y:74.15%;--w:7.28%" src="images/Group 23.png" alt="" aria-hidden="true" />
+        <img loading="lazy" class="what-if__deco" style="--x:97.59%;--y:77.77%;--w:13.43%;--h:37.25%;--r:-30.37deg" src="images/photo-4.png" alt="" aria-hidden="true" />
       </div>
 
       <div class="what-if__spreads">
         <div class="what-if__spread-slot">
-          <img class="what-if__spread" src="images/Frame 1484578928.webp" alt="Разворот дневника: «Рынок переполнен, мне на нём нет места» / «Мне стыдно начинать»" />
+          <img loading="lazy" class="what-if__spread" src="images/Frame 1484578928.webp" alt="Разворот дневника: «Рынок переполнен, мне на нём нет места» / «Мне стыдно начинать»" />
         </div>
         <div class="what-if__spread-slot">
-          <img class="what-if__spread" src="images/Group 27.webp" alt="Разворот дневника: «Я в этом не разберусь, слишком много всего» / «Я оплачу доступ, проведу там один день и никогда не вернусь»" />
+          <img loading="lazy" class="what-if__spread" src="images/Group 27.webp" alt="Разворот дневника: «Я в этом не разберусь, слишком много всего» / «Я оплачу доступ, проведу там один день и никогда не вернусь»" />
         </div>
         <div class="what-if__spread-slot">
-          <img class="what-if__spread" src="images/Frame 1484578929.webp" alt="Разворот дневника: «У меня специфическая ниша, мне это не подойдёт»" />
+          <img loading="lazy" class="what-if__spread" src="images/Frame 1484578929.webp" alt="Разворот дневника: «У меня специфическая ниша, мне это не подойдёт»" />
         </div>
       </div>
     </div>
@@ -397,7 +426,7 @@
   <section class="objections" aria-label="Подойдёт ли мне клуб, если я не развиваю личный бренд?">
     <h2 class="objections__title">Подойдёт ли мне клуб, если я не развиваю личный бренд?</h2>
     <p class="objections__answer">Однозначно! Здесь вы найдёте людей, которые стремятся к развитию во всех направлениях. Каждую неделю у нас проходят эфиры с лидерами ниш с целью интеллектуального и эстетического наполнения: этикет, искусство, маркетинг, психология, бизнес, ai — мы изучаем то, что актуально сегодня, и что наполняет душу.</p>
-    <img class="objections__torn-edge" src="images/край 2.webp" alt="" aria-hidden="true" />
+    <img loading="lazy" class="objections__torn-edge" src="images/край 2.webp" alt="" aria-hidden="true" />
   </section>
 
   <section class="pricing" id="pricing" aria-label="Тарифы">
@@ -406,46 +435,46 @@
 
     <div class="pricing__list">
       <article class="pricing__card pricing__card--1m">
-        <img class="pricing__card-header" src="images/content-frame-1.png" alt="1 месяц" />
+        <img loading="lazy" class="pricing__card-header" src="images/content-frame-1.webp" alt="1 месяц" />
         <div class="pricing__card-body">
           <p class="pricing__desc"><strong>Полный доступ к материалам</strong> клуба с ежемесячным продлением<br /><br />(отменить можно в любой момент)</p>
           <p class="pricing__desc pricing__desc--desktop"><strong>Полный доступ</strong><br />ко всем комнатам клуба.</p>
-          <p class="pricing__price"><span class="pricing__amount pricing__amount--mobile">20</span><span class="pricing__amount pricing__amount--desktop">25</span><span class="pricing__currency">€</span></p>
+          <p class="pricing__price"><span class="pricing__amount pricing__amount--mobile">20</span><span class="pricing__amount pricing__amount--desktop">20</span><span class="pricing__currency">€</span></p>
           <button class="btn-cta" type="button" data-open-tariff-modal="1m">Вступить в клуб</button>
         </div>
       </article>
 
       <article class="pricing__card pricing__card--3m">
-        <img class="pricing__card-header" src="images/content-frame-1-1.png" alt="3 месяца" />
+        <img loading="lazy" class="pricing__card-header" src="images/content-frame-1-1.webp" alt="3 месяца" />
         <div class="pricing__card-body">
           <p class="pricing__desc"><strong>Полный доступ к материалам</strong> клуба с продлением раз в 3 месяца<br /><br />(отменить можно в любой момент)</p>
           <p class="pricing__desc pricing__desc--desktop"><strong>Полный доступ</strong><br />на 90 дней <strong>с выгодой 27%</strong></p>
           <p class="pricing__price"><span class="pricing__amount">55</span><span class="pricing__currency">€</span></p>
           <button class="btn-cta" type="button" data-open-tariff-modal="3m">Вступить в клуб</button>
         </div>
-        <img class="pricing__badge pricing__badge--3m" src="images/content-group.png" alt="Экономия 20 евро" />
+        <img loading="lazy" class="pricing__badge pricing__badge--3m" src="images/content-group.png" alt="Экономия 20 евро" />
       </article>
 
       <article class="pricing__card pricing__card--6m">
-        <img class="pricing__card-header" src="images/content-frame-1-2.png" alt="6 месяцев" />
+        <img loading="lazy" class="pricing__card-header" src="images/content-frame-1-2.webp" alt="6 месяцев" />
         <div class="pricing__card-body">
           <p class="pricing__desc"><strong>Полный доступ к материалам</strong> клуба с продлением раз в 6 месяцев<br /><br />(отменить можно в любой момент)</p>
           <p class="pricing__desc pricing__desc--desktop"><strong>Полный доступ</strong><br />на полгода <strong>с выгодой 33%</strong></p>
           <p class="pricing__price"><span class="pricing__amount">100</span><span class="pricing__currency">€</span></p>
           <button class="btn-cta" type="button" data-open-tariff-modal="6m">Вступить в клуб</button>
         </div>
-        <img class="pricing__badge pricing__badge--6m" src="images/content-group-1.png" alt="Экономия 50 евро" />
+        <img loading="lazy" class="pricing__badge pricing__badge--6m" src="images/content-group-1.png" alt="Экономия 50 евро" />
       </article>
 
       <article class="pricing__card pricing__card--12m">
-        <img class="pricing__card-header" src="images/content-frame-1-3.png" alt="12 месяцев" />
+        <img loading="lazy" class="pricing__card-header" src="images/content-frame-1-3.webp" alt="12 месяцев" />
         <div class="pricing__card-body">
-          <p class="pricing__desc">Полный доступ к клубу<br /><strong>на целый год + личная консультация</strong><br /><strong>от @yuvladi</strong><br /><br /><strong>Консультацию можно использовать</strong><br /><strong>в любой момент на протяжении 12 месяцев</strong></p>
-          <p class="pricing__desc pricing__desc--desktop"><strong>Полный доступ на целый год</strong><br /><strong>и час наедине со мной:</strong><br /><br /><strong>разбираем ваш блог и вашу стратегию лично.</strong> Консультацию можно взять в любой момент в течение 12 месяцев.</p>
-          <p class="pricing__price"><span class="pricing__amount">450</span><span class="pricing__currency">€</span></p>
+          <p class="pricing__desc">Полный доступ к клубу<br />на целый год</p>
+          <p class="pricing__desc pricing__desc--desktop">Полный доступ к клубу<br />на целый год</p>
+          <p class="pricing__price"><span class="pricing__amount">200</span><span class="pricing__currency">€</span></p>
           <button class="btn-cta" type="button" data-open-tariff-modal="12m">Вступить в клуб</button>
         </div>
-        <span class="pricing__badge--consult">+ личная консультация</span>
+        <img loading="lazy" class="pricing__badge pricing__badge--12m" src="images/40 ру.png" alt="Экономия 40 евро" />
       </article>
     </div>
 
@@ -456,7 +485,7 @@
     <div class="keyhole-bonus__pin">
       <div class="keyhole-bonus__photo">
         <div class="keyhole-bonus__photo-frame">
-          <img src="images/Frame 1484578930.webp" alt="" aria-hidden="true" />
+          <img loading="lazy" src="images/Frame 1484578930.webp" alt="" aria-hidden="true" />
         </div>
       </div>
 
@@ -468,8 +497,8 @@
           <p>пробный период</p>
           <p class="keyhole-bonus__on-badge">
             на
-            <img class="keyhole-bonus__badge keyhole-bonus__badge--mobile" src="images/Group 6.png" alt="24 часа" width="106" height="44" />
-            <img class="keyhole-bonus__badge keyhole-bonus__badge--desktop" src="images/Group 6.png" alt="24 часа" width="163" height="67" />
+            <img loading="lazy" class="keyhole-bonus__badge keyhole-bonus__badge--mobile" src="images/Group 6.png" alt="24 часа" width="106" height="44" />
+            <img loading="lazy" class="keyhole-bonus__badge keyhole-bonus__badge--desktop" src="images/Group 6.png" alt="24 часа" width="163" height="67" />
           </p>
         </div>
 
@@ -477,7 +506,7 @@
           Присоединяйтесь <strong>к клубу бесплатно</strong> на 24 часа перед принятием решения о покупке
         </p>
 
-        <a class="btn-cta keyhole-bonus__cta" href="#pricing">Вступить в клуб</a>
+        <button class="btn-cta keyhole-bonus__cta" type="button" data-open-tariff-modal="dod">Вступить в клуб</button>
       </div>
     </div>
   </section>
@@ -579,14 +608,14 @@
   </section>
 
   <section class="closing-cta" aria-label="Присоединяйтесь к клубу">
-    <img class="closing-cta__angel" src="images/icon-angel.webp" alt="" aria-hidden="true" />
+    <img loading="lazy" class="closing-cta__angel" src="images/icon-angel.webp" alt="" aria-hidden="true" />
 
     <h2 class="closing-cta__heading closing-cta__heading--mobile">Я люблю говорить, что мечта — это отголосок нашего потенциала, <mark>а цель — это мечта</mark>, за которую вы взяли ответственность.</h2>
     <p class="closing-cta__heading closing-cta__heading--desktop">Я не буду вас дожимать. Если вы дочитали досюда, <mark>вам уже не нужны мои аргументы,</mark> нужен только момент, когда вы перестанете совещаться с собой и просто попробуете.</p>
 
     <p class="closing-cta__text closing-cta__text--mobile">Если вы дочитали до этого момента, значит, развитие личного бренда или поиск поддерживающего окружения — это то, что просит ваш потенциал.</p>
 
-    <img class="closing-cta__collage" src="images/Frame 1484578931.webp" alt="Полароид с фото участницы клуба и восковая печать" />
+    <img loading="lazy" class="closing-cta__collage" src="images/Frame 1484578931.webp" alt="Полароид с фото участницы клуба и восковая печать" />
 
     <p class="closing-cta__text closing-cta__text--desktop">Клуб никуда не денется, и я тоже, <mark>но каждый отложенный месяц</mark> — это месяц, который вы прожили, наблюдая за чужими блогами вместо того, чтобы вести свой.</p>
 
@@ -602,8 +631,8 @@
 
   <footer class="site-footer">
     <div class="site-footer__hands" aria-hidden="true">
-      <img class="site-footer__hand site-footer__hand--left" src="images/decorative-blur-background-1 2.webp" alt="" />
-      <img class="site-footer__hand site-footer__hand--right" src="images/decorative-blur-background.webp" alt="" />
+      <img loading="lazy" class="site-footer__hand site-footer__hand--left" src="images/decorative-blur-background-1 2.webp" alt="" />
+      <img loading="lazy" class="site-footer__hand site-footer__hand--right" src="images/decorative-blur-background.webp" alt="" />
     </div>
 
     <p class="site-footer__requisites">
@@ -622,12 +651,12 @@
 
   <dialog class="video-modal" id="video-modal">
     <button class="video-modal__close" type="button" data-close-modal>Закрыть</button>
-    <video class="video-modal__video" id="video-modal-player" src="videos/video-tour.mp4" controls playsinline></video>
+    <video class="video-modal__video" id="video-modal-player" src="videos/video-tour.mp4" controls playsinline preload="none"></video>
   </dialog>
 
   <dialog class="tariff-modal" id="tariff-modal-1m">
     <button class="tariff-modal__close" type="button" data-close-modal aria-label="Закрыть"></button>
-    <img class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
 
     <h2 class="tariff-modal__title">Тариф<br />на 1 месяц</h2>
 
@@ -650,12 +679,12 @@
       <button class="btn-cta tariff-modal__submit" type="submit">Оплатить и вступить</button>
     </form>
 
-    <img class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
   </dialog>
 
   <dialog class="tariff-modal" id="tariff-modal-3m">
     <button class="tariff-modal__close" type="button" data-close-modal aria-label="Закрыть"></button>
-    <img class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
 
     <h2 class="tariff-modal__title">Тариф<br />на 3 месяца</h2>
 
@@ -678,12 +707,12 @@
       <button class="btn-cta tariff-modal__submit" type="submit">Оплатить и вступить</button>
     </form>
 
-    <img class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
   </dialog>
 
   <dialog class="tariff-modal" id="tariff-modal-6m">
     <button class="tariff-modal__close" type="button" data-close-modal aria-label="Закрыть"></button>
-    <img class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
 
     <h2 class="tariff-modal__title">Тариф<br />на 6 месяцев</h2>
 
@@ -706,12 +735,12 @@
       <button class="btn-cta tariff-modal__submit" type="submit">Оплатить и вступить</button>
     </form>
 
-    <img class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
   </dialog>
 
   <dialog class="tariff-modal" id="tariff-modal-12m">
     <button class="tariff-modal__close" type="button" data-close-modal aria-label="Закрыть"></button>
-    <img class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
 
     <h2 class="tariff-modal__title">Тариф<br />на 12 месяцев</h2>
 
@@ -734,7 +763,26 @@
       <button class="btn-cta tariff-modal__submit" type="submit">Оплатить и вступить</button>
     </form>
 
-    <img class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
+  </dialog>
+
+  <dialog class="tariff-modal" id="tariff-modal-dod">
+    <button class="tariff-modal__close" type="button" data-close-modal aria-label="Закрыть"></button>
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--top" src="images/image 63346000.png" alt="" aria-hidden="true" />
+
+    <h2 class="tariff-modal__title">День<br />открытых дверей</h2>
+
+    <form class="tariff-modal__form" data-checkout-url="https://app.zenedu.io/l/stTj58Bx1aNTT2LJ">
+      <input class="tariff-modal__input" type="text" name="name" placeholder="Ваше Имя" autocomplete="name" required />
+
+      <div class="tariff-modal__checks">
+        <p class="tariff-modal__check-text">Я даю прямое согласие на немедленное получение доступа к цифровому контенту и подтверждаю отсутствие права на отказ от договора и возврат средств.</p>
+      </div>
+
+      <button class="btn-cta tariff-modal__submit" type="submit">Вступить</button>
+    </form>
+
+    <img loading="lazy" class="tariff-modal__clouds tariff-modal__clouds--bottom" src="images/image 63345999.png" alt="" aria-hidden="true" />
   </dialog>
 
   <script src="js/video-modal.js"></script>
@@ -752,5 +800,12 @@
   <script src="js/keyhole-bonus.js"></script>
   <script src="js/faq-reveal.js"></script>
   <script src="js/closing-cta-reveal.js"></script>
+  <div class="cookie-banner" data-cookie-banner hidden>
+    <img loading="lazy" class="cookie-banner__icon" src="images/8c315204974a834520faab19f4fdd0ed (фон удален).webp" alt="" aria-hidden="true" />
+    <p class="cookie-banner__text">Мы используем файлы cookie для улучшения работы сайта. Подробнее — в <a href="privacy.html">Политике конфиденциальности</a>.</p>
+    <button class="btn-cta cookie-banner__accept" type="button" data-cookie-accept>Хорошо</button>
+  </div>
+
+  <script src="js/cookie-banner.js"></script>
 </body>
 </html>
