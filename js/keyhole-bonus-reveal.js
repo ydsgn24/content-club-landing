@@ -7,12 +7,16 @@
   );
   if (!textTargets.length) return;
 
-  // Text only starts revealing once the keyhole mask is mostly open (same
-  // moment the old single opacity fade used to kick in), then each line
-  // staggers on top of that base delay — baked into --reveal-delay itself
-  // since .reveal-word's own transition-delay has no separate base offset.
-  var BASE_DELAY_S = 0.55;
-  var LINE_DELAY_S = 0.1;
+  // Text only starts revealing once the keyhole mask is mostly open, then
+  // each line staggers on top of that base delay — baked into
+  // --reveal-delay itself since .reveal-word's own transition-delay has no
+  // separate base offset. Used to be 0.55s (matching the old, much slower
+  // keyhole-opening animation's own finish time) — now that the keyhole
+  // itself opens within one scroll gesture (see js/keyhole-bonus.js),
+  // that same fixed delay just reads as the text lagging behind an
+  // already-fully-open photo, so it's cut down close to zero.
+  var BASE_DELAY_S = 0.05;
+  var LINE_DELAY_S = 0.06;
 
   // Same word-wrapping approach as the rest of the site's reveal scripts:
   // walk TEXT nodes only, so surrounding markup (<br>, the badge <img>)

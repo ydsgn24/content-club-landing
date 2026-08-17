@@ -150,11 +150,13 @@
    Was a single opacity fade on the whole .content block; now the title/
    subtitle/text reveal word by word instead (.reveal-word, shared base
    rule in video-teaser.css) via js/keyhole-bonus-reveal.js, same mechanism
-   as the rest of the site. That script bakes a 0.55s base delay (matching
-   the old fade's start — when the keyhole is already mostly open) into
-   each word's --reveal-delay, on top of the usual per-line stagger, so
-   nothing needs a transition-delay here. The badge/CTA aren't prose text,
-   so they keep a plain fade+rise below instead of word-wrapping. */
+   as the rest of the site. That script bakes a small base delay (see
+   BASE_DELAY_S there) into each word's --reveal-delay, on top of the
+   usual per-line stagger, so nothing needs a transition-delay here. The
+   badge/CTA aren't prose text, so they keep a plain fade+rise below
+   instead of word-wrapping — their own transition-delay is tuned to
+   land close behind the text, not the old much-slower keyhole-open
+   animation's finish time. */
 .keyhole-bonus__content {
   position: absolute;
   inset: 0;
@@ -245,8 +247,8 @@
   height: auto;
   opacity: 0;
   transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  transition-delay: 0.55s;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition-delay: 0.1s;
 }
 
 .keyhole-bonus--open .keyhole-bonus__badge {
@@ -289,8 +291,8 @@
   width: min(83.47%, 313px);
   transform: translateX(-50%) translateY(10px);
   opacity: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  transition-delay: 0.8s;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition-delay: 0.2s;
 }
 
 .keyhole-bonus--open .keyhole-bonus__cta {
