@@ -27,9 +27,12 @@
    --progress custom property below (see .keyhole-bonus__photo) — the
    opening is 1:1 with the scroll gesture, not a timed animation, so
    there's no "did I miss the transition" window at all. The script maps
-   only the first ~55% of the pinned scroll distance to the zoom; the
-   remaining ~45% holds the fully-open frame on screen (still pinned)
-   before releasing, so there's real time to read the text and tap the CTA.
+   only the first ~16% of the pinned scroll distance (~12vh — about one
+   wheel tick or touch swipe) to the zoom, so the hole finishes opening
+   within a single scroll gesture instead of dragging across several; the
+   remaining ~84% (~63vh) holds the fully-open frame on screen (still
+   pinned) before releasing, so there's real time to read the text and
+   tap the CTA.
 
    The keyhole mask is inlined as a data URI (not a separate .svg file)
    because file:// pages — i.e. opening index.html directly instead of
@@ -67,9 +70,11 @@
 .keyhole-bonus {
   position: relative;
   /* Extra scroll distance for the pin: 100vh of it is consumed just
-     holding .pin on screen, the remaining 150vh is what
-     js/keyhole-bonus.js turns into 0–1 scroll progress. */
-  height: 250vh;
+     holding .pin on screen, the remaining 75vh is what
+     js/keyhole-bonus.js turns into 0–1 scroll progress (~12vh of that
+     opens the keyhole, ~63vh holds it open to read — see ZOOM_FRACTION
+     there and the file-top comment above). */
+  height: 175vh;
   background: var(--color-cream-pale);
 }
 
@@ -178,6 +183,18 @@
   transform: translateY(0);
 }
 
+/* Classica Two.ttf has no Ukrainian Cyrillic-extension glyphs at all
+   (і/ї/є/ґ, upper or lower — verified via the font's cmap). The only word
+   in this title that needs one is "відкритих" (UA copy), which uses "і".
+   Rather than fall back to a mismatched font or a real fallback glyph via
+   @font-face unicode-range, index-ua.html swaps just that letter for the
+   Latin "i" — same glyph shape as Cyrillic і in effectively every typeface,
+   including this one (its Latin i is present and covers the same visual
+   role), so it stays real, selectable, accessible text with no visible
+   difference. Do NOT extend this trick to є/ї/ґ — there's no Latin or
+   mirrored-letter substitute that matches those shapes; if UA copy in this
+   element ever needs them, add a proper unicode-range @font-face fallback
+   instead. */
 .keyhole-bonus__title {
   position: absolute;
   top: 10.1%;

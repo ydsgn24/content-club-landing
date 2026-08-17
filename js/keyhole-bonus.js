@@ -28,12 +28,14 @@
     return;
   }
 
-  // The keyhole opens across only the first ~55% of the pinned scroll
-  // distance; the rest holds the fully-open frame on screen (still
-  // pinned) so there's real time to read the text and tap the CTA before
-  // it releases — see the CSS file header for why this replaced the old
-  // timed scroll-lock.
-  var ZOOM_FRACTION = 0.55;
+  // The keyhole opens across only the first ~16% of the pinned scroll
+  // distance (~12vh — roughly one wheel tick/touch swipe, per product
+  // request: opening used to take several scroll gestures to complete,
+  // which read as sluggish) — the rest holds the fully-open frame on
+  // screen (still pinned) so there's real time to read the text and tap
+  // the CTA before it releases — see the CSS file header for why this
+  // replaced the old timed scroll-lock.
+  var ZOOM_FRACTION = 0.16;
   var OPEN_THRESHOLD = 0.98;
 
   var ticking = false;

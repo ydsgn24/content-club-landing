@@ -5,6 +5,8 @@
   var bg = document.querySelector('.what-if__bg');
   var prevBtn = document.querySelector('.what-if__arrow--prev');
   var nextBtn = document.querySelector('.what-if__arrow--next');
+  var mobileDots = Array.prototype.slice.call(document.querySelectorAll('.what-if__dots--mobile .what-if__dot'));
+  var desktopDots = Array.prototype.slice.call(document.querySelectorAll('.what-if__dots--desktop .what-if__dot'));
   if (!section || !track || !spreads || !bg) return;
 
   var DESIGN_W = 2241;
@@ -16,8 +18,16 @@
 
   var current = null; // active controller (mobile or desktop)
 
+  function syncDots(dots, index) {
+    dots.forEach(function (dot, i) {
+      var active = i === index;
+      dot.classList.toggle('is-active', active);
+      dot.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
   // ---------------------------------------------------------------------
-  // Mobile/tablet: prev/next arrows step through 6 half-spread frames.
+  // Mobile/tablet: prev/next arrows + dots step through 6 half-spread frames.
   // ---------------------------------------------------------------------
   function createMobileController() {
     var stepTargets = [];
@@ -46,6 +56,7 @@
       var stepCount = HALF_CENTERS.length;
       track.style.transform = 'translate3d(' + (-stepTargets[stepIndex]) + 'px, 0, 0)';
       bg.style.backgroundPositionX = (-(stepIndex / (stepCount - 1)) * bgTravel) + 'px';
+      syncDots(mobileDots, stepIndex);
     }
 
     function goTo(next) {
@@ -61,6 +72,12 @@
       goTo(stepIndex + 1);
     }
 
+    var dotHandlers = mobileDots.map(function (dot, i) {
+      return function () {
+        goTo(i);
+      };
+    });
+
     var resizeTimer;
     function onResize() {
       clearTimeout(resizeTimer);
@@ -74,12 +91,18 @@
         window.addEventListener('resize', onResize);
         if (prevBtn) prevBtn.addEventListener('click', onPrevClick);
         if (nextBtn) nextBtn.addEventListener('click', onNextClick);
+        mobileDots.forEach(function (dot, i) {
+          dot.addEventListener('click', dotHandlers[i]);
+        });
       },
       stop: function () {
         window.removeEventListener('resize', onResize);
         clearTimeout(resizeTimer);
         if (prevBtn) prevBtn.removeEventListener('click', onPrevClick);
         if (nextBtn) nextBtn.removeEventListener('click', onNextClick);
+        mobileDots.forEach(function (dot, i) {
+          dot.removeEventListener('click', dotHandlers[i]);
+        });
         track.style.transform = '';
         track.style.transition = '';
       }
@@ -87,7 +110,8 @@
   }
 
   // ---------------------------------------------------------------------
-  // Desktop: prev/next arrows step through 3 whole pre-composited spreads.
+  // Desktop: prev/next arrows + dots step through 3 whole pre-composited
+  // spreads.
   // ---------------------------------------------------------------------
   function createDesktopController() {
     var stepCount = PAGE_CENTERS.length;
@@ -103,6 +127,7 @@
     function render() {
       spreads.style.transform = 'translate3d(' + (-stepIndex * window.innerWidth) + 'px, 0, 0)';
       bg.style.backgroundPositionX = (-(stepIndex / (stepCount - 1)) * bgTravel) + 'px';
+      syncDots(desktopDots, stepIndex);
     }
 
     function goTo(next) {
@@ -118,6 +143,12 @@
       goTo(stepIndex + 1);
     }
 
+    var dotHandlers = desktopDots.map(function (dot, i) {
+      return function () {
+        goTo(i);
+      };
+    });
+
     var resizeTimer;
     function onResize() {
       clearTimeout(resizeTimer);
@@ -131,12 +162,18 @@
         window.addEventListener('resize', onResize);
         if (prevBtn) prevBtn.addEventListener('click', onPrevClick);
         if (nextBtn) nextBtn.addEventListener('click', onNextClick);
+        desktopDots.forEach(function (dot, i) {
+          dot.addEventListener('click', dotHandlers[i]);
+        });
       },
       stop: function () {
         window.removeEventListener('resize', onResize);
         clearTimeout(resizeTimer);
         if (prevBtn) prevBtn.removeEventListener('click', onPrevClick);
         if (nextBtn) nextBtn.removeEventListener('click', onNextClick);
+        desktopDots.forEach(function (dot, i) {
+          dot.removeEventListener('click', dotHandlers[i]);
+        });
         spreads.style.transform = '';
       }
     };

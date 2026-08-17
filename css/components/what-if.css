@@ -204,8 +204,45 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Two separate dot strips, not one — mobile steps through 6 half-spread
+   frames but desktop steps through 3 whole spreads (see js/what-if-nav.js),
+   so the counts genuinely differ per breakpoint instead of just needing
+   a style tweak like most other mobile/desktop pairs on this page. */
+.what-if__dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.what-if__dots--desktop {
+  display: none;
+}
+
+.what-if__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(246, 238, 226, 0.4);
+  box-shadow: 0 0 0 1px var(--color-overlay-black-40);
+  cursor: pointer;
+}
+
+.what-if__dot.is-active {
+  background: var(--color-cream-pale);
+}
+
 @media (min-width: 1200px) {
   .what-if__nav {
     bottom: 40px;
+  }
+
+  .what-if__dots--mobile {
+    display: none;
+  }
+
+  .what-if__dots--desktop {
+    display: flex;
   }
 }
