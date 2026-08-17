@@ -2,46 +2,16 @@
    variant "section-open-house-bonus-alt-draft" (193:257): full-bleed photo
    (Frame 1484578930.webp) + title/subtitle/badge/text/CTA. The other
    variant (193:258, the plain keyhole teaser) only supplied the keyhole
-   shape itself — its own photo crop isn't used here, since the reveal
-   effect below needs one static photo shared by both looks, not two.
+   shape itself — its own photo crop isn't used here, since this reused
+   the same static photo as the alt-draft variant.
 
-   The reveal effect isn't in the Figma file (no prototype data on this
-   component) — implemented per product spec: the photo never moves or
-   scales — only the keyhole-shaped CSS mask over it grows (mask-size),
-   so it reads as a hole widening in front of a still picture, not a
-   photo zooming in.
-
-   This used to be a CSS transition fired by a scroll-position threshold,
-   with js/keyhole-bonus.js blind-locking scroll (overflow:hidden) for a
-   guessed duration to give the transition time to finish. That's exactly
-   what broke on real phones: iOS Safari's momentum scrolling can carry a
-   fling straight through an overflow:hidden lock already in flight, and a
-   fixed lock duration has no way to also guarantee reading time once
-   opened — scroll either raced past the reveal or continued right as it
-   finished, before the CTA was even readable.
-
-   Went through several scroll-tied designs after that — a `position:
-   sticky` pin inside a much taller .keyhole-bonus, with mask-size first
-   tracking the whole pinned scroll range, then just the entry scroll
-   that first carries the section into view, then finally a one-shot
-   reveal that still kept the sticky pin purely as extra hold-open
-   "reading time" padding. Per product feedback, that pin itself was the
-   remaining problem: it made the section feel like it "stuck"/wouldn't
-   let go once opened, however briefly. There's no pin at all now — the
-   section is plain in-flow content, sized by its own aspect-ratio like
-   any other section, and js/keyhole-bonus.js's IntersectionObserver
-   fires once, the moment .keyhole-bonus first shows even a sliver at
-   the bottom of the viewport, adding .keyhole-bonus--open — everything
-   (mask-size, text, badge, CTA) then animates open on its own via a
-   fixed-duration CSS transition, independent of scrolling, and the
-   visitor can keep scrolling past it immediately, same as any other
-   section on the page.
-
-   The keyhole mask is inlined as a data URI (not a separate .svg file)
-   because file:// pages — i.e. opening index.html directly instead of
-   through a server — hit WebKit's stricter same-origin rules for
-   mask-image url() fetches, which silently blanks the whole masked
-   element instead of erroring.
+   Used to have a keyhole-shaped CSS mask that widened open on scroll
+   (implemented per product spec — no prototype for it in the Figma file),
+   went through several scroll-tied and one-shot-reveal designs, but per
+   product feedback the whole animated reveal was cut in the end: this is
+   now a plain static section — the photo and all its text are visible
+   from the start, same as any other section on the page. No JS drives
+   this section at all anymore.
 
    Mobile frame (193:257) values below are px converted to %-of-375
    (width) / %-of-812 (height), so the whole composition scales as one
@@ -59,16 +29,7 @@
    larger separately-exported "24 часа" stamp), not just a resize, so it
    gets its own values below rather than extending the mobile ones —
    same "carry both, toggle by breakpoint" convention as
-   .pricing__desc / .pricing__desc--desktop. No Figma prototype exists
-   for the keyhole reveal at this size either, and mobile's mask-size %
-   were tuned for the 375/812 ratio — reused as-is they'd skew badly on
-   the much flatter 1440/875 frame, so desktop gets its own closed/open
-   mask-size pair: same keyhole height as a fraction of the frame
-   (38.42%, matching mobile), width recomputed from that height to keep
-   the true 172/312 shape ratio at this frame's own aspect (12.87% of
-   1440 instead of 45.87% of 375). mask-position keeps mobile's exact
-   values — that percentage is a per-axis anchor-point identity,
-   independent of aspect. */
+   .pricing__desc / .pricing__desc--desktop. */
 
 .keyhole-bonus {
   position: relative;
@@ -94,39 +55,9 @@
   }
 }
 
-/* ============ Photo + one-shot keyhole mask reveal ============ */
-
 .keyhole-bonus__photo {
   position: absolute;
   inset: 0;
-  --keyhole-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 181 321'%3E%3Cdefs%3E%3Cfilter id='b' x='0' y='0' width='181' height='321' filterUnits='userSpaceOnUse'%3E%3CfeGaussianBlur stdDeviation='2'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23b)'%3E%3Cpath fill='%23D9D9D9' d='M176.5 90.5638C176.5 138.095 137.996 176.628 90.5 176.628C43.0035 176.628 4.5 138.095 4.5 90.5638C4.5 43.0321 43.0035 4.5 90.5 4.5C137.996 4.5 176.5 43.0321 176.5 90.5638Z'/%3E%3Cpath fill='%23D9D9D9' d='M56.4851 153.506L12.8433 316.5H172.649L129.007 153.506H56.4851Z'/%3E%3C/g%3E%3C/svg%3E");
-  -webkit-mask-image: var(--keyhole-mask);
-  mask-image: var(--keyhole-mask);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  /* Anchors the mask's own (50.24%, 51.59%) point to that same fraction
-     of the container, for any mask-size — the standard background-position
-     percentage identity. That's what keeps the hole growing outward from
-     a fixed point instead of drifting as mask-size below changes. */
-  -webkit-mask-position: 50.24% 51.59%;
-  mask-position: 50.24% 51.59%;
-  /* Closed by default; js/keyhole-bonus.js adds .keyhole-bonus--open once
-     (see the file-top comment), which switches mask-size to the open
-     values below — this transition is what actually animates the hole
-     widening, a plain fixed-duration CSS transition rather than a value
-     recomputed every scroll frame. */
-  --mask-w-closed: 45.87;
-  --mask-w-open: 366.96;
-  --mask-h-closed: 38.42;
-  --mask-h-open: 307.36;
-  -webkit-mask-size: calc(var(--mask-w-closed) * 1%) calc(var(--mask-h-closed) * 1%);
-  mask-size: calc(var(--mask-w-closed) * 1%) calc(var(--mask-h-closed) * 1%);
-  transition: mask-size 0.5s ease-out, -webkit-mask-size 0.5s ease-out;
-}
-
-.keyhole-bonus--open .keyhole-bonus__photo {
-  -webkit-mask-size: calc(var(--mask-w-open) * 1%) calc(var(--mask-h-open) * 1%);
-  mask-size: calc(var(--mask-w-open) * 1%) calc(var(--mask-h-open) * 1%);
 }
 
 /* The oversized crop (241.07% × 125.74%, offset -65.6%/-25.74%) has to
@@ -147,54 +78,10 @@
   object-fit: cover;
 }
 
-/* ============ Text content ============
-   Was a single opacity fade on the whole .content block; now the title/
-   subtitle/text reveal word by word instead (.reveal-word, shared base
-   rule in video-teaser.css) via js/keyhole-bonus-reveal.js, same mechanism
-   as the rest of the site. That script bakes a small base delay (see
-   BASE_DELAY_S there) into each word's --reveal-delay, on top of the
-   usual per-line stagger, so nothing needs a transition-delay here. The
-   badge/CTA aren't prose text, so they keep a plain fade+rise below
-   instead of word-wrapping.
-
-   Text/badge/CTA key off .keyhole-bonus--open, added by
-   js/keyhole-bonus.js the instant the section first becomes visible —
-   see the file-top comment. They fade in via their own transition (plus
-   a small per-line stagger for the words, see BASE_DELAY_S/LINE_DELAY_S
-   in js/keyhole-bonus-reveal.js) at essentially the same moment the mask
-   itself starts widening, so photo and text arrive together instead of
-   the text lagging behind an already-open photo. */
 .keyhole-bonus__content {
   position: absolute;
   inset: 0;
   z-index: 1;
-  pointer-events: none;
-}
-
-.keyhole-bonus--open .keyhole-bonus__content {
-  pointer-events: auto;
-}
-
-/* Belt-and-suspenders for the "fully open" state: rather than trusting
-   mask-size to have grown "big enough" to clear the whole frame (fragile —
-   see the note above .keyhole-bonus__photo's desktop mask-size override,
-   where a too-large value backfired and hid the entire photo), drop the
-   mask outright once js/keyhole-bonus.js adds .keyhole-bonus--mask-cleared
-   — guarantees the full photo shows edge-to-edge with zero keyhole
-   silhouette left, independent of any mask-size math. This has to be a
-   SEPARATE, later class from --open rather than bundled into it: swapping
-   mask-image to none at the same moment --open starts the mask-size
-   transition would skip the widening-circle animation entirely (a
-   discrete image swap can't be eased), so JS only adds this one after
-   waiting out that transition's duration. */
-.keyhole-bonus--mask-cleared .keyhole-bonus__photo {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-.keyhole-bonus--open .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Classica Two.ttf has no Ukrainian Cyrillic-extension glyphs at all
@@ -257,15 +144,6 @@
 
 .keyhole-bonus__badge {
   height: auto;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  transition-delay: 0.1s;
-}
-
-.keyhole-bonus--open .keyhole-bonus__badge {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .keyhole-bonus__badge--mobile {
@@ -301,15 +179,7 @@
   top: 56.16%;
   left: 50%;
   width: min(83.47%, 313px);
-  transform: translateX(-50%) translateY(10px);
-  opacity: 0;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  transition-delay: 0.2s;
-}
-
-.keyhole-bonus--open .keyhole-bonus__cta {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
+  transform: translateX(-50%);
 }
 
 /* ============ Desktop: 1200px — matches the Desktop frame (59:3315) ============ */
@@ -317,24 +187,6 @@
   .keyhole-bonus__pin {
     aspect-ratio: 1440 / 875;
     max-height: none;
-  }
-
-  /* Same 12x scale on both axes as the mobile keyhole's own 8x — bigger
-     here because the closed width% is much smaller to begin with (a
-     smaller starting fraction needs a larger multiplier to still clear
-     the frame once mask-position's off-center anchor is accounted for).
-     A bigger multiplier (tried 20x) doesn't reliably "clear" this frame's
-     much wider 1440/875 aspect — past a certain scale the container's
-     visible window lands in a near-transparent band of the mask's own
-     circle+wedge silhouette, so the ENTIRE photo disappears instead of
-     just the keyhole edge. See .keyhole-bonus--mask-cleared above, which
-     removes the mask outright once fully open instead of relying on
-     mask-size ever reaching "big enough". */
-  .keyhole-bonus__photo {
-    --mask-w-closed: 12.87;
-    --mask-w-open: 154.44;
-    --mask-h-closed: 38.42;
-    --mask-h-open: 461.04;
   }
 
   .keyhole-bonus__photo-frame {
@@ -386,21 +238,5 @@
     min-height: 80px;
     font-size: 20px;
     letter-spacing: -0.2px;
-  }
-}
-
-/* js/keyhole-bonus.js's IntersectionObserver-driven reveal runs the same
-   way for everyone (no separate reduced-motion branch) — it only skips
-   the wait before adding .keyhole-bonus--mask-cleared here (see
-   MASK_TRANSITION_MS there). Nothing here needs a layout override
-   anymore (no pin, no scroll-tied height) — just make the reveal
-   transitions themselves instant instead of animated. */
-@media (prefers-reduced-motion: reduce) {
-  .keyhole-bonus__photo,
-  .keyhole-bonus__content,
-  .keyhole-bonus__badge,
-  .keyhole-bonus__cta {
-    transition-duration: 0.01ms;
-    transition-delay: 0s;
   }
 }
