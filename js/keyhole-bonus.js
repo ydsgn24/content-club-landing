@@ -28,14 +28,17 @@
     return;
   }
 
-  // The keyhole opens across only the first ~16% of the pinned scroll
-  // distance (~12vh — roughly one wheel tick/touch swipe, per product
-  // request: opening used to take several scroll gestures to complete,
-  // which read as sluggish) — the rest holds the fully-open frame on
-  // screen (still pinned) so there's real time to read the text and tap
-  // the CTA before it releases — see the CSS file header for why this
-  // replaced the old timed scroll-lock.
-  var ZOOM_FRACTION = 0.16;
+  // The keyhole now opens DURING the scroll that first carries it into
+  // view, not after — progress tracks .keyhole-bonus's own top edge from
+  // the moment it appears at the bottom of the viewport (rect.top ===
+  // innerHeight) through to fully settled at its pinned position
+  // (rect.top === 0), so it's already open by the time it locks in place
+  // instead of sitting there closed and static until the pin "arrives".
+  // Past that point rect.top goes negative (still pinned, consuming the
+  // rest of .keyhole-bonus's extra height) and progress just clamps at 1
+  // — that remaining scroll is pure hold-open reading time, no separate
+  // zoom fraction needed anymore (see the CSS file header for why this
+  // replaced the old timed scroll-lock).
   var OPEN_THRESHOLD = 0.98;
 
   var ticking = false;
@@ -43,11 +46,10 @@
   function render() {
     ticking = false;
     var rect = root.getBoundingClientRect();
-    var pinnableRange = root.offsetHeight - window.innerHeight;
-    var rawProgress = pinnableRange > 0 ? -rect.top / pinnableRange : (rect.top <= 0 ? 1 : 0);
-    rawProgress = Math.min(Math.max(rawProgress, 0), 1);
+    var vh = window.innerHeight;
+    var maskProgress = vh > 0 ? 1 - rect.top / vh : (rect.top <= 0 ? 1 : 0);
+    maskProgress = Math.min(Math.max(maskProgress, 0), 1);
 
-    var maskProgress = Math.min(rawProgress / ZOOM_FRACTION, 1);
     photo.style.setProperty('--progress', maskProgress);
     root.classList.toggle('keyhole-bonus--open', maskProgress >= OPEN_THRESHOLD);
   }
