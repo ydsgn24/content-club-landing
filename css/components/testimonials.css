@@ -1,6 +1,6 @@
 /* section-testimonials — Figma node 59:3710 (mobile), 59:2992 (desktop).
    Two entirely different carousels, swapped by breakpoint (js/testimonials.js
-   picks a controller the same way js/what-if-scroll.js does):
+   picks a controller the same way js/what-if-nav.js does):
 
    - Mobile/tablet (.testimonials__stage): a single golden frame stays fixed
      in place; only the photo underneath it slides sideways into the frame's

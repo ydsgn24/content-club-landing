@@ -8,19 +8,20 @@
    since some photos are meant to sit under the pages/other photos.
 
    Behavior (not present in the static Figma frame — implemented per
-   product spec): once scrolled into view the section pins for a full
-   viewport height on every device. The wood-desk background sits on its
-   own layer and drifts slower than the foreground for a parallax effect.
-   The heading stays fixed at the top of the screen for the whole pin.
+   product spec): the section holds a full-viewport-height stage; prev/next
+   arrow buttons (.what-if__nav, bottom-center on every breakpoint) step
+   through it instead of the old scroll-jacked/wheel-hijacked auto-advance
+   — a visitor who doesn't click never has the page scroll sideways on
+   them. The wood-desk background sits on its own layer and shifts along
+   with each step for a parallax effect. The heading stays fixed at the
+   top of the stage throughout.
 
-   Mobile/tablet (<1200px) use .what-if__track: vertical scroll distance
-   steps it through 6 snapping frames (each spread gets a left-half and
-   right-half frame) instead of following the scroll 1:1.
+   Mobile/tablet (<1200px) use .what-if__track: arrows step it through 6
+   snapping frames (each spread gets a left-half and right-half frame).
 
    Desktop (≥1200px) uses .what-if__spreads instead: 3 pre-composited
    full-spread images (exported whole from Figma, one per diary), one
-   wheel gesture = one spread, via wheel-event interception rather than
-   scroll distance. Driven by js/what-if-scroll.js. */
+   arrow click = one spread. Driven by js/what-if-nav.js. */
 
 .what-if {
   position: relative;
@@ -35,8 +36,7 @@
 }
 
 .what-if__pin {
-  position: sticky;
-  top: 0;
+  position: relative;
   height: 100vh;
   overflow: hidden;
   display: flex;
@@ -162,4 +162,50 @@
   max-height: calc(82vh + 50px);
   width: auto;
   height: auto;
+}
+
+/* Prev/next — not a Figma element (this whole nav is a product-spec
+   addition, see the file-top comment), so styled to match the existing
+   .testimonials__nav arrow pattern (same 48px circle) rather than
+   inventing a new one, just recolored: .what-if sits on --color-brown,
+   where the testimonials' --color-dusty-blue would barely read, so this
+   uses the site's cream/beige tokens instead. Bottom-center on every
+   breakpoint per product spec (testimonials only does that on mobile;
+   its desktop nav moves to top-right, which doesn't apply here). */
+.what-if__nav {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  gap: 20px;
+}
+
+/* Unlike .testimonials__arrow (background: none — it only ever sits on
+   the plain cream section background), this floats directly over the
+   diary artwork, which is cream-colored itself in places — a transparent
+   circle would nearly vanish there. The dark overlay backdrop keeps the
+   cream border/icon readable over both the pale paper and the dark
+   wood-desk background. */
+.what-if__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--color-cream-pale);
+  background: var(--color-overlay-black-40);
+  color: var(--color-cream-pale);
+  cursor: pointer;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 1200px) {
+  .what-if__nav {
+    bottom: 40px;
+  }
 }
