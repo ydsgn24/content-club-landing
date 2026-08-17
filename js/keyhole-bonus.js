@@ -1,82 +1,50 @@
 (function () {
   var root = document.querySelector('[data-keyhole-bonus]');
   if (!root) return;
-  var photo = root.querySelector('.keyhole-bonus__photo');
-  if (!photo) return;
 
-  // No scroll-jack for reduced-motion users — just reveal it in place once
-  // it's in view (matching .keyhole-bonus__pin's position:static and
-  // .keyhole-bonus's height:auto reset for this case in the CSS).
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    photo.style.setProperty('--progress', 1);
-    if ('IntersectionObserver' in window) {
-      var staticObserver = new IntersectionObserver(
-        function (entries, obs) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              root.classList.add('keyhole-bonus--open', 'keyhole-bonus--text');
-              obs.unobserve(root);
-            }
-          });
-        },
-        { threshold: 0.3 }
-      );
-      staticObserver.observe(root);
-    } else {
-      root.classList.add('keyhole-bonus--open', 'keyhole-bonus--text');
-    }
-    return;
-  }
-
-  // The keyhole now opens DURING the scroll that first carries it into
-  // view, not after — progress tracks .keyhole-bonus's own top edge from
-  // the moment it appears at the bottom of the viewport (rect.top ===
-  // innerHeight) through to fully settled at its pinned position
-  // (rect.top === 0), so it's already open by the time it locks in place
-  // instead of sitting there closed and static until the pin "arrives".
-  // Past that point rect.top goes negative (still pinned, consuming the
-  // rest of .keyhole-bonus's extra height) and progress just clamps at 1
-  // — that remaining scroll is pure hold-open reading time, no separate
-  // zoom fraction needed anymore (see the CSS file header for why this
-  // replaced the old timed scroll-lock).
+  // Per product request, this is no longer scroll-scrubbed (mask-size
+  // tied 1:1 to scroll distance, "the more you scroll the more it
+  // opens") — it's a one-shot reveal instead: the moment the section
+  // first appears at the bottom of the viewport, it opens fully on its
+  // own via a CSS transition (see .keyhole-bonus__photo), regardless of
+  // how far the visitor actually scrolls. IntersectionObserver at
+  // threshold 0 fires on that first sliver of visibility, which only
+  // happens as a result of the visitor's own scroll/touch gesture, so
+  // this doubles as "opens from one touch" without any separate
+  // scroll/touch listener needed.
   //
-  // Text/badge/CTA get their OWN, much earlier threshold, decoupled from
-  // OPEN_THRESHOLD: the closed→open mask-size values are tuned (per
-  // breakpoint, see keyhole-bonus.css) to visually cover the whole frame
-  // well before progress actually reaches 1 — OPEN_THRESHOLD just governs
-  // when the mask gets dropped outright as a belt-and-suspenders cleanup,
-  // not when the photo first LOOKS fully open. Gating text on that same
-  // late threshold left a long stretch where the photo already read as
-  // fully revealed but no text had appeared yet — looked like a blank
-  // photo with nothing on it. TEXT_THRESHOLD fires as soon as there's
-  // enough opened photo behind the text for it to read against (this
-  // site's cream text needs the photo, not the plain cream section
-  // background, for contrast), without waiting for the mask cleanup.
-  var TEXT_THRESHOLD = 0.4;
-  var OPEN_THRESHOLD = 0.98;
+  // .keyhole-bonus--open drives the mask-size transition + text/badge/
+  // CTA reveal together, immediately. .keyhole-bonus--mask-cleared comes
+  // MASK_TRANSITION_MS later and only drops the mask-image outright —
+  // belt-and-suspenders once the transition has visually finished (see
+  // the CSS file header for why trusting mask-size math alone is
+  // fragile). It has to be delayed and separate: adding it at the same
+  // time as --open would swap mask-image to none instantly, skipping
+  // the widening-circle animation entirely instead of just cleaning up
+  // after it.
+  var MASK_TRANSITION_MS = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 550;
 
-  var ticking = false;
-
-  function render() {
-    ticking = false;
-    var rect = root.getBoundingClientRect();
-    var vh = window.innerHeight;
-    var maskProgress = vh > 0 ? 1 - rect.top / vh : (rect.top <= 0 ? 1 : 0);
-    maskProgress = Math.min(Math.max(maskProgress, 0), 1);
-
-    photo.style.setProperty('--progress', maskProgress);
-    root.classList.toggle('keyhole-bonus--text', maskProgress >= TEXT_THRESHOLD);
-    root.classList.toggle('keyhole-bonus--open', maskProgress >= OPEN_THRESHOLD);
+  function reveal() {
+    root.classList.add('keyhole-bonus--open');
+    window.setTimeout(function () {
+      root.classList.add('keyhole-bonus--mask-cleared');
+    }, MASK_TRANSITION_MS);
   }
 
-  function onScroll() {
-    if (!ticking) {
-      ticking = true;
-      window.requestAnimationFrame(render);
-    }
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(
+      function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            reveal();
+            obs.unobserve(root);
+          }
+        });
+      },
+      { threshold: 0 }
+    );
+    observer.observe(root);
+  } else {
+    reveal();
   }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  render();
 })();
