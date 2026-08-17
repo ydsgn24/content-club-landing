@@ -14,7 +14,7 @@
         function (entries, obs) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
-              root.classList.add('keyhole-bonus--open');
+              root.classList.add('keyhole-bonus--open', 'keyhole-bonus--text');
               obs.unobserve(root);
             }
           });
@@ -23,7 +23,7 @@
       );
       staticObserver.observe(root);
     } else {
-      root.classList.add('keyhole-bonus--open');
+      root.classList.add('keyhole-bonus--open', 'keyhole-bonus--text');
     }
     return;
   }
@@ -39,6 +39,20 @@
   // — that remaining scroll is pure hold-open reading time, no separate
   // zoom fraction needed anymore (see the CSS file header for why this
   // replaced the old timed scroll-lock).
+  //
+  // Text/badge/CTA get their OWN, much earlier threshold, decoupled from
+  // OPEN_THRESHOLD: the closed→open mask-size values are tuned (per
+  // breakpoint, see keyhole-bonus.css) to visually cover the whole frame
+  // well before progress actually reaches 1 — OPEN_THRESHOLD just governs
+  // when the mask gets dropped outright as a belt-and-suspenders cleanup,
+  // not when the photo first LOOKS fully open. Gating text on that same
+  // late threshold left a long stretch where the photo already read as
+  // fully revealed but no text had appeared yet — looked like a blank
+  // photo with nothing on it. TEXT_THRESHOLD fires as soon as there's
+  // enough opened photo behind the text for it to read against (this
+  // site's cream text needs the photo, not the plain cream section
+  // background, for contrast), without waiting for the mask cleanup.
+  var TEXT_THRESHOLD = 0.4;
   var OPEN_THRESHOLD = 0.98;
 
   var ticking = false;
@@ -51,6 +65,7 @@
     maskProgress = Math.min(Math.max(maskProgress, 0), 1);
 
     photo.style.setProperty('--progress', maskProgress);
+    root.classList.toggle('keyhole-bonus--text', maskProgress >= TEXT_THRESHOLD);
     root.classList.toggle('keyhole-bonus--open', maskProgress >= OPEN_THRESHOLD);
   }
 

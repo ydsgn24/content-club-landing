@@ -158,9 +158,16 @@
    BASE_DELAY_S there) into each word's --reveal-delay, on top of the
    usual per-line stagger, so nothing needs a transition-delay here. The
    badge/CTA aren't prose text, so they keep a plain fade+rise below
-   instead of word-wrapping — their own transition-delay is tuned to
-   land close behind the text, not the old much-slower keyhole-open
-   animation's finish time. */
+   instead of word-wrapping.
+
+   Text/badge/CTA key off .keyhole-bonus--text, NOT --open: --open only
+   flips once the mask is basically finished (see the belt-and-suspenders
+   note below) — the closed→open mask-size values already visually cover
+   the whole frame well before that point, so gating text on --open left
+   a stretch where the photo read as fully revealed with nothing on it.
+   --text fires off js/keyhole-bonus.js's own earlier TEXT_THRESHOLD
+   instead, as soon as there's enough opened photo behind the text for
+   this site's cream text color to actually read against it. */
 .keyhole-bonus__content {
   position: absolute;
   inset: 0;
@@ -168,7 +175,7 @@
   pointer-events: none;
 }
 
-.keyhole-bonus--open .keyhole-bonus__content {
+.keyhole-bonus--text .keyhole-bonus__content {
   pointer-events: auto;
 }
 
@@ -184,7 +191,7 @@
   mask-image: none;
 }
 
-.keyhole-bonus--open .reveal-word {
+.keyhole-bonus--text .reveal-word {
   opacity: 1;
   transform: translateY(0);
 }
@@ -255,7 +262,7 @@
   transition-delay: 0.1s;
 }
 
-.keyhole-bonus--open .keyhole-bonus__badge {
+.keyhole-bonus--text .keyhole-bonus__badge {
   opacity: 1;
   transform: translateY(0);
 }
@@ -299,7 +306,7 @@
   transition-delay: 0.2s;
 }
 
-.keyhole-bonus--open .keyhole-bonus__cta {
+.keyhole-bonus--text .keyhole-bonus__cta {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
@@ -382,9 +389,9 @@
 }
 
 /* No scroll-jack at all — js/keyhole-bonus.js skips the pin/progress logic
-   entirely and just adds .keyhole-bonus--open once the section is in view,
-   so the tall scroll-distance wrapper and the sticky pin both need to
-   collapse back to a plain single-viewport section here. */
+   entirely and just adds both .keyhole-bonus--open and --text once the
+   section is in view, so the tall scroll-distance wrapper and the sticky
+   pin both need to collapse back to a plain single-viewport section here. */
 @media (prefers-reduced-motion: reduce) {
   .keyhole-bonus {
     height: auto;
