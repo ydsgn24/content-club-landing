@@ -20,22 +20,22 @@
    opened — scroll either raced past the reveal or continued right as it
    finished, before the CTA was even readable.
 
-   Now .keyhole-bonus__pin is `position: sticky` inside a much taller
-   .keyhole-bonus (a native, compositor-driven pin the browser itself
-   enforces — nothing to race past). Went through two scroll-scrubbed
-   designs after that (mask-size tied 1:1 to scroll distance, first over
-   the whole pinned range, then just the entry scroll that first carries
-   the section into view) before landing here — per product feedback,
-   ANY scroll-linked dragging ("the more I scroll the more it opens")
-   still read as slow/laggy no matter how short the tied distance was.
-   It's a one-shot reveal now instead: js/keyhole-bonus.js's
-   IntersectionObserver fires once, the moment .keyhole-bonus first
-   shows even a sliver at the bottom of the viewport, and adds
-   .keyhole-bonus--open — everything (mask-size, text, badge, CTA) then
-   animates open on its own via a fixed-duration CSS transition,
-   independent of further scrolling. The rest of .keyhole-bonus's extra
-   height (see height below) is still there as hold-open reading time
-   once that animation finishes, before releasing to the next section.
+   Went through several scroll-tied designs after that — a `position:
+   sticky` pin inside a much taller .keyhole-bonus, with mask-size first
+   tracking the whole pinned scroll range, then just the entry scroll
+   that first carries the section into view, then finally a one-shot
+   reveal that still kept the sticky pin purely as extra hold-open
+   "reading time" padding. Per product feedback, that pin itself was the
+   remaining problem: it made the section feel like it "stuck"/wouldn't
+   let go once opened, however briefly. There's no pin at all now — the
+   section is plain in-flow content, sized by its own aspect-ratio like
+   any other section, and js/keyhole-bonus.js's IntersectionObserver
+   fires once, the moment .keyhole-bonus first shows even a sliver at
+   the bottom of the viewport, adding .keyhole-bonus--open — everything
+   (mask-size, text, badge, CTA) then animates open on its own via a
+   fixed-duration CSS transition, independent of scrolling, and the
+   visitor can keep scrolling past it immediately, same as any other
+   section on the page.
 
    The keyhole mask is inlined as a data URI (not a separate .svg file)
    because file:// pages — i.e. opening index.html directly instead of
@@ -72,19 +72,14 @@
 
 .keyhole-bonus {
   position: relative;
-  /* The keyhole opens as a one-shot animation the instant this section
-     is first visible (see the file-top comment and js/keyhole-bonus.js)
-     — none of this height drives that anymore. This 175vh is purely the
-     *pinned* budget: 100vh of it is consumed holding .pin on screen at
-     all, the remaining 75vh is hold-open reading time once the reveal
-     animation has finished, before releasing to the next section. */
-  height: 175vh;
+  /* Plain in-flow spacing to the sections above/below — per product
+     spec, same both sides regardless of breakpoint. */
+  margin: 80px 0;
   background: var(--color-cream-pale);
 }
 
 .keyhole-bonus__pin {
-  position: sticky;
-  top: 0;
+  position: relative;
   width: 100%;
   aspect-ratio: 375 / 812;
   max-height: 100vh;
@@ -397,18 +392,10 @@
 /* js/keyhole-bonus.js's IntersectionObserver-driven reveal runs the same
    way for everyone (no separate reduced-motion branch) — it only skips
    the wait before adding .keyhole-bonus--mask-cleared here (see
-   MASK_TRANSITION_MS there). The animated hold-open pin is still a
-   scroll effect though, so it collapses back to a plain single-viewport
-   section here, and every transition below goes instant. */
+   MASK_TRANSITION_MS there). Nothing here needs a layout override
+   anymore (no pin, no scroll-tied height) — just make the reveal
+   transitions themselves instant instead of animated. */
 @media (prefers-reduced-motion: reduce) {
-  .keyhole-bonus {
-    height: auto;
-  }
-
-  .keyhole-bonus__pin {
-    position: static;
-  }
-
   .keyhole-bonus__photo,
   .keyhole-bonus__content,
   .keyhole-bonus__badge,
