@@ -261,31 +261,20 @@
     width: 90%;
   }
 
-  /* Base .hero__bg's crop (object-position:50% 0% + translateY(-40px))
-     was tuned for the original 984px-tall box — a fixed-px translateY
-     doesn't scale down with a shorter container, so at 700px it left the
-     "Content Club" wordmark baked into the photo pushed down low enough
-     to collide with .hero__card once the card moved up above. Re-tuned
-     here with resolution-independent object-position % (no fixed-px
-     transform) so the wordmark stays fully visible up top and the face
-     clears the card underneath it, verified empirically via screenshot. */
-  /* Capped lower than the ≥700px-height bucket below (1.3/-20px vs its
-     1.584/-50px) — this bucket has less vertical room, and matching that
-     bucket's full zoom+raise here pushes the model's mouth behind the
-     card (checked empirically via Playwright at 375×667). A further
-     +10% zoom on top of the already-capped 1.3 pushes the same overlap
-     even at the original -10px raise, so scale stays at 1.3 — only the
-     raise moved, and only partway (-10px→-20px, not the full -40px the
-     ≥700px bucket's own delta would imply) — 1.3/-20px is the most this
-     bucket can take before the overlap starts.
-
-     A further +50px request on top of THAT (→-70px) turned out fine,
-     unlike the earlier increments — past a certain raise the crop window
-     moves on from the chin/mouth entirely and clears the card again
-     (checked empirically), so this one wasn't capped. */
+  /* Mobile now loads a dedicated portrait crop (index.html's <picture>
+     source, images/hero-bg-mobile.png, 507×988) instead of the desktop
+     photo — it already has the wordmark and face composed near the top,
+     so unlike the old shared-photo era this needs little correction:
+     just object-position biased toward the top so cover crops from the
+     bottom (legs/skirt, non-essential) rather than the top. No
+     scale/translate hacks — those were tuned against the old photo's
+     very different framing and don't apply to this asset. */
+  /* Small -10px raise on top of the plain top-aligned crop — the
+     model's chin just grazes the card without it (checked empirically
+     via Playwright at 375×667). */
   .hero__bg {
-    object-position: 50% 25%;
-    transform: translateY(-70px) scale(1.3);
+    object-position: 50% 0%;
+    transform: translateY(-10px);
   }
 
   /* Per direct request: dropped now that .hero__followers's own vertical
@@ -328,13 +317,11 @@
     top: calc(41% + 303.65px);
   }
 
-  /* This bucket has the most vertical room of the three mobile buckets
-     (tallest aspect-ratio), so it gets the full requested zoom/raise —
-     the base bucket below is capped lower (1.3/-70px) because it starts
-     overlapping the model's mouth at these values (checked empirically). */
+  /* Same dedicated mobile image as the base bucket above — no bucket-
+     specific correction needed here either. */
   .hero__bg {
-    object-position: 50% 25%;
-    transform: translateY(-100px) scale(1.584);
+    object-position: 50% 0%;
+    transform: none;
   }
 }
 
@@ -345,14 +332,13 @@
    rather than crushing the much more common 360–767px range further to
    chase this one edge case, it gets its own tighter values instead.
 
-   Known accepted trade-off at this width only: the wordmark-to-face
-   distance is fixed within images/фон Юля.webp itself, so there's no
-   crop that clears BOTH the cookie banner below the button AND full
-   headroom above the face at this box height — the card's top edge/
-   flower brooch ends up grazing the model's chin (checked empirically,
-   nowhere near as bad as the full mouth/card overlap this whole block
-   was added to fix). Full clearance would require either shrinking the
-   card further or re-cropping the source photo itself. */
+   Known accepted trade-off at this width only (pre-dedicated-mobile-photo
+   era): the wordmark-to-face distance used to be fixed within the shared
+   desktop photo, leaving no crop that cleared BOTH the cookie banner
+   below the button AND full headroom above the face — now moot since
+   mobile loads its own purpose-cropped image (see the base bucket's own
+   comment above), but the aspect-ratio/top values below are still tuned
+   independently for this width and left as they are. */
 @media (max-width: 340.98px) {
   .hero {
     aspect-ratio: 375 / 620;
@@ -368,21 +354,14 @@
     top: calc(34% + 283.65px);
   }
 
-  /* Deliberately NOT zoomed to the other buckets' scale — this bucket
-     already has the least vertical room of the three (see "Known
-     accepted trade-off" above: the face/card already graze at the
-     original 1.15/18%), and any extra zoom here pushes that graze into
-     a full mouth/card overlap (checked empirically). Scale stays at the
-     original 1.15 on purpose.
-
-     The raise (translateY) is a different story though: past a certain
-     point the crop window moves on from the chin/mouth entirely and
-     clears the card again (same effect confirmed on the other two
-     buckets) — checked empirically that -50px does exactly that here
-     too, so it's applied despite the zoom staying capped. */
+  /* Same dedicated mobile image as the other two buckets, but this
+     bucket's shorter box needs a bigger -35px raise to clear the card —
+     tuned as a middle ground: any less and the chin still grazes the
+     card, any more (tested to -50/-60px) starts clipping the "Content"
+     wordmark at the very top instead (checked empirically). */
   .hero__bg {
-    object-position: 50% 18%;
-    transform: translateY(-50px) scale(1.15);
+    object-position: 50% 0%;
+    transform: translateY(-35px);
   }
 }
 
