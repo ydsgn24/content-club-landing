@@ -13,6 +13,18 @@
   color: var(--color-navy);
 }
 
+/* .hero__torn-edge sits 20px above .hero's own bottom edge on mobile
+   (see hero.css) — that leaves a 20px sliver of .hero__bg photo exposed
+   below the torn-edge graphic, still inside .hero, before this section
+   starts. Pulling this section up by the same 20px (its own background
+   is opaque, so it cleanly covers that sliver) closes the gap so this
+   section starts exactly where the torn edge visually ends. */
+@media (max-width: 767.98px) {
+  .video-teaser {
+    margin-top: -20px;
+  }
+}
+
 /* Fixed at its native 1440px design width — not scaled to fit narrower
    viewports, just centered and cropped by .video-teaser's own overflow:hidden.
    Only stretches (proportionally) once the viewport itself exceeds 1440px.

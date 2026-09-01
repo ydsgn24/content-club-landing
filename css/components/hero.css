@@ -235,13 +235,14 @@
     aspect-ratio: 375 / 700;
   }
 
+  /* +16px per direct request, on top of the original 38%. */
   .hero__stack {
-    top: 38%;
+    top: calc(38% + 16px);
   }
 
   /* 12px below the button's own bottom edge, held at any width within
      this bucket (not just one reference size) — mirrors .hero__stack's
-     own top:38% plus the stack's fixed content height (card + gap +
+     own top plus the stack's fixed content height (card + gap +
      button ≈ 271.65px, measured via Playwright at 375×667 and confirmed
      constant across buckets since it comes from rem/min-height values,
      not viewport-relative ones) plus the 12px gap itself. A plain % here
@@ -249,9 +250,11 @@
      width in the 341–767.98px range (verified: as low as ~0.6px at
      360×640) — the base .hero__social-proof rule's top:85.2% was tuned
      for the pre-20px-shift tall-phone layout and no longer applies now
-     that each mobile bucket moves the button independently. */
+     that each mobile bucket moves the button independently. The +16px
+     here mirrors .hero__stack's own +16px above, keeping the 12px gap
+     between them intact (283.65px + 16px = 299.65px). */
   .hero__social-proof {
-    top: calc(38% + 283.65px);
+    top: calc(38% + 299.65px);
   }
 
   /* 90% of .hero__stack's width — shrinks the photo/card/pin cluster by
@@ -315,15 +318,16 @@
     aspect-ratio: 375 / 820;
   }
 
+  /* +16px per direct request, on top of the existing +20px. */
   .hero__stack {
-    top: calc(41% + 20px);
+    top: calc(41% + 36px);
   }
 
   /* Same calc() approach as the base bucket above, mirroring this
-     bucket's own .hero__stack top:calc(41% + 20px) plus the same fixed
-     283.65px (content height + 12px gap). */
+     bucket's own .hero__stack top plus the same fixed 283.65px (content
+     height + 12px gap), both bumped +16px per direct request. */
   .hero__social-proof {
-    top: calc(41% + 303.65px);
+    top: calc(41% + 319.65px);
   }
 
   /* Same dedicated mobile image as the base bucket above — no bucket-
@@ -353,14 +357,16 @@
     aspect-ratio: 375 / 620;
   }
 
+  /* +16px per direct request, on top of the original 34%. */
   .hero__stack {
-    top: 34%;
+    top: calc(34% + 16px);
   }
 
   /* Same calc() approach as the base bucket above, mirroring this
-     bucket's own .hero__stack top:34% plus the same fixed 283.65px. */
+     bucket's own .hero__stack top plus the same fixed 283.65px, both
+     bumped +16px per direct request. */
   .hero__social-proof {
-    top: calc(34% + 283.65px);
+    top: calc(34% + 299.65px);
   }
 
   /* Same dedicated mobile image as the other two buckets, but this
