@@ -170,6 +170,9 @@
    Longer translations still grow the card past this floor as before. */
 .hero__card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 15% 12%;
   min-height: 198.66px;
 }
@@ -261,16 +264,26 @@
    Android) have more real slack than the shortest phones this block was
    tuned for, so the 700/38% numbers above leave the button sitting
    higher than it needs to relative to their own viewport. Relaxed back
-   down partway per direct feedback ("could sit a bit lower") — still
-   nowhere near the original 984/50.9%, and still checked to clear the
-   cookie banner with real margin at every size in this range. */
+   down partway per direct feedback ("could sit a bit lower"), then another
+   +20px per a later direct request — still nowhere near the original
+   984/50.9%, and still checked to clear the cookie banner with real
+   margin (~80px at 390×844) at every size in this range.
+
+   The +20px is deliberately NOT applied to the two breakpoints below
+   (<700px height, and <341px width) — measured empirically (Playwright)
+   that several common short/narrow phones (360×640, 393×659, 414×660)
+   already have the CTA overlapping the cookie banner at the EXISTING
+   38%/34% values, before adding anything on top. Shifting those down
+   further would only make an already-tight/broken case worse; that
+   pre-existing overlap is a separate bug, not something this change
+   introduced or fixes. */
 @media (max-width: 767.98px) and (min-height: 700px) {
   .hero {
     aspect-ratio: 375 / 820;
   }
 
   .hero__stack {
-    top: 41%;
+    top: calc(41% + 20px);
   }
 }
 
