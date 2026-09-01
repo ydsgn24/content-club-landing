@@ -269,14 +269,18 @@
      here with resolution-independent object-position % (no fixed-px
      transform) so the wordmark stays fully visible up top and the face
      clears the card underneath it, verified empirically via screenshot. */
-  /* Capped lower than the ≥700px-height bucket below (1.3/-10px vs its
-     1.44/-20px) — this bucket has less vertical room, and matching that
+  /* Capped lower than the ≥700px-height bucket below (1.3/-20px vs its
+     1.584/-50px) — this bucket has less vertical room, and matching that
      bucket's full zoom+raise here pushes the model's mouth behind the
-     card (checked empirically via Playwright at 375×667). 1.3/-10px is
-     the most this bucket can take before that overlap starts. */
+     card (checked empirically via Playwright at 375×667). A further
+     +10% zoom on top of the already-capped 1.3 pushes the same overlap
+     even at the original -10px raise, so scale stays at 1.3 — only the
+     raise moved, and only partway (-10px→-20px, not the full -40px the
+     ≥700px bucket's own delta would imply) — 1.3/-20px is the most this
+     bucket can take before the overlap starts. */
   .hero__bg {
     object-position: 50% 25%;
-    transform: translateY(-10px) scale(1.3);
+    transform: translateY(-20px) scale(1.3);
   }
 
   /* Per direct request: dropped now that .hero__followers's own vertical
@@ -321,11 +325,11 @@
 
   /* This bucket has the most vertical room of the three mobile buckets
      (tallest aspect-ratio), so it gets the full requested zoom/raise —
-     the base bucket below is capped lower (1.3/-10px) because it starts
+     the base bucket below is capped lower (1.3/-20px) because it starts
      overlapping the model's mouth at these values (checked empirically). */
   .hero__bg {
     object-position: 50% 25%;
-    transform: translateY(-20px) scale(1.44);
+    transform: translateY(-50px) scale(1.584);
   }
 }
 
