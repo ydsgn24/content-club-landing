@@ -82,26 +82,15 @@
   }
 }
 
-/* Drops in from above on scroll (js/audience-fit-scroll.js adds
-   .audience-fit--chandelier-revealed once it enters the viewport) instead
-   of just sitting there static — reads as the chandelier being lowered
-   into place. One-shot, same on every breakpoint. */
 .audience-fit__chandelier {
   position: absolute;
   top: -60px;
   left: 50%;
-  transform: translateX(-50%) translateY(-90px);
-  opacity: 0;
+  transform: translateX(-50%);
   width: 460px;
   max-width: none;
   height: auto;
   z-index: 3;
-  transition: transform 1s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.9s ease;
-}
-
-.audience-fit--chandelier-revealed .audience-fit__chandelier {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
 }
 
 /* Raised 30px above the original Figma-matched spot (was top: -30px) per
@@ -173,20 +162,6 @@
 .audience-card--experts       { top: 1175px; }
 .audience-card--entrepreneurs { top: 1446px; transform: rotate(-1.78deg); }
 .audience-card--specialists   { top: 1718px; transform: rotate(1.12deg); }
-
-/* Mobile/tablet only (js/audience-fit-scroll.js): each card straightens
-   out while it's near the vertical center of the screen, and settles back
-   into its resting tilt above as it scrolls away in either direction —
-   not a one-shot reveal, so the class gets added/removed continuously. */
-@media (max-width: 1199.98px) {
-  .audience-card {
-    transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
-  }
-
-  .audience-card--straight {
-    transform: rotate(0deg);
-  }
-}
 
 .audience-card__icon {
   position: absolute;
@@ -303,7 +278,7 @@
    A completely different composition from mobile/tablet: cards laid out as
    a static grid on top of the photo backdrop (3 cards, then 2 centered
    below), exactly as Figma shows — no single-column stack. */
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .audience-fit {
     overflow: hidden;
   }
@@ -410,12 +385,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .audience-fit__chandelier {
-    transition-duration: 0.01ms;
-  }
-
-  .audience-card {
-    transition-duration: 0.01ms;
-  }
-}

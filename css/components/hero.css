@@ -49,22 +49,22 @@
   pointer-events: none;
 }
 
-/* Figma mobile node 48:517 (updated): UA/RU switch at top:21px (2.13% of
-   the 984px-tall mobile frame), centered — the "current" language reads
-   as the dimmed half of the pair (50% opacity), the other language is
-   the actual link, at full cream. Carries through to desktop too (not
-   just mobile) per direct request, since there's no reason for it not
-   to stay centered there. */
+/* Deliberate deviation from Figma mobile node 48:517 (per direct product
+   request, not a design update): doves removed entirely, and the top row
+   restructured as eyebrow-left / lang-switch-right (was a centered stack)
+   to reclaim vertical space — goal is the CTA button landing inside the
+   first viewport on short mobile screens without scrolling. Fixed px
+   anchors (not %) for the top row specifically, since the ask was an
+   exact 16px/16px inset, not a Figma-derived position. */
 .hero__lang-switch {
   position: absolute;
-  left: 50%;
-  top: 2.13%;
+  right: 16px;
+  top: 16px;
   z-index: 2;
   display: flex;
   align-items: center;
   gap: 4px;
   margin: 0;
-  transform: translateX(-50%);
   font-family: 'Jost', sans-serif;
   font-weight: 500;
   font-size: 1rem;
@@ -73,13 +73,12 @@
   color: var(--color-cream);
 }
 
+/* Underlined at rest (not just on hover/focus) — the switch is two bare
+   words with no other button/link styling, so without a permanent
+   affordance it doesn't read as clickable, especially on touch where
+   hover never happens before the tap. */
 .hero__lang-switch a {
   color: inherit;
-  text-decoration: none;
-}
-
-.hero__lang-switch a:hover,
-.hero__lang-switch a:focus-visible {
   text-decoration: underline;
 }
 
@@ -87,33 +86,22 @@
   color: var(--color-cream-70);
 }
 
-/* Same update: doves+florals bracket the switch, one flipped horizontally
-   (Figma reuses one asset with a 180°+flipY transform, net a mirror,
-   same trick as the tariff-modal clouds) instead of two separate files. */
-.hero__dove {
+.hero__eyebrow {
   position: absolute;
-  top: 1.02%;
-  width: 21.87%;
-  height: auto;
-  pointer-events: none;
-  z-index: 1;
+  left: 16px;
+  top: 16px;
+  z-index: 2;
+  margin: 0;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  color: var(--color-cream);
 }
 
-.hero__dove--left {
-  left: 1.33%;
-  transform: scaleX(-1);
-}
-
-.hero__dove--right {
-  right: 1.33%;
-}
-
-/* Eyebrow + follower count now stack centered as one block (was a
-   left/eyebrow-right/followers split) — mobile-only per node 48:517;
-   the desktop frame (58:2468) hasn't been redesigned this way, so its
-   own media query below still repositions them back to a left/right
-   split for that breakpoint. */
-.hero__eyebrow,
+/* Follower count sits 16px below the eyebrow/lang-switch row (row height
+   is one 1rem/1.1 line ≈ 17.6px, so 16 + 18 + 16 ≈ 50px), centered. */
 .hero__followers,
 .hero__social-proof {
   position: absolute;
@@ -129,13 +117,9 @@
   color: var(--color-cream);
 }
 
-.hero__eyebrow {
-  top: 6.91%;
-  font-size: 1rem;
-}
-
 .hero__followers {
-  top: 10.37%;
+  top: 50px;
+  z-index: 2;
   font-size: 1rem;
 }
 
@@ -173,10 +157,21 @@
 /* The card's height is driven by the text it holds (padding + content),
    not by the tag graphic — that graphic stretches to match instead. This
    guarantees the description always stays inside the plate, centered, at
-   any viewport width, rather than relying on two elements scaling in sync. */
+   any viewport width, rather than relying on two elements scaling in sync.
+
+   min-height pins that content-driven height to the RU copy's own natural
+   height (measured: 198.66px, constant across breakpoints since
+   .hero__stack's width is capped at 369px from mobile through desktop).
+   Without it, any translation whose text wraps to fewer lines than RU
+   shrinks the card, and since .hero__photo--tag stretches non-uniformly
+   (object-fit: fill) to match, the plate's illustrated scalloped border
+   gets visibly squashed — exactly what happened to the UA copy, which
+   wraps to 3 lines here instead of RU's 4 (181.06px, ~9% shorter card).
+   Longer translations still grow the card past this floor as before. */
 .hero__card {
   position: relative;
   padding: 15% 12%;
+  min-height: 198.66px;
 }
 
 .hero__photo--tag {
@@ -222,26 +217,105 @@
   display: none;
 }
 
+/* ============ Mobile-only compaction (<768px), per direct product request
+   ============
+   Not a Figma value — deliberately deviates from the 375/984 poster ratio
+   to reclaim vertical space so the CTA button lands inside the first
+   viewport on short phones without scrolling (see hero__stack/collage
+   above for their own Figma-matched defaults, which tablet/desktop still
+   use unmodified). Tuned empirically (Playwright, viewport heights from
+   320×568 up to 390×844) rather than derived from a design spec — revisit
+   these three numbers together if the CTA stops fitting after a copy or
+   layout change above it. */
+@media (max-width: 767.98px) {
+  .hero {
+    aspect-ratio: 375 / 700;
+  }
+
+  .hero__stack {
+    top: 38%;
+  }
+
+  /* 90% of .hero__stack's width — shrinks the photo/card/pin cluster by
+     10% per direct request. The button itself stays full size
+     (.hero__cta is a separate flex child, not part of .hero__collage). */
+  .hero__collage {
+    width: 90%;
+  }
+
+  /* Base .hero__bg's crop (object-position:50% 0% + translateY(-40px))
+     was tuned for the original 984px-tall box — a fixed-px translateY
+     doesn't scale down with a shorter container, so at 700px it left the
+     "Content Club" wordmark baked into the photo pushed down low enough
+     to collide with .hero__card once the card moved up above. Re-tuned
+     here with resolution-independent object-position % (no fixed-px
+     transform) so the wordmark stays fully visible up top and the face
+     clears the card underneath it, verified empirically via screenshot. */
+  .hero__bg {
+    object-position: 50% 18%;
+    transform: scale(1.15);
+  }
+}
+
+/* Taller phones (≥700px CSS height — iPhone 12/13/14 and up, most modern
+   Android) have more real slack than the shortest phones this block was
+   tuned for, so the 700/38% numbers above leave the button sitting
+   higher than it needs to relative to their own viewport. Relaxed back
+   down partway per direct feedback ("could sit a bit lower") — still
+   nowhere near the original 984/50.9%, and still checked to clear the
+   cookie banner with real margin at every size in this range. */
+@media (max-width: 767.98px) and (min-height: 700px) {
+  .hero {
+    aspect-ratio: 375 / 820;
+  }
+
+  .hero__stack {
+    top: 41%;
+  }
+}
+
+/* Extra compaction only below 341px width (iPhone SE 1st-gen and similar
+   320px-wide devices — a vanishing sliver of real traffic today). At
+   this width the cookie banner's text wraps to more lines and grows
+   taller, so the 700/38% numbers above stop being enough to clear it;
+   rather than crushing the much more common 360–767px range further to
+   chase this one edge case, it gets its own tighter values instead.
+
+   Known accepted trade-off at this width only: the wordmark-to-face
+   distance is fixed within images/фон Юля.webp itself, so there's no
+   crop that clears BOTH the cookie banner below the button AND full
+   headroom above the face at this box height — the card's top edge/
+   flower brooch ends up grazing the model's chin (checked empirically,
+   nowhere near as bad as the full mouth/card overlap this whole block
+   was added to fix). Full clearance would require either shrinking the
+   card further or re-cropping the source photo itself. */
+@media (max-width: 340.98px) {
+  .hero {
+    aspect-ratio: 375 / 620;
+  }
+
+  .hero__stack {
+    top: 34%;
+  }
+}
+
 /* ============ Tablet: 768px — matches the Tablet frame (133:2356) ============
    Same mobile typography/colors and the same card+button size — the tablet
    frame just recenters that mobile composition inside a wider photo canvas.
-   Eyebrow/followers stay the new centered mobile layout through this
-   breakpoint too (no tablet-specific split override anymore) — only
-   .hero__social-proof still gets its own tablet width/position, since
-   that one wasn't touched by the mobile redesign. */
+   Eyebrow/followers/social-proof all stay the same centered mobile layout
+   through this breakpoint (no tablet-specific split override) — the old
+   .hero__social-proof left:36.6%/width:26.8% override here was a leftover
+   from before the mobile redesign centered everything else, pushing this
+   one line off-center under the CTA button while the rest of the section
+   recentered around it. */
 @media (min-width: 768px) {
   .hero {
     aspect-ratio: 768 / 984;
   }
-
-  .hero__social-proof {
-    left: 36.6%;
-    width: 26.8%;
-  }
 }
 
 /* ============ Desktop: 1200px — matches the Desktop frame ============ */
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .hero {
     aspect-ratio: 1440 / 875;
   }
@@ -254,12 +328,6 @@
     top: -100px;
     height: calc(100% + 100px);
     transform: none;
-  }
-
-  /* Doves are part of the mobile-only redesign (node 48:517) — no
-     matching update on the desktop frame (58:2468) yet. */
-  .hero__dove {
-    display: none;
   }
 
   /* Deliberately excluded from the bump below (stays 16px/1rem, same as

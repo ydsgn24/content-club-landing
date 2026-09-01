@@ -204,7 +204,7 @@
    Heading and nav share one row; testimonials are a zigzag strip (even
    items sit 180px lower, per Figma) with several visible/scrollable at
    once instead of a single centered one. */
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .testimonials {
     padding: 105px 100px 60px;
     text-align: left;

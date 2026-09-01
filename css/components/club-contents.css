@@ -6,8 +6,20 @@
    that's exactly the class of bug fixed earlier in .hero__stack. Only the
    decorative top photo is absolutely positioned; everything else is in flow. */
 
+/* video-teaser is an aspect-ratio-locked poster (see its own file) whose
+   content cluster doesn't fill the full box — it leaves trailing empty
+   space below the "watch" caption before the section's own bottom edge
+   (82px mobile/tablet, 120px desktop). Stacked on top of this section's
+   own 53px padding-top, that read as too large a gap between the caption
+   and the "Insides" wordmark below — pulled up by negative margin here
+   (~1/3 reduction) rather than touching video-teaser's aspect-ratio
+   (which would shift its internal %-positioned heading/photo/caption too,
+   not just the trailing slack). Safe to overlap: both sections share the
+   same background stripe image/position (see .club-contents__bg), so the
+   seam stays visually continuous. */
 .club-contents {
   position: relative;
+  margin-top: -45px;
   padding-top: 53px;
   padding-bottom: 40px;
   background: var(--color-cream-pale);
@@ -55,16 +67,6 @@
   display: block;
   width: 193px;
   height: 65px;
-  /* Hidden behind a hard-edged wipe until revealed, so the cursive
-     wordmark appears to be traced left-to-right like a pen stroke,
-     instead of just fading in. Timing is slower/eased than the
-     word reveal below so it reads as "written", not "faded". */
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 1.1s cubic-bezier(0.22, 0.9, 0.32, 1);
-}
-
-.club-contents--revealed .club-contents__icon {
-  clip-path: inset(0 0 0 0);
 }
 
 .club-contents__icon-caption {
@@ -166,13 +168,47 @@
   .club-cards {
     padding: 0 24px;
   }
+
+  /* Same overlap bug already fixed for desktop below, just never given its
+     own tablet override: the mobile-sized plate (up to 700px) overshoots
+     this breakpoint's fixed vertical gaps (intro→offer-wrap margin-top:64px,
+     offer-wrap→list margin-top:32px, both unchanged from mobile), crashing
+     into the "Insides" wordmark above and the photo collage below at once.
+     Sized for real presence on this wider canvas (not just the bare
+     minimum that avoids overlap) — offer-wrap/list's own margins grown to
+     match. Verified empirically (Playwright, 768–1179px): still clears
+     both the wordmark above and the photo collage below at every width in
+     the range, with margin to spare. */
+  .club-contents__offer-badge {
+    width: min(54vw, 440px);
+  }
+
+  .club-contents__offer-wrap {
+    margin-top: 75px;
+  }
+
+  .club-contents__list {
+    margin-top: 70px;
+  }
 }
 
-@media (min-width: 1200px) {
-  .club-contents__photo-collage,
+@media (min-width: 1180px) {
+  .club-contents {
+    margin-top: -58px;
+  }
+
   .accordion-group,
   .club-cards {
     max-width: 840px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* Half the 840px cap the other two groups use — at desktop width the
+     full-width collage photo read oversized next to the accordion list
+     below it. */
+  .club-contents__photo-collage {
+    max-width: 420px;
     margin: 0 auto;
     padding: 0;
   }
@@ -182,6 +218,17 @@
      overlap the "Insides" wordmark/caption above it. */
   .club-contents__offer-badge {
     width: min(45vw, 350px);
+  }
+
+  /* Resets the tablet block's enlarged 75px/70px back to the original
+     64px/32px — without this, tablet's margins would otherwise keep
+     cascading into desktop too (nothing else here touches them). */
+  .club-contents__offer-wrap {
+    margin-top: 64px;
+  }
+
+  .club-contents__list {
+    margin-top: 32px;
   }
 }
 
@@ -232,42 +279,4 @@
   position: relative;
   width: min(100%, 313px);
   margin: 32px auto 0;
-}
-
-/* ============ Scroll reveal (js/club-contents-reveal.js) ============
-   Mirrors .video-teaser's line-by-line word reveal: the script wraps the
-   caption/offer text in .reveal-word spans (base fade/rise state lives in
-   video-teaser.css since it's the same shared mechanism) and adds
-   .club-contents--revealed once the intro scrolls into view — that class
-   also drives the logo wipe above. Cards get their own reveal below,
-   independent of this: each one fades/rises in on its own as it individually
-   enters the viewport, since the section is much taller than one screen. */
-.club-contents--revealed .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.accordion-item,
-.club-card {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.accordion-item.reveal-card--visible,
-.club-card.reveal-card--visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .club-contents__icon {
-    transition-duration: 0.01ms;
-  }
-
-  .accordion-item,
-  .club-card {
-    transition-duration: 0.01ms;
-    transform: none;
-  }
 }

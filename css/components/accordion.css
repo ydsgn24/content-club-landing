@@ -65,7 +65,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  background: var(--color-dusty-blue);
+  background: var(--color-navy);
   transform: translate(-50%, -50%);
   transition: transform 0.2s ease;
 }

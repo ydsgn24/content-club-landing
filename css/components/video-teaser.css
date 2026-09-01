@@ -108,7 +108,7 @@
      `img { max-width: 100% }` reset, which otherwise clamps this down
      to its 343px-wide ancestor (.video-teaser__content) — the actual
      bug behind the plate looking stuck at the old smaller size. */
-  width: min(90vw, 700px);
+  width: min(99vw, 770px);
   max-width: none;
   height: auto;
   transform: translate(-50%, -50%);
@@ -234,34 +234,6 @@
   transform-origin: left center;
 }
 
-/* ============ Line-by-line scroll reveal (js/video-teaser-reveal.js) ============
-   Not in the Figma file — implemented per product spec. The script wraps
-   each word of the heading/description in a .reveal-word span and groups
-   them by their rendered line (measured at runtime, so it's correct at
-   any breakpoint/wrap point, not just one hard-coded width), then adds
-   .video-teaser--revealed once the section scrolls into view. Each word
-   fades/rises in together with the rest of its own line, staggered line
-   by line via the --reveal-delay custom property the script sets per word. */
-.reveal-word {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(0.35em);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  transition-delay: var(--reveal-delay, 0s);
-}
-
-.video-teaser--revealed .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal-word {
-    transition-duration: 0.01ms;
-    transition-delay: 0s;
-  }
-}
-
 /* ============ Tablet: 768px — interpolated, no Figma Tablet frame yet ============ */
 @media (min-width: 768px) {
   .video-teaser {
@@ -270,7 +242,12 @@
 
   .video-teaser__stack {
     top: 8%;
-    gap: 56px;
+    /* Widened from 56px along with .description-wrap's own margin-top
+       below — both grown by the same ~60px the enlarged badge needed, so
+       it has room to breathe without crashing into the heading above or
+       .video-teaser__watch below. Verified empirically (Playwright,
+       768–1179px): 10px+ clearance on both sides at every width. */
+    gap: 110px;
   }
 
   .video-teaser__content {
@@ -281,8 +258,22 @@
     font-size: 44px;
   }
 
+  .video-teaser__description-wrap {
+    margin-top: 98px;
+  }
+
   .video-teaser__description {
     font-size: 20px;
+  }
+
+  /* Sized (and the surrounding gaps above widened to match) so the plate
+     reads with real presence on this wider canvas instead of shrinking to
+     the bare minimum that avoids overlap — same reused asset as mobile/
+     desktop, just its own tablet-appropriate scale. Verified empirically
+     (Playwright, 768–1179px): still clears both the heading above and
+     .video-teaser__watch below at every width in the range. */
+  .video-teaser__description-badge {
+    width: min(80vw, 640px);
   }
 
   .video-teaser__watch {
@@ -291,7 +282,7 @@
 }
 
 /* ============ Desktop: 1200px — matches the Desktop frame ============ */
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .video-teaser {
     aspect-ratio: 1440 / 1053;
   }
@@ -305,11 +296,18 @@
     width: min(23.8%, 343px);
   }
 
+  /* Resets the tablet block's enlarged 98px back to the original 39px —
+     without this, tablet's margin-top would otherwise keep cascading into
+     desktop too (nothing else here touches this property). */
+  .video-teaser__description-wrap {
+    margin-top: 39px;
+  }
+
   /* Half the mobile size — at desktop's much shorter 2-line description,
      the full mobile-sized plate (min(90vw,700px)) overshot the text badly
      enough to overlap the heading above it. */
   .video-teaser__description-badge {
-    width: min(45vw, 350px);
+    width: min(49.5vw, 385px);
   }
 
   .video-teaser__heading {

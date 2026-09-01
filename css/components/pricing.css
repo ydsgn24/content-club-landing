@@ -64,16 +64,6 @@
   color: var(--color-navy);
 }
 
-/* Scroll reveal (js/pricing-reveal.js) — heading/note/disclaimer line-reveal
-   word by word (.reveal-word, shared base rule in video-teaser.css) as each
-   scrolls into view; cards fade/rise in individually as they're scrolled
-   to, same .reveal-card--visible mechanism as the club-contents cards. */
-.pricing.is-revealed .reveal-word,
-.pricing__disclaimer.is-revealed .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .pricing__card {
   position: relative;
   display: flex;
@@ -82,14 +72,6 @@
   background: var(--color-cream-pale-2);
   border: 2px solid var(--color-dusty-blue);
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.pricing__card.reveal-card--visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .pricing__card-header {
@@ -170,7 +152,7 @@
 }
 
 /* ============ Desktop: 1200px — matches node 59:3156 ============ */
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .pricing {
     max-width: 1440px;
     margin: 0 auto;
@@ -241,10 +223,6 @@
     margin: 0;
   }
 
-  .pricing__card--12m .pricing__desc--desktop {
-    top: 173px;
-  }
-
   .pricing__amount--mobile {
     display: none;
   }
@@ -281,8 +259,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .pricing__card {
-    transition-duration: 0.01ms;
-  }
-}

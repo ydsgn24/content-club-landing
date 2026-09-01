@@ -19,14 +19,7 @@
    auto-height wrapper) simply stretches to match, cropping further at the
    edges if a very narrow/long-copy screen needs more height — instead of
    the old fixed aspect-ratio image running out of room and getting clipped
-   by the section's own overflow:hidden the way the tablet paper once did.
-
-   Scroll reveal (js/founder-intro-reveal.js) — same mechanisms as the rest
-   of the site: the eyebrow/letter/invite text line-reveals word by word
-   (.reveal-word, shared base rule in video-teaser.css) as each group
-   scrolls into view; the collage photo fades/rises in the same way the
-   club-contents cards do; the "Yuvladi" wordmark traces in left-to-right
-   like images/icon-whats-inside.svg does in club-contents.css. */
+   by the section's own overflow:hidden the way the tablet paper once did. */
 
 .founder-intro {
   position: relative;
@@ -50,9 +43,7 @@
   text-align: center;
 }
 
-/* "Yuvladi" wordmark — real drawn logo asset (images/logo-wordmark.svg).
-   Traces in left-to-right like a pen stroke, same technique as the
-   "Insides" wordmark in club-contents.css. */
+/* "Yuvladi" wordmark — real drawn logo asset (images/logo-wordmark.svg). */
 .founder-intro__logo {
   position: absolute;
   top: 108px;
@@ -60,17 +51,6 @@
   transform: translateX(-50%);
   width: 296px;
   height: auto;
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.founder-intro.is-revealed .founder-intro__logo {
-  clip-path: inset(0 0 0 0);
-}
-
-.founder-intro.is-revealed .founder-intro__eyebrow .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Deliberately oversized/bleeding past the viewport edges on narrow
@@ -81,16 +61,9 @@
   position: absolute;
   top: 217px;
   left: 50%;
-  transform: translateX(-50%) translateY(28px);
+  transform: translateX(-50%);
   width: 487px;
   max-width: none;
-  opacity: 0;
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.founder-intro__collage.is-revealed {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
 }
 
 /* Pushed down past the absolutely-positioned eyebrow/logo/collage above it
@@ -194,16 +167,6 @@
   z-index: 1;
 }
 
-/* Letter/invite text line-reveal: each group (block--1, block--2, invite)
-   gets its own `is-revealed` class independently as it scrolls into view,
-   since they're spread far apart down a very tall section. */
-.founder-intro__block--1.is-revealed .reveal-word,
-.founder-intro__block--2.is-revealed .reveal-word,
-.founder-intro__invite.is-revealed .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* A flow sibling of .founder-intro__paper-wrap, not a child of it — pulled
    up by exactly half its own height so it straddles the wrapper's bottom
    edge (half on the paper, half hanging below it) regardless of how tall
@@ -251,9 +214,14 @@
     padding-bottom: 121px; /* 24px min gap + half the 194px tablet badge */
   }
 
+  /* Widened from the mobile-carried 450px so the letter text actually
+     spans the paper background's own width (full section width at this
+     breakpoint) instead of floating as a narrow column with large bare
+     margins on both sides — wider lines also mean fewer of them, so the
+     letter reads shorter/more compact vertically. */
   .founder-intro__block {
-    width: 450px;
-    max-width: calc(100% - 40px);
+    width: 620px;
+    max-width: calc(100% - 64px);
     padding: 0 46px;
   }
 
@@ -275,8 +243,8 @@
   }
 
   .founder-intro__invite {
-    width: 450px;
-    max-width: calc(100% - 40px);
+    width: 620px;
+    max-width: calc(100% - 64px);
     margin-top: 33px;
     padding: 0 46px;
     font-size: 40px;
@@ -293,7 +261,7 @@
    A genuinely different arrangement: two text columns flank the centered
    collage, the paper texture disappears, and the invite line becomes its
    own big centered heading below everything. */
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .founder-intro {
     max-width: 1440px;
     margin: 0 auto;
@@ -397,9 +365,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .founder-intro__logo,
-  .founder-intro__collage {
-    transition-duration: 0.01ms;
-  }
-}

@@ -58,11 +58,29 @@
           return;
         }
 
+        // Reaching here means the name is filled and (for tariffs) both
+        // consents are ticked — this is a genuine accepted submission, so
+        // fire Lead now, before we hand off to zenedu and lose the chance.
+        if (window.fbq) {
+          var titleEl = modal.querySelector('.tariff-modal__title');
+          fbq('track', 'Lead', {
+            content_name: titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : undefined,
+            content_ids: [modal.id.replace('tariff-modal-', '')]
+          });
+        }
+
         // Checkboxes gate `submit.disabled` above, so reaching here means
         // the name is filled and both consents are ticked — hand off to
         // this tariff's checkout page (data-checkout-url, one per form).
+        // Forward this page's own query string (fbclid, utm_*) so zenedu's
+        // Pixel/CAPI can still attribute the purchase back to the ad
+        // creative that brought the visitor here — otherwise it's lost at
+        // this redirect.
         var checkoutUrl = form.getAttribute('data-checkout-url');
         if (checkoutUrl) {
+          if (window.location.search) {
+            checkoutUrl += (checkoutUrl.indexOf('?') === -1 ? '?' : '&') + window.location.search.slice(1);
+          }
           window.location.href = checkoutUrl;
         }
       });

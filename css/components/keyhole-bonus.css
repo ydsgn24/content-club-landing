@@ -16,12 +16,12 @@
    Mobile frame (193:257) values below are px converted to %-of-375
    (width) / %-of-812 (height), so the whole composition scales as one
    unit with the pin's own box (same convention as .hero__eyebrow etc in
-   hero.css). No Tablet frame was designed: the 100vh cap on .pin is a
-   mobile-only safeguard (keeps a short/wide phone from stretching the
-   pin too tall); from 768px up it's lifted so the same 375/812
-   composition just keeps scaling up at its own ratio (may run taller
-   than the viewport there, same tradeoff other tall mobile/tablet
-   sections on this site accept — see founder-intro.css).
+   hero.css). No Tablet frame was designed: the 100vh/100svh cap on .pin
+   applies through the whole mobile/tablet range (up to the 1180px
+   desktop breakpoint, which reinstates its own max-height:none for its
+   real, much-wider Figma frame below) — per product request, this stage
+   should always fit one screen rather than running taller than the
+   viewport on a tall/narrow tablet like an 820×1180 iPad portrait.
 
    Desktop (≥1200px) is a real, different Figma frame (node 59:3315,
    1440×875, same width/height as .hero's own desktop frame) — genuinely
@@ -39,6 +39,12 @@
   background: var(--color-cream-pale);
 }
 
+/* max-height keeps the mobile 375/812 composition capped to one screen
+   instead of stretching taller than the viewport (e.g. an 820×1180 tablet
+   in portrait would otherwise render this ~1776px tall, way past the
+   1180px available — see the desktop block below, which reinstates
+   aspect-ratio:1440/875 and lifts the cap again for its own, much wider
+   real Figma frame where this isn't a risk). */
 .keyhole-bonus__pin {
   position: relative;
   width: 100%;
@@ -47,12 +53,6 @@
   max-height: 100svh;
   overflow: hidden;
   background: var(--color-cream-pale);
-}
-
-@media (min-width: 768px) {
-  .keyhole-bonus__pin {
-    max-height: none;
-  }
 }
 
 .keyhole-bonus__photo {
@@ -182,8 +182,20 @@
   transform: translateX(-50%);
 }
 
+/* ============ Tablet: 768px — no Figma Tablet frame; carries the mobile
+   composition (see file-top comment) ============
+   .keyhole-bonus__text's mobile width caps at a fixed 291px, sized for a
+   ~375px-wide phone — left uncapped on this much wider canvas it floated
+   as a narrow island with ~265px of bare margin on each side. Widened to
+   fill the section with real 16px edge margins instead. */
+@media (min-width: 768px) {
+  .keyhole-bonus__text {
+    width: calc(100% - 32px);
+  }
+}
+
 /* ============ Desktop: 1200px — matches the Desktop frame (59:3315) ============ */
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .keyhole-bonus__pin {
     aspect-ratio: 1440 / 875;
     max-height: none;

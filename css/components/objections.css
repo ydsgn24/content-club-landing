@@ -1,11 +1,6 @@
 /* section-objections — Figma node 192:217.
    Static wood-desk card with one Q&A pair, matching the "what-if" block's
-   material but not scrolling/pinning — just the block as designed.
-
-   Scroll reveal (js/objections-reveal.js) — same word-by-word line reveal
-   as the rest of the site (.reveal-word, shared base rule in
-   video-teaser.css): title and answer each line-group independently, both
-   triggered together by .is-revealed once the section scrolls into view. */
+   material but not scrolling/pinning — just the block as designed. */
 
 .objections {
   position: relative;
@@ -57,9 +52,4 @@
   width: 1440px;
   max-width: none;
   height: 135px;
-}
-
-.objections.is-revealed .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
 }

@@ -36,27 +36,9 @@
   width: 100%;
 }
 
-/* Scroll reveal (js/faq-reveal.js) — heading line-reveals word by word
-   (.reveal-word, shared base rule in video-teaser.css) once the section
-   scrolls into view; each item fades/rises in individually as it's
-   scrolled to, same .reveal-card--visible mechanism as the club-contents
-   cards/accordion items. */
-.faq.is-revealed .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .faq-item {
   width: 100%;
   border: 2px solid var(--color-dusty-blue);
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.faq-item.reveal-card--visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .faq-item__summary {
@@ -99,7 +81,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  background: var(--color-dusty-blue);
+  background: var(--color-navy);
   transform: translate(-50%, -50%);
   transition: transform 0.2s ease;
 }
@@ -135,7 +117,7 @@
   margin-top: 8px;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .faq {
     padding: 146px 100px 96px 148px;
   }
@@ -177,8 +159,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .faq-item {
-    transition-duration: 0.01ms;
-  }
-}

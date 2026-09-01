@@ -29,7 +29,7 @@
   background: var(--color-brown);
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .what-if {
     margin-top: 200px;
   }
@@ -50,6 +50,10 @@
   background-repeat: repeat-x;
   background-size: auto 900px;
   background-position: top center;
+  /* Same duration/easing as .what-if__track below, so the parallax
+     background glides in step with the notebook instead of snapping to
+     its new position instantly while the track slides smoothly. */
+  transition: background-position 0.6s cubic-bezier(0.65, 0, 0.35, 1);
   will-change: background-position;
 }
 
@@ -72,7 +76,7 @@
   pointer-events: none;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .what-if__heading {
     font-size: 48px;
   }
@@ -132,7 +136,7 @@
   display: none;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .what-if__track {
     display: none;
   }
@@ -233,7 +237,7 @@
   background: var(--color-cream-pale);
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .what-if__nav {
     bottom: 40px;
   }

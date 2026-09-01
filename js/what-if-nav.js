@@ -35,7 +35,12 @@
     var stepIndex = 0;
 
     function computeSteps() {
+      // Also silences .what-if__bg's transition for this one instant reset —
+      // its background-position transition should only ever animate a
+      // user-driven goTo() (arrow/dot click), not the initial mount or an
+      // resize recompute snapping it back to the current step's position.
       track.style.transition = 'none';
+      bg.style.transition = 'none';
       var trackWidth = track.offsetWidth;
       var designToPx = trackWidth / DESIGN_W;
       var viewportWidth = window.innerWidth;
@@ -49,6 +54,7 @@
 
       void track.offsetHeight;
       track.style.transition = '';
+      bg.style.transition = '';
       render();
     }
 

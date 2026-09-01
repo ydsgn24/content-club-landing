@@ -1,0 +1,64 @@
+/* Jost (Google Fonts) has no Ukrainian Cyrillic-extension glyphs at all —
+   і/ї/є (upper or lower) are simply absent from every weight, verified
+   against Google's own font files. Without this patch, the browser
+   silently falls through to its generic system sans for just those
+   letters mid-word, mismatched against the rest of the Jost text around
+   them (index-ua.html has 500+ occurrences across nearly every section).
+
+   These three @font-face rules share the family name 'Jost' on purpose —
+   that's what makes them a per-character fallback: browsers already
+   split Google's Jost delivery into unicode-range'd faces per script, so
+   when a character isn't covered by any of Google's Jost faces, they
+   fall through to the next @font-face still named 'Jost', which is this
+   file. Link this AFTER the Google Fonts <link> in <head>.
+
+   і/ї alias straight onto Jost's own existing glyphs — і is Latin i (same
+   shape in this font), ї is Latin ï (same precomposed dot placement).
+
+   є/Є do NOT alias to Jost's real э/Э or to a mirrored e/E — tried both,
+   and both read as Э to a Ukrainian eye: Jost's e/E has a crossbar that
+   spans the full width and touches the closing curve, same as э/Э,
+   whereas real є has a short bar that stops well short of the opening.
+   So є/Є are constructed glyphs: Jost's own с/С bowl (unioned via
+   boolean-path union, not just overlaid) with a new short bar sized off
+   real є's proportions (~19%-68% of the bowl's width, vertically
+   centered) — still 100% Jost's own outlines, just assembled instead of
+   aliased. See CLAUDE.md for the visual comparisons that led here.
+
+   No ґ/Ґ — 0 occurrences in the current copy, and no letter in Jost
+   approximates its upturn hook well enough to build from.
+
+   Jost is SIL OFL 1.1 (see OFL.txt here), which explicitly permits
+   modified/derivative font files provided the license travels with them
+   — hence this folder, same self-hosted-module pattern as the other
+   font folders in this project. */
+
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0404, U+0406-0407, U+0454, U+0456-0457;
+  src: url('jost-ua-patch-400.woff2') format('woff2'),
+       url('jost-ua-patch-400.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  unicode-range: U+0404, U+0406-0407, U+0454, U+0456-0457;
+  src: url('jost-ua-patch-500.woff2') format('woff2'),
+       url('jost-ua-patch-500.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  unicode-range: U+0404, U+0406-0407, U+0454, U+0456-0457;
+  src: url('jost-ua-patch-600.woff2') format('woff2'),
+       url('jost-ua-patch-600.woff') format('woff');
+}

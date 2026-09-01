@@ -22,30 +22,11 @@
   overflow: hidden;
 }
 
-/* Scroll reveal (js/closing-cta-reveal.js): the angel/collage/CTA each
-   fade+rise in individually as they're scrolled to; the headings/body
-   text/P.S. line-reveal word by word instead (.reveal-word, shared base
-   rule in video-teaser.css), all triggered together once the section
-   scrolls into view — it isn't tall enough to need founder-intro's
-   separate scroll-trigger-per-group treatment. */
-.closing-cta.is-revealed .reveal-word {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .closing-cta__angel {
   display: block;
   width: 97px;
   height: auto;
   margin: 0 auto 21px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.closing-cta__angel.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .closing-cta__heading {
@@ -89,14 +70,6 @@
   width: calc(100% + 32px);
   max-width: none;
   margin: 0 -16px 19px;
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.closing-cta__collage.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .closing-cta__heading2 {
@@ -113,17 +86,9 @@
   width: 313px;
   max-width: 100%;
   margin: 0 0 64px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.closing-cta__cta.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   .closing-cta {
     display: flex;
     flex-direction: column;
@@ -203,10 +168,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .closing-cta__angel,
-  .closing-cta__collage,
-  .closing-cta__cta {
-    transition-duration: 0.01ms;
-  }
-}

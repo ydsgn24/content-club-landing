@@ -128,7 +128,9 @@
 .tariff-modal__title {
   position: relative;
   z-index: 1;
-  margin: 0 0 32px;
+  /* Pulled up (was 0 0 32px) to make room for .tariff-modal__notice right
+     below it without growing the card's overall height. */
+  margin: -12px 0 16px;
   font-family: 'Kudryashev Display', serif;
   font-weight: 400;
   font-size: 34px;
@@ -136,6 +138,23 @@
   letter-spacing: -0.34px;
   text-align: center;
   color: var(--color-navy);
+}
+
+/* Legal/eligibility notice — not in the Figma component, added
+   per-request between the title and the form. Styled off
+   .tariff-modal__check-text (same small print treatment already used
+   for the consent copy lower in the card) for visual consistency. */
+.tariff-modal__notice {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 24px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.12px;
+  text-align: center;
+  color: rgba(22, 30, 57, 0.8);
 }
 
 .tariff-modal__form {
