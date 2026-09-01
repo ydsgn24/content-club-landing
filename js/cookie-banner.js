@@ -5,10 +5,14 @@
   var STORAGE_KEY = 'cookie-notice-ack';
   if (localStorage.getItem(STORAGE_KEY)) return;
 
-  banner.hidden = false;
-  requestAnimationFrame(function () {
-    banner.classList.add('cookie-banner--visible');
-  });
+  function reveal() {
+    banner.hidden = false;
+    requestAnimationFrame(function () {
+      banner.classList.add('cookie-banner--visible');
+    });
+  }
+
+  window.addEventListener('scroll', reveal, { once: true, passive: true });
 
   var acceptBtn = banner.querySelector('[data-cookie-accept]');
   if (!acceptBtn) return;
