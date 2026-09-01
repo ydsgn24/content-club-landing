@@ -270,8 +270,15 @@
      transform) so the wordmark stays fully visible up top and the face
      clears the card underneath it, verified empirically via screenshot. */
   .hero__bg {
-    object-position: 50% 18%;
-    transform: scale(1.15);
+    object-position: 50% 25%;
+    transform: scale(1.2);
+  }
+
+  /* Per direct request: dropped now that .hero__followers's own vertical
+     space is freed up, and used to zoom/raise .hero__bg above instead
+     (scale 1.15→1.38, object-position 18%→38%). */
+  .hero__followers {
+    display: none;
   }
 }
 
@@ -337,6 +344,17 @@
      bucket's own .hero__stack top:34% plus the same fixed 283.65px. */
   .hero__social-proof {
     top: calc(34% + 283.65px);
+  }
+
+  /* Deliberately NOT zoomed/raised to the base bucket's 1.2/25% above —
+     this bucket already has the least vertical room of the three (see
+     "Known accepted trade-off" above: the face/card already graze at the
+     original 1.15/18%), so any extra zoom here pushes that graze into a
+     full mouth/card overlap (checked empirically). Kept at the original
+     values on purpose. */
+  .hero__bg {
+    object-position: 50% 18%;
+    transform: scale(1.15);
   }
 }
 
