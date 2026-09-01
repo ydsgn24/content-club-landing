@@ -239,6 +239,21 @@
     top: 38%;
   }
 
+  /* 12px below the button's own bottom edge, held at any width within
+     this bucket (not just one reference size) — mirrors .hero__stack's
+     own top:38% plus the stack's fixed content height (card + gap +
+     button ≈ 271.65px, measured via Playwright at 375×667 and confirmed
+     constant across buckets since it comes from rem/min-height values,
+     not viewport-relative ones) plus the 12px gap itself. A plain % here
+     would only hit 12px at one specific width and drift at every other
+     width in the 341–767.98px range (verified: as low as ~0.6px at
+     360×640) — the base .hero__social-proof rule's top:85.2% was tuned
+     for the pre-20px-shift tall-phone layout and no longer applies now
+     that each mobile bucket moves the button independently. */
+  .hero__social-proof {
+    top: calc(38% + 283.65px);
+  }
+
   /* 90% of .hero__stack's width — shrinks the photo/card/pin cluster by
      10% per direct request. The button itself stays full size
      (.hero__cta is a separate flex child, not part of .hero__collage). */
@@ -285,6 +300,13 @@
   .hero__stack {
     top: calc(41% + 20px);
   }
+
+  /* Same calc() approach as the base bucket above, mirroring this
+     bucket's own .hero__stack top:calc(41% + 20px) plus the same fixed
+     283.65px (content height + 12px gap). */
+  .hero__social-proof {
+    top: calc(41% + 303.65px);
+  }
 }
 
 /* Extra compaction only below 341px width (iPhone SE 1st-gen and similar
@@ -309,6 +331,12 @@
 
   .hero__stack {
     top: 34%;
+  }
+
+  /* Same calc() approach as the base bucket above, mirroring this
+     bucket's own .hero__stack top:34% plus the same fixed 283.65px. */
+  .hero__social-proof {
+    top: calc(34% + 283.65px);
   }
 }
 
