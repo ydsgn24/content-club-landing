@@ -261,20 +261,29 @@
     width: 90%;
   }
 
+  /* Raised 20px off the section's own bottom edge per direct request —
+     base rule is bottom:0. */
+  .hero__torn-edge {
+    bottom: 20px;
+  }
+
   /* Mobile now loads a dedicated portrait crop (index.html's <picture>
-     source, images/hero-bg-mobile.png, 507×988) instead of the desktop
-     photo — it already has the wordmark and face composed near the top,
-     so unlike the old shared-photo era this needs little correction:
-     just object-position biased toward the top so cover crops from the
+     source, images/hero-bg-mobile.png) instead of the desktop photo —
+     it already has the wordmark and face composed near the top, so
+     unlike the old shared-photo era this needs little correction: just
+     object-position biased toward the top so cover crops from the
      bottom (legs/skirt, non-essential) rather than the top. No
-     scale/translate hacks — those were tuned against the old photo's
-     very different framing and don't apply to this asset. */
-  /* Small -10px raise on top of the plain top-aligned crop — the
-     model's chin just grazes the card without it (checked empirically
-     via Playwright at 375×667). */
+     scale hacks — those were tuned against the old photo's very
+     different framing and don't apply to this asset.
+
+     -20px raise on top of that plain top-aligned crop — the model's
+     chin/mouth grazes the card without it (checked empirically via
+     Playwright at 375×667). Re-checked and bumped from -10px→-20px
+     after the source image itself was swapped for a shorter re-crop
+     (507×914, was 507×988) — the old -10px no longer cleared. */
   .hero__bg {
     object-position: 50% 0%;
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
 
   /* Per direct request: dropped now that .hero__followers's own vertical
@@ -355,13 +364,15 @@
   }
 
   /* Same dedicated mobile image as the other two buckets, but this
-     bucket's shorter box needs a bigger -35px raise to clear the card —
-     tuned as a middle ground: any less and the chin still grazes the
-     card, any more (tested to -50/-60px) starts clipping the "Content"
-     wordmark at the very top instead (checked empirically). */
+     bucket's shorter box needs a bigger raise to clear the card — a
+     middle ground: any less and the chin still grazes the card, any
+     more starts crowding the "Content" wordmark into the eyebrow/
+     lang-switch row above it (checked empirically). Bumped -35px→-45px
+     after the source image was re-cropped shorter (see base bucket's
+     own comment above). */
   .hero__bg {
     object-position: 50% 0%;
-    transform: translateY(-35px);
+    transform: translateY(-45px);
   }
 }
 
