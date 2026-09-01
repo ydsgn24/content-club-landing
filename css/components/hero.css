@@ -277,10 +277,15 @@
      even at the original -10px raise, so scale stays at 1.3 — only the
      raise moved, and only partway (-10px→-20px, not the full -40px the
      ≥700px bucket's own delta would imply) — 1.3/-20px is the most this
-     bucket can take before the overlap starts. */
+     bucket can take before the overlap starts.
+
+     A further +50px request on top of THAT (→-70px) turned out fine,
+     unlike the earlier increments — past a certain raise the crop window
+     moves on from the chin/mouth entirely and clears the card again
+     (checked empirically), so this one wasn't capped. */
   .hero__bg {
     object-position: 50% 25%;
-    transform: translateY(-20px) scale(1.3);
+    transform: translateY(-70px) scale(1.3);
   }
 
   /* Per direct request: dropped now that .hero__followers's own vertical
@@ -325,11 +330,11 @@
 
   /* This bucket has the most vertical room of the three mobile buckets
      (tallest aspect-ratio), so it gets the full requested zoom/raise —
-     the base bucket below is capped lower (1.3/-20px) because it starts
+     the base bucket below is capped lower (1.3/-70px) because it starts
      overlapping the model's mouth at these values (checked empirically). */
   .hero__bg {
     object-position: 50% 25%;
-    transform: translateY(-50px) scale(1.584);
+    transform: translateY(-100px) scale(1.584);
   }
 }
 
@@ -363,15 +368,21 @@
     top: calc(34% + 283.65px);
   }
 
-  /* Deliberately NOT zoomed/raised to the base bucket's 1.2/25% above —
-     this bucket already has the least vertical room of the three (see
-     "Known accepted trade-off" above: the face/card already graze at the
-     original 1.15/18%), so any extra zoom here pushes that graze into a
-     full mouth/card overlap (checked empirically). Kept at the original
-     values on purpose. */
+  /* Deliberately NOT zoomed to the other buckets' scale — this bucket
+     already has the least vertical room of the three (see "Known
+     accepted trade-off" above: the face/card already graze at the
+     original 1.15/18%), and any extra zoom here pushes that graze into
+     a full mouth/card overlap (checked empirically). Scale stays at the
+     original 1.15 on purpose.
+
+     The raise (translateY) is a different story though: past a certain
+     point the crop window moves on from the chin/mouth entirely and
+     clears the card again (same effect confirmed on the other two
+     buckets) — checked empirically that -50px does exactly that here
+     too, so it's applied despite the zoom staying capped. */
   .hero__bg {
     object-position: 50% 18%;
-    transform: scale(1.15);
+    transform: translateY(-50px) scale(1.15);
   }
 }
 
